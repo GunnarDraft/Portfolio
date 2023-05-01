@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
-import React from 'react'
-import { Canvas } from '@react-three/fiber'
+import React, { useState, Suspense } from 'react'
+import { Canvas, useLoader } from '@react-three/fiber'
 import { MapControls } from '@react-three/drei'
-// import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
@@ -16,12 +16,12 @@ const Box = styled.div`
   width: 400px;
   height: 400px;
   margin: 64px;
-  font-family: Roboto, Arial, sans-serif;
+  font-family: Arial, sans-serif;
   font-weight: bold;
   text-align: center;
   color: #66ff00ef;
   text-shadow: 1px 1px 3px #77ee11;
-  backdrop-filter: blur(8px)   brightness(2);
+  backdrop-filter: blur(8px) brightness(2);
   padding: 16px;
   z-index: 2;
   overflow: visible;
@@ -41,7 +41,7 @@ const Box = styled.div`
   }
 `;
 const Content = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 400px;
@@ -78,18 +78,15 @@ const line1 = "M0 0L350 0L400 50L400 400L50 400L0 350Z";
 
 const inter = Inter({ subsets: ['latin'] })
 
-// function Model() {
-//   const [gltf, setGltf] = useState(null);
-//   const gltfResult = useLoader(GLTFLoader, './scene.glb');
+function Model() {
 
-//   if (!gltf && gltfResult) {
-//     setGltf(gltfResult);
-//   }
-//   const rotation = [0, Math.PI / 4, 0]; // Rotar 90 grados en el eje Y
-//   const position = [0, -50, 0]; // Posicionar en el centro de la escena
+  const gltf = useLoader(GLTFLoader, './base_map.glb');
 
-//   return gltf ? <primitive object={gltf.scene} scale={4} rotation={rotation} position={position} /> : null;
-// }
+  const rotation = [0, Math.PI / 4, 0]; // Rotar 90 grados en el eje Y
+  const position = [0, 0, 0]; // Posicionar en el centro de la escena
+
+  return <primitive object={gltf.scene} scale={4} rotation={rotation} position={position} />;
+}
 export default function Home() {
 
   return (
@@ -101,28 +98,16 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Content>
-          <Box>Welcome</Box>
-          <Svg
-            version="1.1"
-            id="Capa_1"
-            xmlns="http://www.w3.org/2000/svg"
-            x="0px"
-            y="0px"
-            viewBox="0 0 400 400"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 1 }}
-          >
-            <Path d={line1} />
-          </Svg>
-        </Content>
         <Canvas orthographic camera={{ position: [0, 250, 0], zoom: 10 }}>
           <color attach="background" args={['#252530']} />
           <ambientLight />
           <hemisphereLight intensity={0.125} color="#8040df" groundColor="red" />
           <spotLight castShadow color="orange" intensity={2} position={[-50, 50, 40]} angle={0.25} penumbra={1} shadow-mapSize={[128, 128]} shadow-bias={0.00005} />
-          <gridHelper args={[1000, 100, '#151515', '#020202']} position={[0, -10, 0]} />
-          <pointLight position={[10, 10, 10]} />
+          <gridHelper args={[1000, 100, '#151515', '#020202']} position={[0, 1, 0]} />
+          <pointLight position={[10, 100, 10]} />
+          <Suspense fallback={null}>
+            <Model />
+          </Suspense>
           <MapControls
             minZoom={10}
             maxZoom={15}
@@ -137,15 +122,32 @@ export default function Home() {
             removeEventListener={undefined}
             dispatchEvent={undefined}
             onEnd={e => {
-              e.target.target.x > 30 ? e.target.target.x = 30 : null;
-              e.target.target.x < -30 ? e.target.target.x = -30 : null;
-              e.target.target.z > 30 ? e.target.target.z = 30 : null;
-              e.target.target.z < -30 ? e.target.target.z = -30 : null;
-              e.target.target.y > 30 ? e.target.target.y = 30 : null;
-              e.target.target.y < -30 ? e.target.target.y = -30 : null;
+              e.target.target.x > 300 ? e.target.target.x = 300 : null;
+              e.target.target.x < -300 ? e.target.target.x = -300 : null;
+              e.target.target.z > 300 ? e.target.target.z = 300 : null;
+              e.target.target.z < -300 ? e.target.target.z = -300 : null;
+              e.target.target.y > 300 ? e.target.target.y = 300 : null;
+              e.target.target.y < -300 ? e.target.target.y = -300 : null;
             }}
           />
         </Canvas>
+        <Content>
+          <Suspense fallback={null}>
+            <Box>Welcome</Box>
+            <Svg
+              version="1.1"
+              id="Capa_1"
+              xmlns="http://www.w3.org/2000/svg"
+              x="0px"
+              y="0px"
+              viewBox="0 0 400 400"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 1 }}
+            >
+              <Path d={line1} />
+            </Svg>
+          </Suspense>
+        </Content>
       </main>
     </>
   )
