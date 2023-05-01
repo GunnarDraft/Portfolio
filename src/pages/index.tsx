@@ -4,6 +4,50 @@ import React, { useRef, useState, Suspense } from 'react'
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import { MapControls } from '@react-three/drei'
 // import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import styled from "styled-components";
+
+const Box = styled.div`
+  background: #3343538a;
+  position: fixed;
+  display: flex;
+  top: 10;
+  left: 0;
+  width: 400px;
+  height: 400px;
+  margin: 64px;
+  font-family: Roboto, Arial, sans-serif;
+  font-weight: bold;
+  text-align: center;
+  color: #66ff00ef;
+  text-shadow: 1px 1px 3px #77ee11;
+  backdrop-filter: blur(6px) saturate(0.8) brightness(5);
+  z-index: 2;
+  overflow: visible;
+  clip-path: polygon(
+    0 50px,
+    0 0,
+    350px 0,
+    400px 50px,
+    400px 350px,
+    400px 400px,
+    50px 400px,
+    0% 350px,
+    0% 50px
+  );
+  & p {
+    margin: 16px;
+  }
+`;
+const Content = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 400px;
+  margin: 64px;
+  z-index: 3;
+  display: flex;
+`
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,6 +74,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        <Content>
+          <Box>hola</Box>
+        </Content>
         <Canvas orthographic camera={{ position: [0, 250, 0], zoom: 10 }}>
           <color attach="background" args={['#252530']} />
           <ambientLight />
@@ -37,9 +84,6 @@ export default function Home() {
           <spotLight castShadow color="orange" intensity={2} position={[-50, 50, 40]} angle={0.25} penumbra={1} shadow-mapSize={[128, 128]} shadow-bias={0.00005} />
           <gridHelper args={[1000, 100, '#151515', '#020202']} position={[0, -10, 0]} />
           <pointLight position={[10, 10, 10]} />
-          {/* <Suspense fallback={null}>
-            <Model />
-          </Suspense> */}
           <MapControls
             minZoom={10}
             maxZoom={15}
