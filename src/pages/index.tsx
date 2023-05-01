@@ -122,6 +122,7 @@ export default function Home() {
             removeEventListener={undefined}
             dispatchEvent={undefined}
             onEnd={e => {
+              if (e === undefined) return;
               e.target.target.x > 300 ? e.target.target.x = 300 : null;
               e.target.target.x < -300 ? e.target.target.x = -300 : null;
               e.target.target.z > 300 ? e.target.target.z = 300 : null;
