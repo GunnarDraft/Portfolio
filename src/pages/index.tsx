@@ -7,7 +7,7 @@ import { MapControls } from '@react-three/drei'
 import styled from "styled-components";
 
 const Box = styled.div`
-  background: #3343538a;
+  background: #00553e40;
   position: fixed;
   display: flex;
   top: 10;
@@ -20,7 +20,8 @@ const Box = styled.div`
   text-align: center;
   color: #66ff00ef;
   text-shadow: 1px 1px 3px #77ee11;
-  backdrop-filter: blur(6px) saturate(0.8) brightness(5);
+  backdrop-filter: blur(8px)   brightness(2);
+  padding: 16px;
   z-index: 2;
   overflow: visible;
   clip-path: polygon(
@@ -75,7 +76,7 @@ export default function Home() {
       </Head>
       <main>
         <Content>
-          <Box>hola</Box>
+          <Box>Welcome</Box>
         </Content>
         <Canvas orthographic camera={{ position: [0, 250, 0], zoom: 10 }}>
           <color attach="background" args={['#252530']} />
