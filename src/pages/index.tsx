@@ -105,9 +105,7 @@ export default function Home() {
           <spotLight castShadow color="orange" intensity={2} position={[-50, 50, 40]} angle={0.25} penumbra={1} shadow-mapSize={[128, 128]} shadow-bias={0.00005} />
           <gridHelper args={[1000, 100, '#151515', '#020202']} position={[0, 1, 0]} />
           <pointLight position={[10, 100, 10]} />
-          <Suspense fallback={null}>
-            <Model />
-          </Suspense>
+
           <MapControls
             minZoom={10}
             maxZoom={15}
