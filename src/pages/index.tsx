@@ -6,9 +6,11 @@ import { MapControls } from '@react-three/drei'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import Link from 'next/link'
 
 const Box = styled.div`
   background: #00553e40;
+  backdrop-filter: blur(8px) brightness(1.4);
   position: absolute;
   display: flex;
   top: 10;
@@ -21,7 +23,6 @@ const Box = styled.div`
   text-align: center;
   color: #66ff00ef;
   text-shadow: 1px 1px 3px #77ee11;
-  backdrop-filter: blur(8px) brightness(2);
   padding: 16px;
   z-index: 2;
   overflow: visible;
@@ -74,6 +75,20 @@ const Svg = styled(motion.svg)`
     transform: translateY(-20px);
   }
 `;
+
+const MenuConetent = styled.div`
+
+  background: #00553e40;
+  backdrop-filter: blur(8px);
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 4; 
+padding: 16px;
+`
+const Linked = styled(Link)`
+ margin: 16px;
+`
 const line1 = "M0 0L350 0L400 50L400 400L50 400L0 350Z";
 
 const inter = Inter({ subsets: ['latin'] })
@@ -87,6 +102,16 @@ function Model() {
 
   return <primitive object={gltf.scene} scale={4} rotation={rotation} position={position} />;
 }
+function Menu() {
+  return (
+    <MenuConetent>
+      <Linked href="/home">Home</Linked>
+      <Linked href="/">lol</Linked>
+      <Linked href="/contact">Contact</Linked>
+    </MenuConetent>
+  )
+}
+
 export default function Home() {
 
   return (
@@ -98,6 +123,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        <Menu />
         <Canvas orthographic camera={{ position: [0, 250, 0], zoom: 10 }}>
           <color attach="background" args={['#252530']} />
           <ambientLight />
@@ -149,6 +175,7 @@ export default function Home() {
             </Svg>
           </Suspense>
         </Content>
+
       </main>
     </>
   )
