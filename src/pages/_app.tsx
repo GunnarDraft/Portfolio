@@ -1,15 +1,18 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
-import {MenuConetent, Linked, } from '../styles/Styles'
+import {MenuConetent, Linked, ContentNavbar} from '../styles/Styles'
 import { PropsWithChildren } from 'react'
 
 const Navbar = () => {
   return (
+    <ContentNavbar>
     <MenuConetent>
       <Linked href="/home">Home</Linked>
-      <Linked href="/">lol</Linked>
+      <Linked href="projects">Projects</Linked>
       <Linked href="/contact">Contact</Linked>
+      {/* <Linked href="/">lol</Linked> */}
     </MenuConetent>
+    </ContentNavbar>
   )
 }
 export function Layout({ children }:PropsWithChildren) {

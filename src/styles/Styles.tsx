@@ -5,10 +5,8 @@ import Link from 'next/link';
 const Box = styled.div`
   background: #00553e40;
   backdrop-filter: blur(8px) brightness(1.4);
-  position: absolute;
+  position: relative;
   display: flex;
-  top: 10;
-  left: 0;
   width: 400px;
   height: 400px;
   margin: 64px;
@@ -76,17 +74,34 @@ const Svg = styled(motion.svg)`
 const MenuConetent = styled.div`
   background: #00553e40;
   backdrop-filter: blur(8px);
-  position: absolute;
-  top: 0;
-  left: calc(50% - 100px);
+  position: relative;
   z-index: 4; 
   padding: 16px;
   border-radius: 8px;
   margin: 16px;
 `
 
+const ContentNavbar = styled.div`
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  left:0 ;
+  right:0;
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+`
+
 const Linked = styled(Link)`
  margin: 16px;
 `
+const ContentBox = styled.div`
+  position: relative;
+  z-index: 4;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
 
-export { Box, Content, Path, Svg, MenuConetent, Linked}
+`
+
+export { Box, Content, Path, Svg, MenuConetent, Linked, ContentNavbar, ContentBox }

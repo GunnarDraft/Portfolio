@@ -12,7 +12,11 @@ export default function About() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-
+                <div>
+                    contanct info 
+                    description 
+                    proyect section  
+                </div>
             </main>
         </>
     )

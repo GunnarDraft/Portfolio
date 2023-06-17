@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import React, { useRef, useState, Suspense } from 'react'
-
+import {Box, ContentBox } from "../styles/Styles"
 export default function Projects() {
 
     return (
@@ -12,7 +12,27 @@ export default function Projects() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
+                <ContentBox>
 
+                <Box>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates praesentium pariatur quidem quaerat asperiores, officiis adipisci perferendis. Neque incidunt, aliquam recusandae quasi, ut porro amet similique, dolorum quis modi voluptatibus!
+                </Box>
+                <Box>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates praesentium pariatur quidem quaerat asperiores, officiis adipisci perferendis. Neque incidunt, aliquam recusandae quasi, ut porro amet similique, dolorum quis modi voluptatibus!
+                </Box>
+                <Box>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates praesentium pariatur quidem quaerat asperiores, officiis adipisci perferendis. Neque incidunt, aliquam recusandae quasi, ut porro amet similique, dolorum quis modi voluptatibus!
+                </Box>
+                <Box>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates praesentium pariatur quidem quaerat asperiores, officiis adipisci perferendis. Neque incidunt, aliquam recusandae quasi, ut porro amet similique, dolorum quis modi voluptatibus!
+                </Box>
+                <Box>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates praesentium pariatur quidem quaerat asperiores, officiis adipisci perferendis. Neque incidunt, aliquam recusandae quasi, ut porro amet similique, dolorum quis modi voluptatibus!
+                </Box>
+                <Box>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates praesentium pariatur quidem quaerat asperiores, officiis adipisci perferendis. Neque incidunt, aliquam recusandae quasi, ut porro amet similique, dolorum quis modi voluptatibus!
+                </Box>
+                </ContentBox>
             </main>
         </>
     )
