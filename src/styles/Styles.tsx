@@ -92,6 +92,7 @@ const ContentNavbar = styled.div`
   display: flex;
   width: 100vw;
   justify-content: center;
+  z-index: 9999999999;
 `
 
 const Linked = styled(Link)`
