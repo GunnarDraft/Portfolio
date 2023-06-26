@@ -1,21 +1,22 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
-import {MenuConetent, Linked, ContentNavbar} from '../styles/Styles'
+import { MenuConetent, Linked, ContentNavbar } from '../styles/Styles'
 import { PropsWithChildren } from 'react'
 
 const Navbar = () => {
   return (
     <ContentNavbar>
-    <MenuConetent>
-      <Linked href="/home">Home</Linked>
-      <Linked href="projects">Projects</Linked>
-      <Linked href="/contact">Contact</Linked>
-      {/* <Linked href="/">lol</Linked> */}
-    </MenuConetent>
+      <MenuConetent>
+        <Linked href="/home">Home</Linked>
+        <Linked href="projects">Projects</Linked>
+        <Linked href="/about">About</Linked>
+        <Linked href="/periodictable">Periodic Table</Linked>
+        <Linked href="/">lol</Linked>
+      </MenuConetent>
     </ContentNavbar>
   )
 }
-export function Layout({ children }:PropsWithChildren) {
+export function Layout({ children }: PropsWithChildren) {
   return (
     <>
       <Navbar />
@@ -24,7 +25,7 @@ export function Layout({ children }:PropsWithChildren) {
   )
 }
 export default function App({ Component, pageProps }: AppProps) {
-  return  <Layout>
-  <Component {...pageProps} />
-</Layout>
+  return <Layout>
+    <Component {...pageProps} />
+  </Layout>
 }

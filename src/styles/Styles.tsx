@@ -8,6 +8,8 @@ const Box = styled.div`
   position: relative;
   display: flex;
   width: 400px;
+  min-width: 400px !important;
+  min-height: 400px;
   height: 400px;
   margin: 64px;
   font-family: Arial, sans-serif;
@@ -101,6 +103,7 @@ const ContentBox = styled.div`
   display: flex;
   width: 100vw;
   height: 100vh;
+  flex-wrap: wrap;
 
 `
 

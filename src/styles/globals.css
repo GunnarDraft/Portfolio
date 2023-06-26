@@ -1,13 +1,20 @@
+@font-face {
+  font-family: 'Netflix';
+  src: url('/fonts/NetflixSans_W_Md.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
+  --font-mono: Netflix, ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 
-  --foreground-rgb: 0, 0, 0;
+  --foreground-rgb: 200, 200, 200;
   --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background-end-rgb: 205, 205, 205;
 
   --primary-glow: conic-gradient(from 180deg at 50% 50%,
       #16abff33 0deg,
@@ -67,16 +74,21 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 html,
-body, #__next {
+body,
+#__next {
   max-width: 100vw;
   overflow-x: hidden;
   height: 100vh;
   min-height: 100vh;
   padding: 0;
   margin: 0;
+  font-family: "Netflix";
 }
 
 main {
@@ -101,3 +113,87 @@ a {
   }
 }
 
+
+.table {
+  width: 1152px;
+}
+
+.cells {
+  display: grid;
+  grid-template-rows: repeat(18, auto);
+  grid-template-columns: repeat(10, auto);
+  width: 1152px;
+  height: 100%;
+}
+
+.cell {
+  box-sizing: border-box;
+  padding: 4px;
+  width: 100px;
+  height: 100px;
+  display: grid;
+  margin: 4px;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.cell .number {
+  font-size: 12px;
+}
+
+.cell .symbol {
+  font-size: 20px;
+  text-align: center;
+}
+
+.cell .name {
+  font-size: 10px;
+  text-align: center;
+}
+
+.cell[data-category*="nonmetal"] {
+  border-color: #f0ff8f;
+}
+
+.cell[data-category*="metalloid"] {
+  border-color: #cbcc98;
+}
+
+.cell[data-category*="noble gas"] {
+  border-color: #bfffff;
+}
+
+.cell[data-category="alkali metal"] {
+  border-color: #ff6565;
+}
+
+.cell[data-category="alkaline earth metal"] {
+  border-color: #ffdead;
+}
+
+.cell[data-category="transition metal"] {
+  border-color: #ffc1c0;
+}
+
+.cell[data-category="post-transition metal"] {
+  border-color: #cccccc;
+}
+
+.cell[data-category="lanthanide"] {
+  border-color: #ffbfff;
+}
+
+.cell[data-category="actinide"] {
+  border-color: #ff99cc;
+}
+
+.cell[data-category*="unknown"] {
+  border-color: #dddddd;
+}
+
+.categories {
+  margin-top: 64px;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: repeat(4, auto);
+}
