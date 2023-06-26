@@ -12,8 +12,11 @@ const ContainerNetflix = styled.div`
     transform:scale(0.3) !important;    
     max-width:max-content;
     max-height:max-content;
+    z-index: 11;
     `
-
+const HTMLContainer = styled(Html)`
+z-index: 11 !important;
+`
 function Model(props) {
     const group = useRef<THREE.Group>(null)
     // Load model
@@ -36,11 +39,11 @@ function Model(props) {
                     <mesh material={materials['matte.001']} geometry={nodes['Cube008_1'].geometry} />
                     <mesh geometry={nodes['Cube008_2'].geometry}>
                         {/* Drei's HTML component can "hide behind" canvas geometry */}
-                        <Html className="content" rotation-x={-Math.PI / 2} position={[0, 0.05, -0.09]} transform occlude>
+                        <HTMLContainer rotation-x={-Math.PI / 2} position={[0, 0.05, -0.09]} transform occlude>
                             <ContainerNetflix onPointerDown={(e) => e.stopPropagation()}>
                                 <Netflix />
                             </ContainerNetflix>
-                        </Html>
+                        </HTMLContainer>
                     </mesh>
                 </group>
             </group>
