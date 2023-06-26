@@ -86,7 +86,7 @@ const MenuConetent = styled.div`
 const ContentNavbar = styled.div`
   position: fixed;
   top: 0;
-  z-index: 10;
+  z-index: 100;
   left:0 ;
   right:0;
   display: flex;
