@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import React, { useRef, useState, Suspense } from 'react'
 import PeriodicTableJSON from "../../public/periodictable.json";
-import { OrbitControls } from "@react-three/drei"; 
+import { OrbitControls } from "@react-three/drei";
 import { Vector2, Color } from "three";
 
 function Cell(props) {
@@ -109,13 +109,16 @@ function PeriodicTable(props) {
 
 const PeriodicTableComponet = () => {
     return <div>
-
-    <PeriodicTable elements={PeriodicTableJSON.elements} />
-        <div>
-            <Canvas camera={{ position: [0.0, 10.0, 10.0] }}> 
-                <Cube />
-            </Canvas>
-    </div>
+        <Suspense fallback={null}>
+            {PeriodicTableJSON ?
+                <div>
+                    <PeriodicTable elements={PeriodicTableJSON.elements} />
+                    <Canvas camera={{ position: [0.0, 10.0, 10.0] }}>
+                        <Cube />
+                    </Canvas>
+                </div>
+                : null}
+        </Suspense>
     </div>
 }
 const fragmentShader = /*glsl*/` 
@@ -213,11 +216,11 @@ const Cube = () => {
     const mesh = useRef(null);
 
     return (
-        <mesh ref={mesh}> 
+        <mesh ref={mesh}>
             <shaderMaterial
-                fragmentShader={fragmentShader} 
+                fragmentShader={fragmentShader}
             />
         </mesh>
     );
-}; 
+};
 export default PeriodicTableComponet
