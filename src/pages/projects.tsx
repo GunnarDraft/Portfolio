@@ -12,7 +12,7 @@ const ContainerNetflix = styled.div`
     transform:scale(0.3) !important;    
     max-width:max-content;
     max-height:max-content;
-    z-index: 11;
+    z-index: 11 !important;
     `
 const HTMLContainer = styled(Html)`
 z-index: 11 !important;
