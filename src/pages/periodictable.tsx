@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import React, { useRef, useState, Suspense } from 'react'
-import PeriodicTableJSON from "../../public/periodictable.json";
+import PeriodicTableJSON from "./periodictable.json";
 import { OrbitControls } from "@react-three/drei";
 import { Vector2, Color } from "three";
 
