@@ -174,7 +174,7 @@ function Cell(props) {
                 visibility: props.visible ? "visible" : "hidden"
             }}
         >
-            {props.n>0 && props.m>0 && props.l>0 ?
+            {props.n>0 && props.m>=0 && props.l>0 ?
             <CanvasContainer camera={{ position: [0.0, 0.0, 1.5] }}>
                 <Orbital n={props.n} l={props.l} m={props.m} />
             </CanvasContainer>
