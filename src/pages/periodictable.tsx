@@ -5,95 +5,6 @@ import { OrbitControls } from "@react-three/drei";
 import { Vector2, Color } from "three";
 import PeriodicTableJSON from '../../public/PeriodicTable.json'
 
-
-function Cell(props) {
-    return (
-        <div
-            key={props.number}
-            className="cell"
-            data-category={props.category}
-            style={{
-                gridRowStart: props.ypos,
-                gridColumnStart: props.xpos,
-                visibility: props.visible ? "visible" : "hidden"
-            }}
-        >
-            {props.n>0 && props.m!=0 && props.l>0 ?
-            <CanvasContainer camera={{ position: [0.0, 0.0, 1.5] }}>
-                <Orbital n={props.n} l={props.l} m={props.m} />
-            </CanvasContainer>
-            : <div> </div>} 
-            <span className="number">{props.number}</span>
-            <span className="symbol">{props.symbol}</span>
-            <span className="name">{props.name}</span>
-        </div>
-    );
-}
-
-function PeriodicTable(props) {
-    const [state, setState] = useState(
-        props.elements.reduce(
-            (state, { category }) => Object.assign(state, { [category]: true }),
-            {}
-        )
-    );
-    return (
-        <div className="table">
-            <div className="cells">
-                {props.elements.map(e =>
-                    Cell({
-                        ...e,
-                        visible: state[e.category]
-                    }) 
-                )}
-            </div>
-            {/* <div className="categories">
-                {Object.keys(state).map(category => (
-                    <span key={category}>
-                        <input
-                            key={category}
-                            type="checkbox"
-                            name={category}
-                            checked={state[category]}
-                            onChange={event =>
-                                setState({
-                                    ...state,
-                                    ...{ [category]: event.target.checked }
-                                })
-                            }
-                        />
-                        {category}
-                    </span>
-                ))}
-            </div> */}
-        </div>
-    );
-}
-
-
-
-const CanvasContainer = styled(Canvas)`
-display: flex;
-position: relative;
-height: 100px !important;
-width: 100px !important;  
-border: 1px dashed red; 
-`
-const DivContainer = styled.div`
-display: flex;
-position: relative;
-height: 100vh !important;	
-width: 100vw !important;
-border: 1px solid blue; 
-
-`
-{/* <PeriodicTable elements={PeriodicTableJSON.elements} /> */ }
-const PeriodicTableComponet = () => {
-    return <DivContainer>
-        <PeriodicTable elements={PeriodicTableJSON.elements} />
-    </DivContainer>
-}
-
 const fragmentShader = /*glsl*/`  
 #ifdef GL_ES
 precision mediump float;
@@ -101,19 +12,16 @@ precision mediump float;
 
 uniform vec2 u_resolution;
 uniform float u_time; 
-uniform vec2 u_mouse;
-uniform sampler2D u_channel0;
+uniform vec2 u_mouse; 
 
-#define ROT(p, a) p=cos(a)*p+sin(a)*vec2(p.y, -p.x)
-const float tau = 6.28318530718;
+ #define ROT(p, a) p=cos(a)*p+sin(a)*vec2(p.y, -p.x)
+
 float a0 = 5.1;
-
+uniform int  n;
+uniform int  l;
+uniform int  m;
 float A = 0.;
-float Y0 = 0.;
-
-uniform int n;
-uniform int l;
-uniform int m;
+float Y0 = 0.; 
 
 float JC(int x)
 {
@@ -202,12 +110,12 @@ bool mapcor(vec3 p, out float fcolor)
 	return ret;
 }
 
-void main()
+void main( )
 {
     vec2 pp = (-u_resolution.xy + 2.0*gl_FragCoord.xy) / u_resolution.y;
     float eyer = 2.0;
-    float eyea = -((u_mouse.x + 80.5) / u_resolution.x) * tau;
-    float eyef = ((u_mouse.y / u_resolution.y)-0.24) * tau;
+    float eyea = -((u_mouse.x + 80.5) / u_resolution.x) * 3.1415926 * 2.0;
+    float eyef = ((u_mouse.y / u_resolution.y)-0.24) * 3.1415926 * 2.0;
     
 	vec3 cam = vec3(
         eyer * cos(eyea) * sin(eyef),
@@ -226,7 +134,7 @@ void main()
     float dt = 0.03;
     float cor = 0.0;
     A = sqrt(pow(2. / (float(n) * a0), 3.) * (JC(n - l - 1) / (2.0 * float(n) * JC(n + l))));
-    Y0 = (1. / sqrt(tau)) * sqrt(((2. * float(l) + 1.) / 2.0) * (JC(l - m) / JC(l + m)));
+    Y0 = (1. / sqrt(2. * 3.1415926)) * sqrt(((2. * float(l) + 1.) / 2.0) * (JC(l - m) / JC(l + m)));
     
     for(int i = 0; i < 100; i ++)
     {
@@ -239,7 +147,6 @@ void main()
 	
     gl_FragColor = color;
 }
-
 
 `
 
@@ -254,6 +161,97 @@ void main() {
 }
 
 `
+
+function Cell(props) {
+    return (
+        <div
+            key={props.number}
+            className="cell"
+            data-category={props.category}
+            style={{
+                gridRowStart: props.ypos,
+                gridColumnStart: props.xpos,
+                visibility: props.visible ? "visible" : "hidden"
+            }}
+        >
+            {props.n>0 && props.m>0 && props.l>0 ?
+            <CanvasContainer camera={{ position: [0.0, 0.0, 1.5] }}>
+                <Orbital n={props.n} l={props.l} m={props.m} />
+            </CanvasContainer>
+            : <div> </div>} 
+            <span className="number">{props.number}</span>
+            <span className="symbol">{props.symbol}</span>
+            <span className="name">{props.name}</span>
+        </div>
+    );
+}
+
+function PeriodicTable(props) {
+    const [state, setState] = useState(
+        props.elements.reduce(
+            (state, { category }) => Object.assign(state, { [category]: true }),
+            {}
+        )
+    );
+    return (
+        <div className="table">
+            <div className="cells">
+                {props.elements.map(e =>
+                    Cell({
+                        ...e,
+                        visible: state[e.category]
+                    }) 
+                )}
+            </div>
+            {/* <CanvasContainer camera={{ position: [0.0, 0.0, 1.5] }}>
+                <Orbital n={3} l={2} m={1} />
+            </CanvasContainer> */}
+            {/* <div className="categories">
+                {Object.keys(state).map(category => (
+                    <span key={category}>
+                        <input
+                            key={category}
+                            type="checkbox"
+                            name={category}
+                            checked={state[category]}
+                            onChange={event =>
+                                setState({
+                                    ...state,
+                                    ...{ [category]: event.target.checked }
+                                })
+                            }
+                        />
+                        {category}
+                    </span>
+                ))}
+            </div> */}
+        </div>
+    );
+}
+
+
+
+const CanvasContainer = styled(Canvas)`
+display: flex;
+position: relative;
+height: 100px !important;
+width: 100px !important;   
+`
+const DivContainer = styled.div`
+display: flex;
+position: relative;
+height: 100vh !important;	
+width: 100vw !important; 
+
+`
+{/* <PeriodicTable elements={PeriodicTableJSON.elements} /> */ }
+const PeriodicTableComponet = () => {
+    return <DivContainer>
+        <PeriodicTable elements={PeriodicTableJSON.elements} />
+    </DivContainer>
+}
+
+
 interface IOrbitalProps {
     n: number;
     l: number;
@@ -276,13 +274,13 @@ const Orbital = ({ n, l, m }: IOrbitalProps) => {
             u_mouse: { value: new Vector2(0, 0) },
             u_resolution: { value: new Vector2(100, 100) },
             n: {
-                value: n | 3
+                value: n ?? 6
             },
             l: {
-                value: l | 1
+                value: l ?? 3
             },
             m: {
-                value: m | 1
+                value: m ?? 1
             },
         }),
         []
@@ -318,7 +316,7 @@ const Orbital = ({ n, l, m }: IOrbitalProps) => {
                 fragmentShader={fragmentShader}
                 vertexShader={vertexShader}
                 uniforms={uniforms}
-                wireframe={false}
+                wireframe={false} 
             />
         </mesh>
     );
