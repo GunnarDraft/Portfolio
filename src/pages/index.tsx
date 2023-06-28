@@ -1,15 +1,11 @@
 import Head from 'next/head'
-import { Inter } from 'next/font/google'
 import React, { Suspense } from 'react'
 import { Canvas, useLoader } from '@react-three/fiber'
 import { MapControls } from '@react-three/drei'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import {Box, Path, Content, Svg} from '../styles/Styles'
 
 
-const line1 = "M0 0L350 0L400 50L400 400L50 400L0 350Z";
 
-const inter = Inter({ subsets: ['latin'] })
 
 function Model() {
 
@@ -68,23 +64,7 @@ export default function Home() {
             }}
           />
         </Canvas>
-        <Content>
-          <Suspense fallback={null}>
-            <Box>Welcome</Box>
-            <Svg
-              version="1.1"
-              id="Capa_1"
-              xmlns="http://www.w3.org/2000/svg"
-              x="0px"
-              y="0px"
-              viewBox="0 0 400 400"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 1 }}
-            >
-              <Path d={line1} />
-            </Svg>
-          </Suspense>
-        </Content>
+        
 
       </main>
     </>

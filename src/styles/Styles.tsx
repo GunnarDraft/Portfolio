@@ -10,8 +10,7 @@ const Box = styled.div`
   width: 400px;
   min-width: 400px !important;
   min-height: 400px;
-  height: 400px;
-  margin: 64px;
+  height: 400px; 
   font-family: Arial, sans-serif;
   font-weight: bold;
   text-align: center;
@@ -37,12 +36,9 @@ const Box = styled.div`
 `;
 
 const Content = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: relative; 
   width: 400px;
-  height: 400px;
-  margin: 64px;
+  height: 400px; 
   z-index: 3;
   display: flex;
 `
@@ -59,8 +55,7 @@ const Svg = styled(motion.svg)`
   top: 10;
   left: 0;
   width: 400px;
-  height: 400px;
-  margin: 64px;
+  height: 400px; 
   z-index: 3;
   position: absolute;
   flex: 1;
@@ -78,9 +73,9 @@ const MenuConetent = styled.div`
   backdrop-filter: blur(8px);
   position: relative;
   z-index: 4; 
-  padding: 16px;
-  border-radius: 8px;
+  padding: 16px; 
   margin: 16px;
+  clip-path: polygon( 0 5%, 0 0, 95% 0, 100% 50%, 100% 95%, 100% 100%, 5% 100%, 0% 50%, 0% 0% );
 `
 
 const ContentNavbar = styled.div`
@@ -107,5 +102,14 @@ const ContentBox = styled.div`
   flex-wrap: wrap;
 
 `
+const HomeContent = styled.div`
+  position: relative;
+  z-index: 4;
+  display: flex; 
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; 
+`
 
-export { Box, Content, Path, Svg, MenuConetent, Linked, ContentNavbar, ContentBox }
+export { Box, Content, Path, Svg, MenuConetent, Linked, ContentNavbar, ContentBox, HomeContent }

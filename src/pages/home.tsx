@@ -1,120 +1,11 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { MathUtils, Vector2 } from "three";
-import { OrbitControls } from "@react-three/drei";
-import { Color } from "three";
+import { Vector2 } from "three";
 import styled from "styled-components";
+import { Box, Path, Content, Svg, HomeContent } from '../styles/Styles'
+import React, { Suspense } from 'react'
+const line1 = "M0 0L350 0L400 50L400 400L50 400L0 350Z";
 
-const fragmentShader = /*glsl*/`  
-#ifdef GL_ES
-precision mediump float;
-#endif
-
-uniform vec2 u_resolution;
-uniform float u_time; 
-uniform vec2 u_mouse;
-uniform sampler2D u_channel0;
-
-#define R u_resolution.xy
-#define A(U) texture(u_channel0,(U)/R)
-#define cx(b) mat2((b).x,-(b).y,(b).yx)
-#define ei(a) cx(vec2(cos(a),sin(a)))
-#define norm(v) (length(v)<=0.?vec2(0):normalize(v))
-#define pi 3.14159265359
-float factorial (float n) {
-    float o = 1.;
-    for (float i = 1.; i <= n; i++) 
-        o *= i;
-    return o;
-}
-float legendre (float x, float l, float m) {
-    float p0 = 1.;
-    for (float i = 0.; i<m; i++) 
-        p0 = (1.-2.*i)*sqrt(1.-x*x)*p0;
-    if (l == m) return p0;
-    float p1 = (2.*m+1.)*x*p0;
-    for (float i = m+2.; i < l; i++) {
-        float t = ((2.*i-1.)*x*p1-(i+m-1.)*p0)/(i-m);
-        p0 = p1;
-        p1 = t;
-    }
-    return p1;
-}
-float laguerre (float x, float k, float a) {
-    float _0 = 1.;
-    float _1 = 1.+a-x;
-    for (float i = 0.; i < k; i++) {
-        float t = ((2.*i+1.+a-x)*_1-(i+a)*_0)/(i+1.);
-        _0 = _1;
-        _1 = t;
-    }
-    return _0;
-}
-vec2 harmonic (vec3 k, float l, float m) {
-    if (length(k)>0.) k = normalize(k);
-    vec2 o = vec2(1,0)*ei(atan(k.y,k.x)*m);
-    o *= legendre(k.z,l,m);
-    o *= pow(-1.,m)*sqrt((2.*l+1.)/(4.*pi)*factorial(l-m)/factorial(l+m));
-    return o;
-}
-
-// vec2 harmonic(vec3 k, float l, float m) {
-//     if (length(k) > 0.0) k = normalize(k);
-//     vec2 o = vec2(1, 0);
-//     o *= legendre(k.z, l, m);
-//     o *= pow(-1.0, m) * sqrt((2.0 * l + 1.0) / (4.0 * pi) * factorial(l - m) / factorial(l + m));
-//     return o;
-// }
-
-float normalization (float n, float l) {
-    return sqrt(pow(2./n,3.)/(2.*n)*factorial(n-l-1.)/factorial(n+l));
-}
-vec2 hydrogen (vec3 k, float n, float l, float m) {
-    
-    vec2 o = harmonic(k,l,m);
-    float p = 2.*length(k)/n;
-    o *= laguerre(p,n-l-1.,2.*l+1.);
-    o *= exp(-p*.5)*pow(p,l);
-    return o*normalization(n,l);
-}
-// vec2 hydrogen(vec3 k, float n, float l, float m) {
-//     vec2 o = harmonic(k, l, m);
-//     float p = 2.0 * length(k) / n;
-//     o *= laguerre(p, n - l - 1.0, 2.0 * l + 1.0);
-//     o *= exp(-p * 0.5) * pow(p, l);
-//     return o * normalization(n, l);
-// }
-vec4 color (vec2 u) {
-
-    return dot(u,u)*(0.5+0.5*normalize(sin(atan(u.y,u.x)+vec4(1,0,0,4))));
-}
-void main() { 
-
-    vec2 uv = (-u_resolution.xy + 2.0*gl_FragCoord.xy) / u_resolution.y;
-    vec3 p = vec3(0,0,-120);
-    vec3 d = normalize(vec3(uv,1));
-    vec2 t = vec2(u_time);
-   
-    t = 6.2*u_mouse.xy/R.x;
-        
-    p.xy *= ei(t.x);
-    p.yz *= ei(t.y);
-    d.xy *= ei(t.x);
-    d.yz *= ei(t.y);
-    gl_FragColor = vec4(0);
-    
-    float n = 6., l = 3., m = 1.;
-    for (int i = 0; i < 100; i++) {
-        vec2 psi = 35.*hydrogen(p,n,l,m);
-        float ro = dot(psi,psi);
-        p += 3.*d*exp(-200.*ro);
-        gl_FragColor += color(psi);
-    }
-    
-}
-
-`
- 
 const vertexShader = /*glsl*/` 
 void main() { 
 
@@ -126,7 +17,7 @@ void main() {
 }
 
 `
-const fragmentShader2 = /*glsl*/`  
+const fragmentShader = /*glsl*/`  
 #ifdef GL_ES
 precision mediump float;
 #endif
@@ -286,8 +177,8 @@ const Gradient = () => {
         value: 0.0,
       },
       u_mouse: { value: new Vector2(0, 0) },
-      u_resolution: { value: new Vector2(100,100)},
-  
+      u_resolution: { value: new Vector2(100, 100) },
+
     }),
     []
   );
@@ -314,7 +205,7 @@ const Gradient = () => {
     <mesh ref={mesh} position={[0, 0, 0]} scale={2}>
       <planeGeometry args={[1, 1, 200, 200]} />
       <shaderMaterial
-        fragmentShader={fragmentShader2}
+        fragmentShader={fragmentShader}
         vertexShader={vertexShader}
         uniforms={uniforms}
         wireframe={false}
@@ -336,6 +227,25 @@ const Scene = () => {
 };
 
 export default function Home() {
-
-  return <Scene />;
+  return <div>
+    <Scene />
+    <HomeContent>
+      <Content>
+        <Box>Welcome</Box>
+        <Svg
+          version="1.1"
+          id="Capa_1"
+          xmlns="http://www.w3.org/2000/svg"
+          x="0px"
+          y="0px"
+          viewBox="0 0 400 400"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 1 }}
+        >
+          <Path d={line1} />
+        </Svg>
+      </Content>
+    </HomeContent>
+  </div>
+    ;
 };
