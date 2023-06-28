@@ -18,11 +18,11 @@ function Cell(props) {
                 visibility: props.visible ? "visible" : "hidden"
             }}
         >
-            {props.n ?
+            {props.n>0 && props.m!=0 && props.l>0 ?
             <CanvasContainer camera={{ position: [0.0, 0.0, 1.5] }}>
                 <Orbital n={props.n} l={props.l} m={props.m} />
             </CanvasContainer>
-            : null} 
+            : <div> </div>} 
             <span className="number">{props.number}</span>
             <span className="symbol">{props.symbol}</span>
             <span className="name">{props.name}</span>
@@ -77,7 +77,7 @@ display: flex;
 position: relative;
 height: 100px !important;
 width: 100px !important;  
-border: 1px solid red; 
+border: 1px dashed red; 
 `
 const DivContainer = styled.div`
 display: flex;
@@ -219,7 +219,7 @@ void main()
 	vec3 front = normalize(- cam);
 	vec3 left = normalize(cross(normalize(vec3(0.25,1,-0.01)), front));
 	vec3 up = normalize(cross(front, left));
-	vec3 v = normalize(front*1.75 + left*pp.x + up*pp.y);
+	vec3 v = normalize(front*3.0 + left*pp.x + up*pp.y);
     
     vec3 p = cam;
     
@@ -282,7 +282,7 @@ const Orbital = ({ n, l, m }: IOrbitalProps) => {
                 value: l | 1
             },
             m: {
-                value: m | 0
+                value: m | 1
             },
         }),
         []

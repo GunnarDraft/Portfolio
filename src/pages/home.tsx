@@ -126,25 +126,23 @@ void main() {
 }
 
 `
-
-const fragmentShader2 = /*glsl*/`
+const fragmentShader2 = /*glsl*/`  
 #ifdef GL_ES
 precision mediump float;
 #endif
 
 uniform vec2 u_resolution;
 uniform float u_time; 
-uniform vec2 u_mouse;
-uniform sampler2D u_channel0;
+uniform vec2 u_mouse; 
 
-#define ROT(p, a) p=cos(a)*p+sin(a)*vec2(p.y, -p.x)
+ #define ROT(p, a) p=cos(a)*p+sin(a)*vec2(p.y, -p.x)
 
 float a0 = 5.1;
-int  n = 2;
-int  l = 0;
-int  m = 0;
+int  n = 3;
+int  l = 2;
+int  m = 1;
 float A = 0.;
-float Y0 = 0.;
+float Y0 = 0.; 
 
 float JC(int x)
 {
@@ -233,7 +231,7 @@ bool mapcor(vec3 p, out float fcolor)
 	return ret;
 }
 
-void main()
+void main( )
 {
     vec2 pp = (-u_resolution.xy + 2.0*gl_FragCoord.xy) / u_resolution.y;
     float eyer = 2.0;
@@ -250,7 +248,7 @@ void main()
 	vec3 front = normalize(- cam);
 	vec3 left = normalize(cross(normalize(vec3(0.25,1,-0.01)), front));
 	vec3 up = normalize(cross(front, left));
-	vec3 v = normalize(front*1.75 + left*pp.x + up*pp.y);
+	vec3 v = normalize(front*3.0 + left*pp.x + up*pp.y);
     
     vec3 p = cam;
     
@@ -272,6 +270,7 @@ void main()
 }
 
 `
+
 const Gradient = () => {
   // This reference will give us direct access to the mesh
   const mesh = useRef(null);
@@ -287,7 +286,8 @@ const Gradient = () => {
         value: 0.0,
       },
       u_mouse: { value: new Vector2(0, 0) },
-      u_resolution: { value: new Vector2(window.innerWidth, window.innerHeight) },
+      u_resolution: { value: new Vector2(100,100)},
+  
     }),
     []
   );
@@ -311,8 +311,8 @@ const Gradient = () => {
   });
 
   return (
-    <mesh ref={mesh} position={[0, 0, 0]} scale={1}>
-      <planeGeometry args={[1, 1, 100, 100]} />
+    <mesh ref={mesh} position={[0, 0, 0]} scale={2}>
+      <planeGeometry args={[1, 1, 200, 200]} />
       <shaderMaterial
         fragmentShader={fragmentShader2}
         vertexShader={vertexShader}
@@ -322,17 +322,20 @@ const Gradient = () => {
     </mesh>
   );
 };
-const CanvasContainer = styled(Canvas)`
-display: flex;
+const CanvasContainer = styled(Canvas)` 
 position: absolute;
-height: 100vh;
-width: 100vw;
-flex:1; 
+height: 100px !important;
+width: 100px !important; 
 `
- 
+const Scene = () => {
+  return (
+    <CanvasContainer camera={{ position: [0.0, 0.0, 1.5] }}>
+      <Gradient />
+    </CanvasContainer>
+  );
+};
+
 export default function Home() {
 
-  return <CanvasContainer camera={{ position: [0.0, 0.0, 1.5] }}>
-      <Gradient />
-    </CanvasContainer>;
+  return <Scene />;
 };
