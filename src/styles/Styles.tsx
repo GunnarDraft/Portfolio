@@ -14,6 +14,7 @@ const Box = styled.div`
   font-family: Arial, sans-serif;
   font-weight: bold;
   text-align: center;
+  flex-flow: column;
   color: #66ff00ef;
   text-shadow: 1px 1px 3px #77ee11;
   padding: 16px;
@@ -41,6 +42,7 @@ const Content = styled.div`
   height: 400px; 
   z-index: 3;
   display: flex;
+  margin: 16px;	
 `
 
 const Path = styled(motion.path)`

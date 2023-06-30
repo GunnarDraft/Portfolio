@@ -4,6 +4,8 @@ import { Vector2 } from "three";
 import styled from "styled-components";
 import { Box, Path, Content, Svg, HomeContent } from '../styles/Styles'
 import React, { Suspense } from 'react'
+import { Typography } from "@material-ui/core";
+import Link from "next/link";
 const line1 = "M0 0L350 0L400 50L400 400L50 400L0 350Z";
 
 const vertexShader = /*glsl*/` 
@@ -225,13 +227,50 @@ const Scene = () => {
     </CanvasContainer>
   );
 };
+const Container = styled.div`
+overflow: visible;
+`
+const Heading = styled(Typography)`
 
+`
+const ProfileImage = styled.img`
+
+`
+const Section = styled.div`
+`
+const Paragraph = styled.div`
+`
+const Button = styled.button``
+const BioYear = styled.div``
+const BioSection = styled.div``
+
+const ListItem = styled.li``
+const List = styled.ul``
+
+const SimpleGrid = styled.div``
+const GridItem = styled.div``
 export default function Home() {
   return <div>
     <Scene />
     <HomeContent>
       <Content>
-        <Box>Welcome</Box>
+        <Box >
+
+          <br />
+          Hello, I&apos;m an indie app developer based in Mexico!
+
+          <Heading  >
+            Gunnar Valgeirsson
+          </Heading>
+          <p>Digital ( Artist / Developer / Designer )</p>
+
+          Gunnar is a freelance and a full-stack developer based in Mexico with a
+          passion for building digital services/stuff he wants. He has a knack
+          for all things launching products, from planning and designing all the
+          way to solving real-life problems with code. When not online, he loves
+
+
+        </Box>
         <Svg
           version="1.1"
           id="Capa_1"
@@ -245,6 +284,143 @@ export default function Home() {
           <Path d={line1} />
         </Svg>
       </Content>
+      {/* <Section  >
+          <Heading  >
+            Work
+          </Heading>
+          <Paragraph>
+            Gunnar is a freelance and a full-stack developer based in Mexico with a
+            passion for building digital services/stuff he wants. He has a knack
+            for all things launching products, from planning and designing all the
+            way to solving real-life problems with code. When not online, he loves
+            hanging out with his camera. Currently, he is living off of his own
+            product called{' '}
+            <Link href="/works/inkdrop" passHref scroll={false}>
+              Inkdrop
+            </Link>
+
+            <Link
+              href="https://www.youtube.com/devaslife"
+              passHref
+              target="_blank"
+            >
+              Dev as Life
+            </Link>
+            &quot; has more than 100k subscribers.
+          </Paragraph>
+          <Box >
+            <Button
+            >
+              My portfolio
+            </Button>
+          </Box>
+        </Section>
+
+        <Section >
+          <Heading >
+            Bio
+          </Heading>
+          <BioSection>
+            <BioYear>1996</BioYear>
+            Born in Mexico.
+          </BioSection>
+          <BioSection>
+            <BioYear>2017</BioYear>
+            Completed
+          </BioSection>
+          <BioSection>
+            <BioYear>2017</BioYear>
+            Worked at Ekomercio
+          </BioSection>
+          <BioSection>
+            <BioYear>2018 to present</BioYear>
+            Working as a freelancer
+          </BioSection>
+        </Section>
+
+        <Section >
+          <Heading  >
+            I ♥
+          </Heading>
+          <Paragraph>
+            Art, Music,{' '}
+            <Link href="#" target="_blank">
+              Drawing
+            </Link>
+            , Playing Drums,{' '}
+            <Link href="#" target="_blank">
+              Photography
+            </Link>
+            , Leica, Machine Learning
+          </Paragraph>
+        </Section>
+
+        <Section >
+          <Heading >
+            On the web
+          </Heading>
+          <List>
+            <ListItem>
+              <Link href="#" target="_blank">
+                <Button
+                >
+                  @craftzdog
+                </Button>
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link href="#" target="_blank">
+                <Button
+                >
+                  @inkdrop_app (English)
+                </Button>
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link href="#" target="_blank">
+                <Button
+                >
+                  @craftzdog (日本語)
+                </Button>
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link href="#" target="_blank">
+                <Button
+                >
+                  @craftzdog
+                </Button>
+              </Link>
+            </ListItem>
+          </List>
+
+          <SimpleGrid>
+            <GridItem
+            >
+
+            </GridItem>
+            <GridItem
+            >
+              A Markdown note-taking app
+            </GridItem>
+          </SimpleGrid>
+
+          <Heading >
+            Newsletter
+          </Heading>
+          <p>
+            Join me on a behind-the-scenes coding journey. Weekly updates on
+            projects, tutorials, and videos
+          </p>
+
+          <Box >
+            <Button
+            >
+              Sign up my newsletter here
+            </Button>
+          </Box>
+        </Section> */}
+
     </HomeContent>
   </div>
     ;
