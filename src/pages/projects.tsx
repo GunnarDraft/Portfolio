@@ -473,7 +473,7 @@ const Gradient = () => {
     });
 
     return (
-        <mesh ref={mesh} position={[0, 0, 5]} rotation={[0, Math.PI, 0]} scale={20}>
+        <mesh ref={mesh} position={[0, 0, 5]} rotation={[0, Math.PI, 0]} scale={40}>
             <planeGeometry args={[2, 1, 200, 200]} />
             <shaderMaterial
                 fragmentShader={fragmentShader}
@@ -527,7 +527,7 @@ function Model(props) {
 
 export default function Projects() {
     return (
-        <Canvas camera={{ position: [-5, 0, -15], fov: 55 }}>
+        <Canvas camera={{ position: [0, 0, -15], fov: 55 }}>
             <Gradient />
             <pointLight position={[10, 10, 10]} intensity={1.5} />
             <Suspense fallback={null}>
