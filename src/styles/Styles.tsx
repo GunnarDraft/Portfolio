@@ -18,7 +18,7 @@ const Box = styled.div`
   color: #66ff00ef;
   text-shadow: 1px 1px 3px #77ee11;
   padding: 16px;
-  z-index: 2;
+  z-index: 8;
   overflow: visible;
   clip-path: polygon(
     0 50px,
@@ -37,10 +37,11 @@ const Box = styled.div`
 `;
 
 const Content = styled.div`
-  position: relative; 
+  position: absolute; 
+  
   width: 400px;
   height: 400px; 
-  z-index: 3;
+  z-index: 9;
   display: flex;
   margin: 16px;	
 `
@@ -58,7 +59,7 @@ const Svg = styled(motion.svg)`
   left: 0;
   width: 400px;
   height: 400px; 
-  z-index: 3;
+  z-index: 11;
   position: absolute;
   flex: 1;
   overflow: visible;
@@ -96,17 +97,23 @@ const Linked = styled(Link)`
  margin: 16px;
 `
 const ContentBox = styled.div`
-  position: relative;
-  z-index: 4;
+  position: relative; 
   display: flex;
   width: 100vw;
   height: 100vh;
   flex-wrap: wrap;
+  z-index: 10;
+
 
 `
 const HomeContent = styled.div`
-  position: relative;
-  z-index: 4;
+  position: fixed;
+  top: 0;
+  left:0;   
+  z-index: 9;
+
+  width: 100vw;
+  height: 100vh;
   display: flex; 
   flex-wrap: wrap;
   justify-content: center;

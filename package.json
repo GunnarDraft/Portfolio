@@ -16,6 +16,7 @@
     "babel-preset-next": "^1.4.0",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.1",
+    "flubber": "^0.4.2",
     "framer-motion": "^10.12.4",
     "glsl-noise": "^0.0.0",
     "glslify": "^7.1.1",
