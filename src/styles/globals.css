@@ -4,6 +4,12 @@
   font-weight: 500;
   font-style: normal;
 }
+@font-face {
+  font-family: 'IMB Plex Mono';
+  src: url('/fonts/IBMPlexMono-Regular.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
 
 :root {
   --max-width: 1100px;

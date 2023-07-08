@@ -4,7 +4,7 @@ import React, { useRef, useState, Suspense, useCallback, useEffect, useMemo } fr
 import { OrbitControls } from "@react-three/drei";
 import { Vector2, Color } from "three";
 import PeriodicTableJSON from '../../public/PeriodicTable.json'
-
+import { CanvasContainerAtom, DivContainer} from '../styles/Styles'
 const fragmentShader = /*glsl*/`  
 #ifdef GL_ES
 precision mediump float;
@@ -175,9 +175,9 @@ function Cell(props) {
             }}
         >
             {props.n>0 && props.m>0 && props.l>0 ?
-            <CanvasContainer camera={{ position: [0.0, 0.0, 1.5] }}>
+            <CanvasContainerAtom camera={{ position: [0.0, 0.0, 1.5] }}>
                 <Orbital n={props.n} l={props.l} m={props.m} />
-            </CanvasContainer>
+            </CanvasContainerAtom>
             : <div> </div>} 
             <span className="number">{props.number}</span>
             <span className="symbol">{props.symbol}</span>
@@ -203,9 +203,7 @@ function PeriodicTable(props) {
                     }) 
                 )}
             </div>
-            {/* <CanvasContainer camera={{ position: [0.0, 0.0, 1.5] }}>
-                <Orbital n={3} l={2} m={1} />
-            </CanvasContainer> */}
+            
             {/* <div className="categories">
                 {Object.keys(state).map(category => (
                     <span key={category}>
@@ -229,22 +227,7 @@ function PeriodicTable(props) {
     );
 }
 
-
-
-const CanvasContainer = styled(Canvas)`
-display: flex;
-position: relative;
-height: 100px !important;
-width: 100px !important;   
-`
-const DivContainer = styled.div`
-display: flex;
-position: relative;
-height: 100vh !important;	
-width: 100vw !important; 
-
-`
-{/* <PeriodicTable elements={PeriodicTableJSON.elements} /> */ }
+ 
 const PeriodicTableComponet = () => {
     return <DivContainer>
         <PeriodicTable elements={PeriodicTableJSON.elements} />
@@ -288,12 +271,7 @@ const Orbital = ({ n, l, m }: IOrbitalProps) => {
 
     useEffect(() => {
         window.addEventListener("mousemove", updateMousePosition, false);
-        //lisen to window resize
-        // window.addEventListener("resize", () => {
-        //     uniforms.u_resolution.value.x = window.innerWidth;
-        //     uniforms.u_resolution.value.y = window.innerHeight;
-        // });
-
+        
         return () => {
             window.removeEventListener("mousemove", updateMousePosition, false);
         };

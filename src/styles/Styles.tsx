@@ -1,34 +1,37 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import Link from 'next/link';
+import { Canvas } from "@react-three/fiber";
+import { Typography } from "@material-ui/core";
 
 const Box = styled.div`
   background: #00553e40;
   backdrop-filter: blur(8px) brightness(1.4);
   position: relative;
   display: flex;
-  width: 400px;
+  width: 600px;
+  height: 600px; 
   min-width: 400px !important;
   min-height: 400px;
-  height: 400px; 
-  font-family: Arial, sans-serif;
+  font-family: 'IMB Plex Mono',  Arial, sans-serif;
+  font-size: 16px;
   font-weight: bold;
   text-align: center;
   flex-flow: column;
   color: #66ff00ef;
   text-shadow: 1px 1px 3px #77ee11;
-  padding: 16px;
+  padding: 32px;
   z-index: 8;
   overflow: visible;
   clip-path: polygon(
     0 50px,
     0 0,
-    350px 0,
-    400px 50px,
-    400px 350px,
-    400px 400px,
-    50px 400px,
-    0% 350px,
+    550px 0,
+    600px 50px,
+    600px 550px,
+    600px 600px,
+    50px 600px,
+    0% 550px,
     0% 50px
   );
   & p {
@@ -39,8 +42,8 @@ const Box = styled.div`
 const Content = styled.div`
   position: absolute; 
   
-  width: 400px;
-  height: 400px; 
+  width: 600px;
+  height: 600px; 
   z-index: 9;
   display: flex;
   margin: 16px;	
@@ -57,8 +60,8 @@ const Svg = styled(motion.svg)`
   outline: none;
   top: 10;
   left: 0;
-  width: 400px;
-  height: 400px; 
+  width: 600px;
+  height: 600px; 
   z-index: 11;
   position: absolute;
   flex: 1;
@@ -120,5 +123,60 @@ const HomeContent = styled.div`
   align-items: center;
   flex-direction: column; 
 `
+const CanvasContainerAtom = styled(Canvas)`
+display: flex;
+position: relative;
+height: 100px !important;
+width: 100px !important;   
+`
+const CanvasContainer = styled(Canvas)` 
+position: absolute;
+height: 100vh !important;
+width: 100vw !important; 
+`
+const DivContainer = styled.div`
+display: flex;
+position: relative;
+height: 100vh !important;	
+width: 100vw !important; 
 
-export { Box, Content, Path, Svg, MenuConetent, Linked, ContentNavbar, ContentBox, HomeContent }
+`
+const Heading = styled(Typography)`
+font-size: 2rem;
+font-family: 'IMB Plex Mono',  Arial, sans-serif;
+font-weight: bold;
+`
+const Typo = styled(Typography)`
+font-size: 2rem;
+font-family: 'IMB Plex Mono',  Arial, sans-serif;
+
+`
+const Typo2 = styled(Typography)`
+font-size: 1.2rem;
+font-family: 'IMB Plex Mono',  Arial, sans-serif;
+`
+const Typo3 = styled(Typography)`
+font-size: 1rem;
+font-family: 'IMB Plex Mono',  Arial, sans-serif;
+`
+const Container = styled.div`
+overflow: visible;
+`
+
+const ProfileImage = styled.img`
+
+`
+const Section = styled.div`
+`
+const Paragraph = styled.div`
+`
+const Button = styled.button``
+const BioYear = styled.div``
+const BioSection = styled.div``
+
+const ListItem = styled.li``
+const List = styled.ul``
+
+const SimpleGrid = styled.div``
+const GridItem = styled.div``
+export { Box, Content, Path, Svg, MenuConetent, Linked, ContentNavbar, ContentBox, HomeContent, CanvasContainer, DivContainer, CanvasContainerAtom, Heading, Typo, Typo2, Typo3 }
