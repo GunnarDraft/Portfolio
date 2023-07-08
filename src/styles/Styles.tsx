@@ -114,7 +114,6 @@ const HomeContent = styled.div`
   top: 0;
   left:0;   
   z-index: 9;
-
   width: 100vw;
   height: 100vh;
   display: flex; 
