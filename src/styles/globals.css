@@ -5,8 +5,8 @@
   font-style: normal;
 }
 @font-face {
-  font-family: 'IMB Plex Mono';
-  src: url('/fonts/IBMPlexMono-Regular.woff') format('woff');
+  font-family: IMB;
+  src: url('/fonts/IBMPlexMono-Regular.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
 }
@@ -14,7 +14,7 @@
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
-  --font-mono: Netflix, ui-monospace, 'IMB Plex Mono', Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
+  --font-mono:IMB, Netflix, ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Link from 'next/link';
 import { Canvas } from "@react-three/fiber";
 import { Typography } from "@material-ui/core";
+import { Html } from "@react-three/drei";
 
 const Box = styled.div`
   background: #00553e40;
@@ -132,6 +133,7 @@ const CanvasContainer = styled(Canvas)`
 position: absolute;
 height: 100vh !important;
 width: 100vw !important; 
+border:1px solid red;
 `
 const DivContainer = styled.div`
 display: flex;
@@ -142,25 +144,29 @@ width: 100vw !important;
 `
 const Heading = styled(Typography)`
 font-size: 2rem;
-font-family: 'IMB Plex Mono',  Arial, sans-serif;
+font-family:  IMB !important;
 font-weight: bold;
 `
 const Typo = styled(Typography)`
-font-size: 2rem;
-font-family: 'IMB Plex Mono',  Arial, sans-serif;
+font-size: 2rem !important;
+font-family: IMB !important;
 
 `
 const Typo2 = styled(Typography)`
-font-size: 1.2rem;
-font-family: 'IMB Plex Mono',  Arial, sans-serif;
+font-size: 1.2rem !important;
+font-family: IMB  !important;
 `
 const Typo3 = styled(Typography)`
-font-size: 1rem;
-font-family: 'IMB Plex Mono',  Arial, sans-serif;
+font-size: 1rem !important;
+font-family: IMB !important;
 `
 const Container = styled.div`
 overflow: visible;
 `
+const HTMLContainer = styled(Html)`
+z-index: 11 !important;
+`
+
 
 const ProfileImage = styled.img`
 
@@ -178,4 +184,8 @@ const List = styled.ul``
 
 const SimpleGrid = styled.div``
 const GridItem = styled.div``
-export { Box, Content, Path, Svg, MenuConetent, Linked, ContentNavbar, ContentBox, HomeContent, CanvasContainer, DivContainer, CanvasContainerAtom, Heading, Typo, Typo2, Typo3 }
+export {
+  Box, Content, Path, Svg, MenuConetent, Linked, ContentNavbar, ContentBox, HomeContent,
+  CanvasContainer, DivContainer, CanvasContainerAtom, Heading, Typo, Typo2, Typo3,
+  HTMLContainer
+}
