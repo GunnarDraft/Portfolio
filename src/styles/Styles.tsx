@@ -52,7 +52,7 @@ const Content = styled.div`
 
 const Path = styled(motion.path)`
   fill: none;
-  stroke: #236343;
+  stroke: #88dd22af;
   stroke-width: 4;
   stroke-miterlimit: 10;
 `;
