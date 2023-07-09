@@ -14,7 +14,7 @@ const Box = styled.div`
   height: 600px; 
   min-width: 400px !important;
   min-height: 400px;
-  font-family: 'IMB Plex Mono',  Arial, sans-serif;
+  font-family: IMB, sans-serif;
   font-size: 16px;
   font-weight: bold;
   text-align: center;
@@ -98,6 +98,11 @@ const ContentNavbar = styled.div`
 `
 
 const Linked = styled(Link)`
+  font-family: IMB, sans-serif; 
+  font-weight: bold;
+  text-align: center; 
+  color: #66ff00ef;
+  text-shadow: 1px 1px 3px #77ee11;
  margin: 16px;
 `
 const ContentBox = styled.div`
@@ -132,8 +137,7 @@ width: 100px !important;
 const CanvasContainer = styled(Canvas)` 
 position: absolute;
 height: 100vh !important;
-width: 100vw !important; 
-border:1px solid red;
+width: 100vw !important;  
 `
 const DivContainer = styled.div`
 display: flex;

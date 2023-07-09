@@ -24,8 +24,7 @@ function Cell(props) {
 }
 
 
-
-
+export
 const PeriodicTableComponet = () => {
     const [state, setState] = useState(
         PeriodicTableJSON.elements.reduce(
@@ -37,8 +36,8 @@ const PeriodicTableComponet = () => {
         <CanvasContainer camera={{ position: [0.0, 0.0, 3] }}>
             {/* <Orbital n={7} l={1} m={0} /> */}
             <Orbital n={7} l={1} m={0} position={[0, 0, 0]} />
-            <Orbital n={5} l={1} m={1} position={[10, 0, 0]} />
-            <Orbital n={6} l={2} m={0} position={[-5, 0, 0]} />
+            <Orbital n={5} l={1} m={1} position={[2, 0, 0]} />
+            <Orbital n={6} l={2} m={0} position={[-2, 0, 0]} />
             
             <HTMLContainer position={[-4,2,0]}>
                 <div className="table"> 
@@ -99,7 +98,7 @@ const Orbital = ({ n, l, m ,position}: IOrbitalProps) => {
                 value: 0.0,
             },
             u_mouse: { value: new Vector2(0, 0) },
-            u_resolution: { value: new Vector2(200,200) },
+            u_resolution: { value: new Vector2(window.innerWidth, window.innerHeight) },
             n: {
                 value: n ?? 6
             },
@@ -131,8 +130,7 @@ const Orbital = ({ n, l, m ,position}: IOrbitalProps) => {
         );
     });
     return (
-
-        <mesh ref={mesh} position={position} scale={1}>
+        <mesh ref={mesh} position={[0,0,0]} scale={1}>
             <planeGeometry args={[1, 1, 200, 200]} />
             <shaderMaterial
                 fragmentShader={fragmentShader}
