@@ -82,7 +82,7 @@ const MenuConetent = styled.div`
   z-index: 4; 
   padding: 16px; 
   margin: 16px;
-  clip-path: polygon( 0 5%, 0 0, 95% 0, 100% 50%, 100% 95%, 100% 100%, 5% 100%, 0% 50%, 0% 0% );
+  clip-path: polygon( 0 7%, 0 0, 93% 0, 100% 50%, 100% 93%, 100% 100%, 7% 100%, 0% 50%, 0% 0% );
 `
 
 const ContentNavbar = styled.div`
@@ -168,7 +168,7 @@ const Container = styled.div`
 overflow: visible;
 `
 const HTMLContainer = styled(Html)`
-z-index: 11 !important;
+z-index: 11 ;
 `
 
 

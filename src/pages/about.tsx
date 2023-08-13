@@ -12,11 +12,9 @@ export default function About() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-                {/* <div>
-                    contanct info
-                    description
-                    proyect section
-                </div> */} 
+
+                Senior front-end developer with more than 5 years of experience in web application development, experience in the MERN stack and in creating highly usable and attractive user interfaces. With skills in functional and reactive programming, I focus on developing scalable and efficient solutions using modern technologies and strongly typed languages. I have worked on diverse projects, from web applications to mobile applications, with experience in e-invoicing, banking and management systems. I am a developer committed to quality and customer satisfaction, always looking to overcome technical challenges and deliver high quality solutions.
+                
             </main>
         </>
     )

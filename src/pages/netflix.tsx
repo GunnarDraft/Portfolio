@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import Container from '@material-ui/core/Container';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
- 
+
 const SvgSuscripcion = (props) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -139,6 +139,9 @@ const Content = styled(Container)`
     background-color: #fafafa;`
 
 const Div = styled.div`
+    transform:scale(0.3) !important; 
+    transform-origin: top left; 
+    border: 1px dashed yellow !important;
     background-color:#fafafa;  
     height: 720px;
     width: 1110px;
@@ -182,10 +185,10 @@ const Text2 = styled(Typography)`
     font-size: 16px !important;
     text-transform: initial;
 `
-const redirect = () => { 
+const redirect = () => {
     window.open('https://netflix.ekomercio.com/selfinvoice/', '_ blank');
 }
-function Netflix() { 
+function Netflix() {
 
     return <Div>
         <AppBar position="static">

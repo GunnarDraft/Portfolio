@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.12.4",
-    "@react-three/drei": "^9.66.0",
-    "@react-three/fiber": "^8.12.2",
+    "@react-three/drei": "8.20.2",
+    "@react-three/fiber": "8.7.2",
     "babel-plugin-glsl": "^1.0.0",
     "babel-preset-next": "^1.4.0",
     "eslint": "8.39.0",
