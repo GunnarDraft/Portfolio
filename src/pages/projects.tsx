@@ -75,19 +75,22 @@ const Matrix = () => {
 
 function LapTop(props) {
     const group = useRef<THREE.Group>(null)
+    const pantalla = useRef<THREE.Group>(null)
     const { nodes, materials } = useGLTF('./mac-draco.glb') as any
-    const scroll = useScroll().offset
+    const scroll = useScroll()
     useFrame((state) => {
+        const y = scroll.offset
         const t = state.clock.getElapsedTime()
         group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, Math.cos(t / 1) / 20 + 0.25, 0.1)
         group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, Math.sin(t / 2) / 20, 0.1)
         group.current.rotation.z = THREE.MathUtils.lerp(group.current.rotation.z, Math.sin(t / 4) / 20, 0.1)
         group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, (-2 + Math.sin(t / 2)) / 2, 0.1)
+        pantalla.current.rotation.x = y
     })
     return (
         <group rotation={[0, Math.PI, 0]} position={[0, 0, 0]}>
             <group ref={group} {...props} dispose={null}>
-                <group rotation-x={-0.125 + scroll} position={[0, -0.04, 0.41]}>
+                <group ref={pantalla} rotation-x={-0.125} position={[0, -0.04, 0.41]}>
                     <group position={[0, 2.96, -0.13]} rotation={[Math.PI / 2, 0, 0]}>
                         <mesh material={materials.aluminium} geometry={nodes['Cube008'].geometry} />
                         <mesh material={materials['matte.001']} geometry={nodes['Cube008_1'].geometry} />
