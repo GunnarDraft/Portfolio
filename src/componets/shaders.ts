@@ -18,7 +18,8 @@ uniform vec2 u_mouse;
 uniform vec2 u_resolution; 
 varying vec3 vPosition;
 
-
+precision lowp float;
+precision lowp int;
 
  const int ITERATIONS = 40;   //use less value if you need more performance
 const float SPEED = 1.;
@@ -415,7 +416,8 @@ void main( )
 
 ` 
 const atomFragmentShader = /*glsl*/ `
-
+precision lowp float;
+precision lowp int;
 
 #define PI 3.14159265359
 /*** math heavy part for spherical harmonics ***/
