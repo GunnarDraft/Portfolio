@@ -39,8 +39,11 @@ const BottomComponet = styled.div`
   color: #66ff00ef;
   text-shadow: 1px 1px 3px #77ee11;
   padding: 32px;
-  margin:32px;
+  margin:32px; 
   overflow: visible;
+    @media (max-width: 600px) {
+      display:none !important;  
+    };
 `
 
 const Matrix = () => {
