@@ -13,8 +13,8 @@ const Box = styled.div`
   width: 600px;
   height: 600px; 
     
-  min-width: 400px;
-  min-height: 400px;
+  min-width: 300px;
+  min-height: 300px;
   font-family: IMB, sans-serif;
   font-size: 16px;
   font-weight: bold;
@@ -40,8 +40,8 @@ const Box = styled.div`
     margin: 16px;
   }
   @media (max-width: 600px) {
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
      clip-path: polygon(
     0 50px,
     0 0,
