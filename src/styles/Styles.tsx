@@ -12,7 +12,8 @@ const Box = styled.div`
   display: flex;
   width: 600px;
   height: 600px; 
-  min-width: 400px !important;
+    
+  min-width: 400px;
   min-height: 400px;
   font-family: IMB, sans-serif;
   font-size: 16px;
@@ -38,6 +39,21 @@ const Box = styled.div`
   & p {
     margin: 16px;
   }
+  @media (max-width: 600px) {
+    width: 400px;
+    height: 400px;
+     clip-path: polygon(
+    0 50px,
+    0 0,
+    250px 0,
+    300px 50px,
+    300px 250px,
+    300px 300px,
+    50px 300px,
+    0% 250px,
+    0% 50px
+  );
+    }
 `;
 
 const Content = styled.div`

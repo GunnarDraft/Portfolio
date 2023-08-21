@@ -7,7 +7,7 @@ const Navbar = () => {
   return (
     <ContentNavbar>
       <MenuConetent>
-        <Linked href="/">Home</Linked>
+        <Linked href="/">About</Linked>
         <Linked href="projects">Projects</Linked>
         {/* <Linked href="/about">About</Linked> */}
         {/* <Linked href="/periodictable">Periodic Table</Linked> */}
