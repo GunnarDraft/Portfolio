@@ -24,7 +24,6 @@ const BottomComponet = styled.div`
     position:fixed;
     bottom: 0;
     left:0;
-    right:0;
     z-index:20;
     width:calc(100vw - 32px) !important;
     max-width:100vw !important;
