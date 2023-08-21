@@ -53,6 +53,13 @@ const Box = styled.div`
     0% 250px,
     0% 50px
   );
+  padding: 8px;
+  & p {
+    margin:4px;
+    
+  }
+  font-size: 10px;
+
     }
 `;
 
@@ -61,9 +68,15 @@ const Content = styled.div`
   
   width: 600px;
   height: 600px; 
+  margin: 16px;	
+   @media (max-width: 600px) {
+    width: 300px;
+    height: 300px;
+  margin: 4px;	
+
+    }
   z-index: 9;
   display: flex;
-  margin: 16px;	
 `
 
 const Path = styled(motion.path)`
@@ -79,6 +92,10 @@ const Svg = styled(motion.svg)`
   left: 0;
   width: 600px;
   height: 600px; 
+   @media (max-width: 600px) {
+    width: 300px;
+    height: 300px;
+    }
   z-index: 11;
   position: absolute;
   flex: 1;
@@ -163,22 +180,35 @@ width: 100vw !important;
 
 `
 const Heading = styled(Typography)`
-font-size: 2rem;
+
+font-size: 2rem !important;
 font-family:  IMB !important;
 font-weight: bold;
+ @media (max-width: 600px) {
+    font-size: 1rem !important;
+    }
 `
 const Typo = styled(Typography)`
 font-size: 2rem !important;
-font-family: IMB !important;
+font-family: IMB ;
+ @media (max-width: 600px) {
+    font-size: 1rem !important;
+    }
 
 `
 const Typo2 = styled(Typography)`
 font-size: 1.2rem !important;
 font-family: IMB  !important;
+ @media (max-width: 600px) {
+    font-size: 0.6rem !important;
+    }
 `
 const Typo3 = styled(Typography)`
 font-size: 1rem !important;
 font-family: IMB !important;
+ @media (max-width: 600px) {
+    font-size: 0.7rem !important;
+    }
 `
 const Container = styled.div`
 overflow: visible;

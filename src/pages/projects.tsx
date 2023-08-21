@@ -26,7 +26,7 @@ const BottomComponet = styled.div`
     left:0;
     right:0;
     z-index:20;
-    width:100vw !important;
+    width:calc(100vw - 32px) !important;
     max-width:100vw !important;
     height:min-content; 
     background: #00553e40;
