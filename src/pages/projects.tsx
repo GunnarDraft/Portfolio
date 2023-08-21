@@ -1,9 +1,8 @@
 import Head from 'next/head'
-import React, { useRef, useState, Suspense, useCallback, useEffect, useMemo } from 'react'
-import { Box, ContentBox } from "../styles/Styles"
-import { GLTFLoader, GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
-import { Canvas, useFrame, useLoader } from '@react-three/fiber'
-import { OrbitControls, ScrollControls, Html, Scroll, Environment, useGLTF, ContactShadows, Image, PresentationControls, useScroll } from '@react-three/drei'
+import React, { useRef, Suspense, useCallback, useEffect, useMemo } from 'react'
+
+import { Canvas, useFrame } from '@react-three/fiber'
+import {  Html,  useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import Netflix from './netflix'
 import styled from 'styled-components'
@@ -94,26 +93,20 @@ const Matrix = () => {
         </mesh>
     );
 };
-const rsqw = (t, delta = 0.1, a = 1, f = 1 / (2 * Math.PI)) => (a / Math.atan(1 / delta)) * Math.atan(Math.sin(2 * Math.PI * t * f) / delta)
-
+ 
 function LapTop(props) {
     const group = useRef<THREE.Group>(null)
     const pantalla = useRef<THREE.Group>(null)
     const { nodes, materials } = useGLTF('./mac-draco.glb') as any
-    // const scroll = useScroll()
-    // const r1 = scroll.range(0 / 4, 1 / 4)
-    // const r2 = scroll.range(1 / 4, 1 / 4)
+ 
    
-    useFrame((state) => {
-        // const y = scroll.offset
+    useFrame((state) => { 
         const t = state.clock.getElapsedTime()
         group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, Math.cos(t / 1) / 20 + 0.25, 0.1)
         group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, Math.sin(t / 2) / 20, 0.1)
         group.current.rotation.z = THREE.MathUtils.lerp(group.current.rotation.z, Math.sin(t / 4) / 20, 0.1)
         group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, (-2 + Math.sin(t / 2)) / 2, 0.1)
-        // pantalla.current.rotation.x = y * 3 >= Math.PI / 2 ? Math.PI / 2 : t >= Math.PI / 2 ? y * 3 : Math.PI / 2 - t
-        // pantalla.current.rotation.x = Math.PI / 2 - rsqw(r1) + r2 * 0.33
-        
+ 
     })
     return (
         <group rotation={[0, Math.PI, 0]} position={[0, 0, 0]}>

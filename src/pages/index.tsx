@@ -6,8 +6,7 @@ import React from 'react'
 import { matrixFragmentShader, vertexShader } from "@/componets/shaders";
 
 const line1 = "M0 0L550 0L600 50L600 600L50 600L0 550Z";
-const line2 = "M0 0L250 0L300 50L300 300L50 300L0 250Z";
-
+ 
 const Gradient = () => { 
   const mesh = useRef(null);
   const mousePosition = useRef({ x: 0, y: 0 });

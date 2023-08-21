@@ -210,30 +210,11 @@ font-family: IMB !important;
     font-size: 0.7rem !important;
     }
 `
-const Container = styled.div`
-overflow: visible;
-`
+ 
 const HTMLContainer = styled(Html)`
 z-index: 11 ;
 `
-
-
-const ProfileImage = styled.img`
-
-`
-const Section = styled.div`
-`
-const Paragraph = styled.div`
-`
-const Button = styled.button``
-const BioYear = styled.div``
-const BioSection = styled.div``
-
-const ListItem = styled.li``
-const List = styled.ul``
-
-const SimpleGrid = styled.div``
-const GridItem = styled.div``
+ 
 export {
   Box, Content, Path, Svg, MenuConetent, Linked, ContentNavbar, ContentBox, HomeContent,
   CanvasContainer, DivContainer, CanvasContainerAtom, Heading, Typo, Typo2, Typo3,
