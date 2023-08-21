@@ -4,7 +4,7 @@ import React, { useRef, Suspense, useCallback, useEffect, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import {  Html,  useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
-import Netflix from './netflix'
+import Netflix from '../componets/netflix'
 import styled from 'styled-components'
 import { matrixFragmentShader, vertexShader } from '@/componets/shaders'
 const ContainerNetflix = styled.div`
