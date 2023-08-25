@@ -21,7 +21,7 @@ varying vec3 vPosition;
 precision lowp float;
 precision lowp int;
 
- const int ITERATIONS = 40;   //use less value if you need more performance
+ const int ITERATIONS = 30;   //use less value if you need more performance
 const float SPEED = 1.;
 
 const float STRIP_CHARS_MIN =  7.;

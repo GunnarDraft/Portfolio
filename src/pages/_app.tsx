@@ -2,6 +2,7 @@ import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { MenuConetent, Linked, ContentNavbar } from '../styles/Styles'
 import { PropsWithChildren } from 'react'
+import { Analytics } from '@vercel/analytics/react';
 
 const Navbar = () => {
   return (
@@ -21,6 +22,7 @@ export function Layout({ children }: PropsWithChildren) {
     <>
       <Navbar />
       <main>{children}</main>
+      <Analytics />
     </>
   )
 }
