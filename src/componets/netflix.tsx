@@ -207,7 +207,7 @@ function Netflix() {
                         PORTAL AUTOFACTURA
                     </Title>
                     <DivFlexRow>
-                        <LinkButton variant='outlined' onClick={redirect}>
+                        <LinkButton variant='outlined' >
                             <DivFlexColumn>
                                 <SvgSuscripcion height={160} width={190} />
                                 <Text>
@@ -215,7 +215,7 @@ function Netflix() {
                                 </Text>
                             </DivFlexColumn>
                         </LinkButton>
-                        <LinkButton variant='outlined' onClick={redirect}>
+                        <LinkButton variant='outlined'  >
                             <DivFlexColumn>
                                 <SvgGiftCard height={160} width={190} />
                                 <Text>
