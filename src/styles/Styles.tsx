@@ -106,8 +106,36 @@ const Svg = styled(motion.svg)`
   &:hover {
     transform: translateY(-20px);
   }
+ 
 `;
+const SvgIn = styled(motion.svg)`
+  outline: none;
+  height:32px;
+  width:32px;
+  z-index: 14;
+  position: absolute;
+  flex: 1;
+  overflow: visible;
+   bottom:64px;
+  left:128px;
+  stroke: #66ff00ef;
+fill:#00000088;
 
+`;
+const SvgBehance = styled(motion.svg)`
+fill:#00000088;
+ stroke: #66ff00ef;
+  bottom:64px;
+  right:64px;
+  outline: none;
+  height:26px;
+  width:260px;
+  z-index: 14;
+  position: absolute;
+  flex: 1;
+  overflow: visible;
+   
+`;
 const MenuConetent = styled.div`
   background: #00553e40;
   backdrop-filter: blur(8px);
@@ -210,13 +238,13 @@ font-family: IMB !important;
     font-size: 0.7rem !important;
     }
 `
- 
+
 const HTMLContainer = styled(Html)`
 z-index: 11 ;
 `
- 
+
 export {
   Box, Content, Path, Svg, MenuConetent, Linked, ContentNavbar, ContentBox, HomeContent,
   CanvasContainer, DivContainer, CanvasContainerAtom, Heading, Typo, Typo2, Typo3,
-  HTMLContainer
+  HTMLContainer, SvgIn, SvgBehance
 }
