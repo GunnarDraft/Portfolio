@@ -4,7 +4,41 @@ import Link from 'next/link';
 import { Canvas } from "@react-three/fiber";
 import { Typography } from "@material-ui/core";
 import { Html } from "@react-three/drei";
-
+const WarningBox = styled.div`
+  background: #55000040;
+  backdrop-filter: blur(8px) brightness(1.4);
+  position: fixed;
+  display: flex;
+  left:32px;
+  width: 600px;
+  height: 200px; 
+  min-width: 100px;
+  min-height: 200px;
+  font-family: IMB, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  flex-flow: column;
+  color: #ff0000ee;
+  text-shadow: 1px 1px 3px #ee112e;
+  padding: 16px;
+  z-index: 8;
+  overflow: visible;
+ clip-path: polygon(
+    0 0,      
+    90% 0%,    
+    100% 30%,    
+    100% 100%, 
+    10% 100%,    
+    0 70%    
+  );
+  & p {
+    margin: 16px;
+  }
+  @media (max-width: 1400px) {
+  display:none; 
+    }
+`;
 const Box = styled.div`
   background: #00553e40;
   backdrop-filter: blur(8px) brightness(1.4);
@@ -12,7 +46,6 @@ const Box = styled.div`
   display: flex;
   width: 600px;
   height: 600px; 
-    
   min-width: 300px;
   min-height: 300px;
   font-family: IMB, sans-serif;
@@ -246,5 +279,5 @@ z-index: 11 ;
 export {
   Box, Content, Path, Svg, MenuConetent, Linked, ContentNavbar, ContentBox, HomeContent,
   CanvasContainer, DivContainer, CanvasContainerAtom, Heading, Typo, Typo2, Typo3,
-  HTMLContainer, SvgIn, SvgBehance
+  HTMLContainer, SvgIn, SvgBehance, WarningBox
 }
