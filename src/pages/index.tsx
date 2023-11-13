@@ -135,7 +135,7 @@ export default function Home() {
         </Svg>
       </Content>
       <WarningBox > 
-        <Typo>Warning</Typo>
+        <Typo>⚠ Warning!</Typo>
         <Typo2>
           Page in maintenance</Typo2>
       </WarningBox>

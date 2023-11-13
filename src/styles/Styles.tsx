@@ -39,6 +39,12 @@ const WarningBox = styled.div`
   display:none; 
     }
 `;
+const WarningText = styled.p`
+ color:#f00;
+ 
+
+
+`
 const Box = styled.div`
   background: #00553e40;
   backdrop-filter: blur(8px) brightness(1.4);
