@@ -7,6 +7,7 @@ import * as THREE from 'three'
 import Netflix from '../componets/netflix'
 import styled from 'styled-components'
 import { matrixFragmentShader, vertexShader } from '@/componets/shaders'
+import { WarningBox, Typo, Typo2 } from '@/styles/Styles'
 const ContainerNetflix = styled.div`
     z-index: 11 !important; 
     max-width: 334px !important;
@@ -171,6 +172,10 @@ export default function Projects() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
+                <WarningBox >
+                    <Typo>Page in maintenance.</Typo>
+                 
+                 </WarningBox>
                 <Canvas camera={{ position: [0, 0, -15], fov: 55 }}>
                     <Matrix />
                     <pointLight position={[10, 10, 10]} intensity={1.5} />
@@ -179,6 +184,7 @@ export default function Projects() {
                             <LapTop /> 
                     </Suspense>
                 </Canvas>
+             
                 <Description />
             </main>
         </>

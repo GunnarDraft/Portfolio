@@ -9,11 +9,13 @@ const WarningBox = styled.div`
   backdrop-filter: blur(8px) brightness(1.4);
   position: fixed;
   display: flex;
+  top:42%;
   left:32px;
   width: 600px;
-  height: 200px; 
+  height: min-content; 
+   z-index:20;
   min-width: 100px;
-  min-height: 200px;
+  min-height: min-content;
   font-family: IMB, sans-serif;
   font-size: 16px;
   font-weight: bold;
@@ -21,8 +23,7 @@ const WarningBox = styled.div`
   flex-flow: column;
   color: #ff0000ee;
   text-shadow: 1px 1px 3px #ee112e;
-  padding: 16px;
-  z-index: 8;
+  padding: 16px; 
   overflow: visible;
  clip-path: polygon(
     0 0,      

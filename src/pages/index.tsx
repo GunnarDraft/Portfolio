@@ -136,8 +136,7 @@ export default function Home() {
       </Content>
       <WarningBox > 
         <Typo>⚠ Warning!</Typo>
-        <Typo2>
-          Page in maintenance</Typo2>
+        <Typo2>This website may contain flashing lights or patterns that could trigger seizures or other visual discomfort. Viewer discretion is advised.</Typo2>
       </WarningBox>
     </HomeContent>
   </div>
