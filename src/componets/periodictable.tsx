@@ -3,24 +3,66 @@ import React, { useRef, useState, Suspense, useCallback, useEffect, useMemo } fr
 import { Vector2 } from "three";
 import PeriodicTableJSON from '../../public/PeriodicTable.json'
 import { CanvasContainer, CanvasContainerAtom, HTMLContainer } from '../styles/Styles'
-import { vertexShader, atomFragmentShader } from '@/componets/shaders';
-function Cell(props) {
-    return (
-        <div
-            key={props.number}
-            className="cell"
-            data-category={props.category}
-            style={{
-                gridRowStart: props.ypos,
-                gridColumnStart: props.xpos,
-                visibility: props.visible ? "visible" : "hidden"
-            }}
-        >
+import { vertexShader, atomFragmentShader, orbitalFragmentShader } from '@/componets/shaders';
 
-            <span className="number">{props.number}</span>
-            <span className="symbol">{props.symbol}</span>
-            <span className="name">{props.name}</span>
-        </div>
+function Cell(props) {
+    const meshRef = useRef(null);
+    const uniforms = useMemo(
+        () => ({
+            u_time: {
+                value: 0.0,
+            }, 
+            u_resolution: { value: new Vector2(128, 128) },
+            n: {
+                value: Math.floor(Math.random() * 4) + 3
+            },
+            l: {
+                value: Math.floor(Math.random() * 3)
+            },
+            m: {
+                value: Math.floor(Math.random() * 3) - 1
+            },
+        }),
+        []
+    );
+
+    useFrame((state) => {
+        const { clock } = state;
+        if (meshRef.current) {
+            meshRef.current.material.uniforms.u_time.value = clock.getElapsedTime();
+        }
+    });
+
+    if (!props.visible) return null;
+
+    return (
+        <group key={props.number}>
+            <mesh ref={meshRef} position={[0, 0, 0.5]} scale={0.4}>
+                <planeGeometry args={[1, 1, 64, 64]} />
+                <shaderMaterial
+                    fragmentShader={orbitalFragmentShader}
+                    vertexShader={vertexShader}
+                    uniforms={uniforms}
+                    wireframe={false}
+                    transparent={true}
+                />
+            </mesh>
+            <div
+                className="cell"
+                data-category={props.category}
+                style={{
+                    gridRowStart: props.ypos,
+                    gridColumnStart: props.xpos,
+                    visibility: props.visible ? "visible" : "hidden",
+                    position: "relative",
+                    zIndex: 10
+                }}
+            >
+                <span className="number">{props.number}</span>
+                <span className="symbol">{props.symbol}</span>
+                <span className="name">{props.name}</span>
+            </div>
+        </group>
     );
 }
 

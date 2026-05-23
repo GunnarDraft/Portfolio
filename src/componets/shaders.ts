@@ -1245,4 +1245,173 @@ void main() {
 // }
 
 // ` 
-export { matrixFragmentShader, vertexShader, atomFragmentShader}
+
+const orbitalFragmentShader = /*glsl*/`
+#define ROTATE(p, a) p=cos(a)*p+sin(a)*vec2(p.y, -p.x)
+
+#define POSITIVE_COL vec3(1.000, 0.000, 1.000) // Púrpura
+#define NEGATIVE_COL vec3(0.000, 1.000, 1.000) // Cian
+
+uniform float n;
+uniform float l;
+uniform float m;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+// Parámetros cuánticos configurables
+float a0 = 5.1;
+float A = 0.0;
+float Y0 = 0.0;
+
+float factorial(float n) {
+    if (n <= 1.0) return 1.0;
+    float res = 1.0;
+    for (float i = n; i > 1.0; i -= 1.0)
+        res *= i;
+    return res;
+}
+
+float doubleFactorial(float n) {
+    if (n <= 0.0) return 1.0;
+    float res = 1.0;
+    for (float i = n; i > 1.0; i -= 2.0)
+        res *= i;
+    return res;
+}
+
+float stableFactorialRatio(float l, float m) {
+    float am = abs(m);
+    if (am > l) return 0.0;
+    float res = 1.0;
+    for (float i = max(l - am + 1.0, 2.0); i <= l + am; i += 1.0)
+        res *= i;
+    if (m < 0.0) return res;
+    return 1.0 / res;
+}
+
+float associatedLaguerrePolynomial(float x, float s, float k) {
+    if (s <= 0.0) return 1.0;
+    float lp1 = 1.0;
+    float lp2 = 1.0 - x + k;
+    for (float i = 1.0; i < s; i += 1.0) {
+        float lp = ((2.0 * i + k + 1.0 - x) * lp2 - (i + k) * lp1) / (i + 1.0);
+        lp1 = lp2; lp2 = lp;
+    }
+    return lp2;
+}
+
+float associatedLegendrePolynomials(float x, float l, float m) {
+    float am = abs(m);
+    if (l < am) return 0.0;
+    if (l == 0.0) return 1.0;
+    
+    float mul = m >= 0.0 ? 1.0 : (mod(-m, 2.0) * 2.0 - 1.0) * stableFactorialRatio(l, m);
+    
+    float lp1 = 0.0;
+    float lp2 = (mod(-am, 2.0) * 2.0 - 1.0) * doubleFactorial(2.0 * am - 1.0) * pow(max(1.0 - x * x, 1e-7), am / 2.0);
+    
+    for (float i = am + 1.0; i <= l; i += 1.0) {
+        float lp = (x * (2.0 * i - 1.0) * lp2 - (i + am - 1.0) * lp1) / (i - am);
+        lp1 = lp2; lp2 = lp;
+    }
+    return lp2 / mul;
+}
+
+float calcRadialPart(float r) {
+    float B = pow(2.0 * r / (n * a0), l);
+    float C = associatedLaguerrePolynomial(2.0 * r / (n * a0), n - l - 1.0, 2.0 * l + 1.0);
+    float E = exp(-(r / (n * a0)));
+    return A * B * C * E;
+}
+
+float calcAngularPart(float cosang) {
+    float pml = associatedLegendrePolynomials(cosang, l, m); 
+    return Y0 * pml;
+}
+
+float calcAzimuthalPart(float fai) {
+    if (m == 0.0) return 1.0;
+    if (m > 0.0)  return cos(m * fai);
+    return sin(abs(m) * fai);
+}
+
+bool calculateColor(vec3 p, inout vec3 accumulatedColor, inout float accumulatedDensity) {
+    float r = length(p);
+    if (r < 1e-4) return false;
+    
+    vec3 v = p / r;
+    vec2 xz = vec2(0.0);
+    if (length(p.xz) > 1e-4) {
+        xz = normalize(p.xz);
+    }
+    
+    float R = calcRadialPart(r);
+    float Y = calcAngularPart(v.y); 
+    
+    float fai = atan(-xz.y, xz.x);
+    float F = calcAzimuthalPart(fai);
+    
+    float psi = R * Y * F; 
+    float psi_magnitude_sq = psi * psi;
+    float density = psi_magnitude_sq * 12000000.0; 
+    
+    if (density > 0.002) {
+        vec3 sampleColor = (psi >= 0.0) ? POSITIVE_COL : NEGATIVE_COL;
+        
+        accumulatedColor += sampleColor * density * 0.08;
+        accumulatedDensity += density * 0.08;
+    }
+
+    if (accumulatedDensity >= 1.0) {
+        accumulatedDensity = 1.0;
+        return true; 
+    }
+    
+    return false;
+}
+
+void main() {
+    vec2 pp = (gl_FragCoord.xy / u_resolution.xy - 0.5) * 2.0;
+    float eyer = 3.2;
+    float eyea = -((pp.x + 1.0) / 2.0) * 3.1415926 * 2.0;
+    float eyef = (pp.y - 0.24) * 3.1415926;
+    
+    vec3 cam = vec3(
+        eyer * cos(eyea) * sin(eyef),
+        eyer * cos(eyef),
+        eyer * sin(eyea) * sin(eyef));
+    
+    ROTATE(cam.xz, (0.25) * (u_time + 15.0));
+    
+    vec3 front = normalize(-cam);
+    vec3 left = normalize(cross(normalize(vec3(0.25, 1.0, -0.01)), front));
+    vec3 up = normalize(cross(front, left));
+    vec3 v = normalize(front * 1.75 + left * pp.x + up * pp.y);
+    
+    vec3 p = cam;
+    
+    float dt = 0.02; 
+    vec3 finalColor = vec3(0.0);
+    float densityAccum = 0.0;
+    
+    A = sqrt(pow(2.0 / (n * a0), 3.0) * (factorial(n - l - 1.0) / (2.0 * n * factorial(n + l))));
+    
+    float m_factor = (m == 0.0) ? 1.0 : 2.0;
+    Y0 = sqrt(((2.0 * l + 1.0) / (4.0 * 3.14159265359)) * stableFactorialRatio(l, m) * m_factor);
+    
+    for(float i = 0.0; i < 160.0; i++) {
+        p += v * dt;
+        
+        if(calculateColor(p * 350.0, finalColor, densityAccum))
+            break;
+    }
+    
+    vec3 background = vec3(0.01, 0.01, 0.02) * (1.0 - densityAccum);
+    
+    finalColor = 1.0 - exp(-finalColor * 1.5);
+    
+    gl_FragColor = vec4(finalColor + background, 1.0);
+}
+`
+
+export { matrixFragmentShader, vertexShader, atomFragmentShader, orbitalFragmentShader}
