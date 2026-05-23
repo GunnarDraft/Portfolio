@@ -9,10 +9,8 @@ const Navbar = () => {
     <ContentNavbar>
       <MenuConetent>
         <Linked href="/">About</Linked>
-        <Linked href="projects">Projects</Linked>
-        {/* <Linked href="/about">About</Linked> */}
-        {/* <Linked href="/periodictable">Periodic Table</Linked> */}
-        {/* <Linked href="/lol">lol</Linked> */}
+        <Linked href="/periodic">Periodic Table</Linked>
+        <Linked href="/projects">Projects</Linked>
       </MenuConetent>
     </ContentNavbar>
   )
