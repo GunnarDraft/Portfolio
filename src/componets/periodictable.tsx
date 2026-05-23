@@ -3,7 +3,7 @@ import React, { useRef, useState, Suspense, useCallback, useEffect, useMemo } fr
 import { Vector2 } from "three";
 import PeriodicTableJSON from '../../public/PeriodicTable.json'
 import { CanvasContainer, CanvasContainerAtom, HTMLContainer } from '../styles/Styles'
-import { vertexShader, atomFragmentShader, periodicTableFragmentShader } from '@/componets/shaders';
+import { vertexShader, atomFragmentShader } from '@/componets/shaders';
 function Cell(props) {
     return (
         <div
@@ -35,10 +35,10 @@ const PeriodicTableComponet = () => {
     );
     return <div>
         <CanvasContainer camera={{ position: [0.0, 0.0, 3] }}>
-            {/* Periodic Table Visualization with Quantum States */}
-            <Orbital n={7} l={1} m={0} elementId={1} position={[0, 0, 0]} usePeriodicShader={true} />
-            <Orbital n={5} l={1} m={1} elementId={2} position={[0.21, 0, 0]} usePeriodicShader={true} />
-            <Orbital n={6} l={2} m={0} elementId={3} position={[-0.21, 0, 0]} usePeriodicShader={true} />
+            {/* <Orbital n={7} l={1} m={0} /> */}
+            <Orbital n={7} l={1} m={0} position={[0, 0, 0]} />
+            <Orbital n={5} l={1} m={1} position={[0.21, 0, 0]} />
+            <Orbital n={6} l={2} m={0} position={[-0.21, 0, 0]} />
             
             <HTMLContainer position={[-4,2,0]}>
                 <div className="table"> 
@@ -82,11 +82,9 @@ interface IOrbitalProps {
     n: number;
     l: number;
     m: number;
-    elementId?: number;
     position?: [number, number, number];
-    usePeriodicShader?: boolean;
 }
-const Orbital = ({ n, l, m, elementId = 1, position, usePeriodicShader = false }: IOrbitalProps) => {
+const Orbital = ({ n, l, m ,position}: IOrbitalProps) => {
     // This reference will give us direct access to the mesh
     const mesh = useRef(null);
     const mousePosition = useRef({ x: 0, y: 0 });
@@ -100,7 +98,7 @@ const Orbital = ({ n, l, m, elementId = 1, position, usePeriodicShader = false }
             u_time: {
                 value: 0.0,
             }, 
-            u_resolution: { value: new Vector2(window.innerWidth, window.innerHeight) },
+            u_resolution: { value: new Vector2(200, 200) },
             n: {
                 value: n ?? 6
             },
@@ -110,11 +108,8 @@ const Orbital = ({ n, l, m, elementId = 1, position, usePeriodicShader = false }
             m: {
                 value: m ?? 1
             },
-            elementId: {
-                value: elementId ?? 1
-            },
         }),
-        [n, l, m, elementId]
+        [n, l, m]
     );
 
     useEffect(() => {
@@ -131,14 +126,11 @@ const Orbital = ({ n, l, m, elementId = 1, position, usePeriodicShader = false }
         mesh.current.material.uniforms.u_time.value = clock.getElapsedTime();
         
     });
-    
-    const shader = usePeriodicShader ? periodicTableFragmentShader : atomFragmentShader;
-    
     return (
         <mesh ref={mesh} position={position} scale={1}>
             <planeGeometry args={[1, 1, 200, 200]} />
             <shaderMaterial
-                fragmentShader={shader}
+                fragmentShader={atomFragmentShader}
                 vertexShader={vertexShader}
                 uniforms={uniforms}
                 wireframe={false}
