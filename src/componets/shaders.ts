@@ -1245,4 +1245,125 @@ void main() {
 // }
 
 // ` 
-export { matrixFragmentShader, vertexShader, atomFragmentShader}
+
+const periodicTableFragmentShader = /*glsl*/ `
+/*
+ * Periodic Table - Quantum Orbital Visualization Shader
+ * Gunnar Ilhuicaatl Medina Sanson - 2026
+ */
+
+precision highp float;
+
+uniform float u_time;
+uniform vec2 u_resolution;
+uniform int n;
+uniform int l;
+uniform int m;
+uniform int elementId;
+
+#define PI 3.14159265359
+
+void main() {
+    // Normalized coordinates
+    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+    vec2 p = (uv - 0.5) * 2.0;
+    if (u_resolution.x > 0.0) {
+        p.x *= u_resolution.x / u_resolution.y;
+    }
+    
+    // Polar coordinates
+    float r = length(p);
+    float phi = atan(p.y, p.x);
+    
+    // Orbital basis parameters
+    float n_f = float(n);
+    float l_f = float(l);
+    float m_f = float(m);
+    
+    // Radial component - exponential decay  
+    float radial = exp(-r / n_f) * (1.0 - r / (n_f + 3.0));
+    radial = max(0.0, radial);
+    
+    // Angular component based on l and m
+    float angular = 1.0;
+    if (l == 0) {
+        // S orbital
+        angular = 0.8;
+    } else if (l == 1) {
+        // P orbital - dumbbell shape
+        angular = abs(sin(phi)) * 0.7 + 0.3;
+    } else if (l == 2) {
+        // D orbital - cloverleaf
+        angular = (abs(sin(phi * 2.0)) + 0.5) * 0.6;
+    } else {
+        // F orbital and beyond
+        angular = abs(sin(phi * m_f)) * 0.8 + 0.2;
+    }
+    
+    // Combine radial and angular parts
+    float wavefunction = radial * angular;
+    
+    // Probability density (psi squared)
+    float density = wavefunction * wavefunction;
+    
+    // Add oscillations for energy levels
+    float oscillation = sin(r * 8.0 - u_time * 2.0) * 0.5 + 0.5;
+    density *= (0.5 + oscillation * 0.5);
+    
+    // Animated rings - electron shells
+    float shell = sin(r * 20.0 - u_time * 3.0) * 0.5 + 0.5;
+    float ringIntensity = density * shell * 0.4;
+    
+    // Element-specific coloring
+    vec3 elementColor;
+    
+    if (elementId <= 2) {
+        // Period 1: H, He
+        elementColor = mix(vec3(1.0, 1.0, 0.7), vec3(0.5, 1.0, 1.0), float(elementId - 1));
+    } else if (elementId <= 10) {
+        // Period 2
+        elementColor = mix(vec3(1.0, 0.5, 0.8), vec3(1.0, 0.2, 0.2), float(elementId - 3) / 8.0);
+    } else {
+        // Other periods
+        elementColor = vec3(0.3 + 0.3 * sin(float(elementId) * 0.3),
+                          0.5 + 0.5 * sin(float(elementId) * 0.4 + u_time),
+                          0.7 + 0.3 * cos(float(elementId) * 0.5));
+    }
+    
+    // Build final color with multiple layers
+    vec3 finalColor = vec3(0.0);
+    
+    // Layer 1: Core orbital density
+    if (density > 0.01) {
+        finalColor += elementColor * density * 2.5;
+    }
+    
+    // Layer 2: Animated rings
+    finalColor += elementColor * ringIntensity * 0.8;
+    
+    // Layer 3: Background glow
+    float glow = exp(-r * r * 1.5) * 0.3;
+    finalColor += elementColor * glow * 0.4;
+    
+    // Layer 4: Quantum grid
+    float gridX = sin(p.x * 12.0) * 0.5 + 0.5;
+    float gridY = sin(p.y * 12.0) * 0.5 + 0.5;
+    float gridPattern = gridX * gridY * 0.1;
+    finalColor += elementColor * gridPattern * 0.15;
+    
+    // Pulse effect
+    float pulse = 0.7 + 0.3 * sin(u_time * 1.5 + float(elementId) * 0.5);
+    finalColor *= pulse;
+    
+    // Falloff at edges
+    float edge = smoothstep(2.5, 0.5, r);
+    finalColor *= edge;
+    
+    // Ensure visibility
+    finalColor = max(finalColor, elementColor * 0.05);
+    
+    gl_FragColor = vec4(finalColor, 1.0);
+}
+`
+
+export { matrixFragmentShader, vertexShader, atomFragmentShader, periodicTableFragmentShader}
