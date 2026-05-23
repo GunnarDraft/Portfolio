@@ -1245,4 +1245,326 @@ void main() {
 // }
 
 // ` 
-export { matrixFragmentShader, vertexShader, atomFragmentShader}
+
+const periodicTableFragmentShader = /*glsl*/`
+// =========================================================================
+// PERIODIC TABLE QUANTUM VISUALIZATION SHADER
+// Gunnar Ilhuicaatl Medina Sanson - 2026
+// =========================================================================
+
+precision highp float;
+precision highp int;
+
+uniform float u_time;
+uniform vec2 u_mouse;
+uniform vec2 u_resolution;
+
+#define LAYOUT_MODE 0
+#define FILTER_ACTIVE 1
+#define COLOR_MODE 3
+#define CAM_Y_OFFSET 0.0
+#define CAM_INERTIA 0.92
+
+#define ROTATE(p, a) p=cos(a)*p+sin(a)*vec2(p.y, -p.x)
+
+#define POS_COL_UP vec3(1.000, 0.000, 1.000)
+#define NEG_COL_UP vec3(0.000, 1.000, 1.000)
+#define POS_COL_DN vec3(1.000, 0.500, 0.000)
+#define NEG_COL_DN vec3(0.000, 1.000, 0.500)
+
+#define CAM_DIST_GRID 9.5
+#define CAM_DIST_QUANT 5.5
+#define CAM_AUTO_SPEED 0.005
+#define CAM_MOUSE_SENS 3.1416
+
+#define GRID_SCALE_X 0.85
+#define GRID_SCALE_Y 0.85
+#define QUANT_SCALE 0.75
+#define ATOM_BOUNDING_R 0.40
+
+#define ELECTRON_DENSITY 15000000.0
+#define WAVE_STEP_SIZE 0.012
+
+#define MAX_FILTER_ITEMS 32
+
+const vec3 ELEMENT_REAL[119] = vec3[](
+    vec3(0.000, 0.000, 0.000),
+    vec3(1.000, 1.000, 1.000), vec3(0.851, 1.000, 1.000), vec3(0.800, 0.502, 1.000),
+    vec3(0.761, 1.000, 0.000), vec3(1.000, 0.710, 0.710), vec3(0.565, 0.565, 0.565),
+    vec3(0.188, 0.314, 0.973), vec3(1.000, 0.051, 0.051), vec3(0.565, 0.878, 0.314),
+    vec3(0.702, 0.890, 0.961), vec3(0.671, 0.361, 0.949), vec3(0.541, 1.000, 0.000),
+    vec3(0.749, 0.651, 0.651), vec3(0.941, 0.784, 0.627), vec3(1.000, 0.502, 0.000),
+    vec3(1.000, 1.000, 0.188), vec3(0.122, 0.941, 0.122), vec3(0.502, 0.820, 0.890),
+    vec3(0.561, 0.251, 0.831), vec3(0.239, 1.000, 0.000), vec3(0.902, 0.902, 0.902),
+    vec3(0.749, 0.761, 0.780), vec3(0.651, 0.651, 0.671), vec3(0.541, 0.600, 0.780),
+    vec3(0.612, 0.478, 0.780), vec3(0.878, 0.400, 0.200), vec3(0.941, 0.565, 0.627),
+    vec3(0.314, 0.816, 0.314), vec3(0.784, 0.502, 0.200), vec3(0.490, 0.502, 0.690),
+    vec3(0.761, 0.561, 0.561), vec3(0.400, 0.561, 0.561), vec3(0.741, 0.502, 0.890),
+    vec3(1.000, 0.631, 0.000), vec3(0.651, 0.161, 0.161), vec3(0.361, 0.722, 0.820),
+    vec3(0.439, 0.180, 0.690), vec3(0.000, 1.000, 0.000), vec3(0.580, 1.000, 1.000),
+    vec3(0.580, 0.878, 0.878), vec3(0.451, 0.761, 0.788), vec3(0.329, 0.710, 0.710),
+    vec3(0.231, 0.620, 0.620), vec3(0.141, 0.561, 0.561), vec3(0.039, 0.490, 0.549),
+    vec3(0.000, 0.412, 0.522), vec3(0.753, 0.753, 0.753), vec3(1.000, 0.851, 0.561),
+    vec3(0.651, 0.459, 0.451), vec3(0.400, 0.502, 0.502), vec3(0.620, 0.388, 0.710),
+    vec3(0.831, 0.478, 0.000), vec3(0.580, 0.000, 0.580), vec3(0.259, 0.620, 0.690),
+    vec3(0.341, 0.090, 0.561), vec3(0.000, 0.788, 0.000), vec3(0.439, 0.831, 1.000),
+    vec3(1.000, 1.000, 0.780), vec3(0.851, 1.000, 0.780), vec3(0.780, 1.000, 0.780),
+    vec3(0.639, 1.000, 0.780), vec3(0.561, 1.000, 0.780), vec3(0.380, 1.000, 0.780),
+    vec3(0.271, 1.000, 0.780), vec3(0.188, 1.000, 0.780), vec3(0.122, 1.000, 0.780),
+    vec3(0.000, 1.000, 0.612), vec3(0.000, 0.902, 0.459), vec3(0.000, 0.831, 0.322),
+    vec3(0.000, 0.749, 0.220), vec3(0.000, 0.671, 0.141), vec3(0.302, 0.761, 1.000),
+    vec3(0.302, 0.651, 1.000), vec3(0.129, 0.580, 0.839), vec3(0.149, 0.490, 0.671),
+    vec3(0.149, 0.400, 0.588), vec3(0.090, 0.329, 0.529), vec3(0.816, 0.816, 0.878),
+    vec3(1.000, 0.820, 0.137), vec3(0.722, 0.722, 0.816), vec3(0.651, 0.329, 0.302),
+    vec3(0.341, 0.349, 0.380), vec3(0.620, 0.310, 0.710), vec3(0.671, 0.361, 0.000),
+    vec3(0.459, 0.310, 0.271), vec3(0.259, 0.510, 0.588), vec3(0.259, 0.000, 0.400),
+    vec3(0.000, 0.490, 0.000), vec3(0.439, 0.671, 0.980), vec3(0.000, 0.729, 1.000),
+    vec3(0.000, 0.631, 1.000), vec3(0.000, 0.561, 1.000), vec3(0.000, 0.502, 1.000),
+    vec3(0.000, 0.420, 1.000), vec3(0.329, 0.361, 0.949), vec3(0.471, 0.361, 0.890),
+    vec3(0.541, 0.310, 0.890), vec3(0.631, 0.212, 0.831), vec3(0.702, 0.122, 0.831),
+    vec3(0.702, 0.122, 0.729), vec3(0.702, 0.051, 0.651), vec3(0.741, 0.051, 0.529),
+    vec3(0.780, 0.000, 0.400), vec3(0.800, 0.000, 0.349), vec3(0.820, 0.000, 0.310),
+    vec3(0.851, 0.000, 0.271), vec3(0.878, 0.000, 0.220), vec3(0.902, 0.000, 0.180),
+    vec3(0.922, 0.000, 0.141), vec3(0.941, 0.000, 0.122), vec3(0.961, 0.000, 0.090),
+    vec3(0.980, 0.000, 0.051), vec3(1.000, 0.120, 0.120), vec3(1.000, 0.180, 0.180),
+    vec3(1.000, 0.239, 0.239), vec3(1.000, 0.302, 0.302), vec3(1.000, 0.361, 0.361),
+    vec3(1.000, 0.420, 0.420)
+);
+
+float a0 = 5.1;
+float gn = 5.0;
+float gl = 2.0;
+float gm = 2.0;
+float ms = 0.5;
+float A = 0.0;
+float Y0 = 0.0;
+
+float factorial(float n) {
+    if (n <= 1.0) return 1.0;
+    float res = 1.0;
+    for (float i = n; i > 1.0; i -= 1.0) res *= i;
+    return res;
+}
+
+float doubleFactorial(float n) {
+    if (n <= 0.0) return 1.0;
+    float res = 1.0;
+    for (float i = n; i > 1.0; i -= 2.0) res *= i;
+    return res;
+}
+
+float stableFactorialRatio(float l, float m) {
+    float am = abs(m);
+    if (am > l) return 0.0;
+    float res = 1.0;
+    for (float i = max(l - am + 1.0, 2.0); i <= l + am; i += 1.0) res *= i;
+    if (m < 0.0) return res;
+    return 1.0 / res;
+}
+
+float associatedLaguerrePolynomial(float x, float s, float k) {
+    if (s <= 0.0) return 1.0;
+    float lp1 = 1.0;
+    float lp2 = 1.0 - x + k;
+    for (float i = 1.0; i < s; i += 1.0) {
+        float lp = ((2.0 * i + k + 1.0 - x) * lp2 - (i + k) * lp1) / (i + 1.0);
+        lp1 = lp2;
+        lp2 = lp;
+    }
+    return lp2;
+}
+
+float associatedLegendrePolynomials(float x, float l, float m) {
+    float am = abs(m);
+    if (l < am) return 0.0;
+    if (l == 0.0) return 1.0;
+    float mul = m >= 0.0 ? 1.0 : (mod(-m, 2.0) * 2.0 - 1.0) * stableFactorialRatio(l, m);
+    float lp1 = 0.0;
+    float lp2 = (mod(-am, 2.0) * 2.0 - 1.0) * doubleFactorial(2.0 * am - 1.0) * pow(max(1.0 - x * x, 1e-7), am / 2.0);
+    for (float i = am + 1.0; i <= l; i += 1.0) {
+        float lp = (x * (2.0 * i - 1.0) * lp2 - (i + am - 1.0) * lp1) / (i - am);
+        lp1 = lp2;
+        lp2 = lp;
+    }
+    return lp2 / mul;
+}
+
+float calcRadialPart(float r) {
+    float B = pow(2.0 * r / (gn * a0), gl);
+    float C = associatedLaguerrePolynomial(2.0 * r / (gn * a0), gn - gl - 1.0, 2.0 * gl + 1.0);
+    float E = exp(-(r / (gn * a0)));
+    return A * B * C * E;
+}
+
+float calcAngularPart(float cosang) {
+    float pml = associatedLegendrePolynomials(cosang, gl, gm);
+    return Y0 * pml;
+}
+
+float calcAzimuthalPart(float fai) {
+    if (gm == 0.0) return 1.0;
+    if (gm > 0.0) return cos(gm * fai);
+    return sin(abs(gm) * fai);
+}
+
+bool calculateColor(vec3 p, inout vec3 accumulatedColor, inout float accumulatedDensity, int id) {
+    float r = length(p);
+    if (r < 1e-4) return false;
+    vec3 v = p / r;
+    vec2 xz = vec2(0.0);
+    if (length(p.xz) > 1e-4) xz = normalize(p.xz);
+    float R = calcRadialPart(r);
+    float Y = calcAngularPart(v.y);
+    float fai = atan(-xz.y, xz.x);
+    float F = calcAzimuthalPart(fai);
+    float psi = R * Y * F;
+    float psi_magnitude_sq = psi * psi;
+    float density = psi_magnitude_sq * ELECTRON_DENSITY;
+    if (density > 0.002) {
+        vec3 sampleColor = ELEMENT_REAL[id];
+        if (psi < 0.0) sampleColor *= 0.5;
+        accumulatedColor += sampleColor * density * 0.05;
+        accumulatedDensity += density * 0.05;
+    }
+    if (accumulatedDensity >= 1.0) {
+        accumulatedDensity = 1.0;
+        return true;
+    }
+    return false;
+}
+
+bool raySphereIntersect(vec3 ro, vec3 rd, vec3 center, float radius, out float t0, out float t1) {
+    vec3 oc = ro - center;
+    float b = dot(oc, rd);
+    float c = dot(oc, oc) - radius * radius;
+    float h = b*b - c;
+    if (h < 0.0) return false;
+    h = sqrt(h);
+    t0 = -b - h;
+    t1 = -b + h;
+    return true;
+}
+
+void getElementQuantum(int id, out float q_n, out float q_l, out float q_m, out float q_s) {
+    const int ORBITAL_COUNT = 19;
+    int orbitN[ORBITAL_COUNT] = int[](1,2,2,3,3,4,3,4,5,4,5,6,4,5,6,7,5,6,7);
+    int orbitL[ORBITAL_COUNT] = int[](0,0,1,0,1,0,2,1,0,2,1,0,3,2,1,0,3,2,1);
+    int orbitCap[ORBITAL_COUNT] = int[](2,2,6,2,6,2,10,6,2,10,6,2,14,10,6,2,14,10,6);
+    
+    if (id == 57) { q_n = 5.0; q_l = 2.0; q_m = -2.0; q_s = 0.5; return; }
+    if (id == 89) { q_n = 6.0; q_l = 2.0; q_m = -2.0; q_s = 0.5; return; }
+    
+    int e = id;
+    if (id >= 58 && id <= 71) e--;
+    if (id >= 90 && id <= 103) e--;
+    
+    q_n = 1.0; q_l = 0.0; q_m = 0.0; q_s = 0.5;
+    
+    for (int i = 0; i < ORBITAL_COUNT; i++) {
+        if (e > orbitCap[i]) { e -= orbitCap[i]; continue; }
+        int nn = orbitN[i];
+        int ll = orbitL[i];
+        int orbitalCount = 2 * ll + 1;
+        int ml_index = (e - 1) % orbitalCount;
+        int spinPhase = (e - 1) / orbitalCount;
+        q_n = float(nn);
+        q_l = float(ll);
+        q_m = float(ml_index - ll);
+        q_s = (spinPhase == 0) ? 0.5 : -0.5;
+        return;
+    }
+}
+
+vec3 getElementCenter(int id, float q_n, float q_l, float q_m, float q_s) {
+    float row = 1.0;
+    float col = 1.0;
+    if (id == 1) { row = 1.0; col = 1.0; }
+    else if (id == 2) { row = 1.0; col = 18.0; }
+    else if (id <= 4) { row = 2.0; col = float(id - 3 + 1); }
+    else if (id <= 10) { row = 2.0; col = float(id - 5 + 13); }
+    else if (id <= 12) { row = 3.0; col = float(id - 11 + 1); }
+    else if (id <= 18) { row = 3.0; col = float(id - 13 + 13); }
+    else if (id <= 36) { row = 4.0; col = float(id - 19 + 1); }
+    else if (id <= 54) { row = 5.0; col = float(id - 37 + 1); }
+    else if (id <= 56) { row = 6.0; col = float(id - 55 + 1); }
+    else if (id == 57) { row = 6.0; col = 3.0; }
+    else if (id <= 71) { row = 8.0; col = float(id - 58 + 4); }
+    else if (id <= 86) { row = 6.0; col = float(id - 72 + 4); }
+    else if (id <= 88) { row = 7.0; col = float(id - 87 + 1); }
+    else if (id == 89) { row = 7.0; col = 3.0; }
+    else if (id <= 103) { row = 9.0; col = float(id - 90 + 4); }
+    else if (id <= 118) { row = 7.0; col = float(id - 104 + 4); }
+    float posX = (col - 9.5) * GRID_SCALE_X;
+    float posY = (4.0 - row) * GRID_SCALE_Y;
+    if (row >= 8.0) posY -= 0.4;
+    return vec3(posX, posY, 0.0);
+}
+
+void main() {
+    vec2 pp = (-u_resolution.xy + 2.0 * gl_FragCoord.xy) / u_resolution.y;
+    float eyer = CAM_DIST_GRID;
+    float eyea = u_time * CAM_AUTO_SPEED + 2.9;
+    float eyef = 1.5708;
+    
+    vec2 mouse = u_mouse.xy / u_resolution.xy;
+    if (length(u_mouse.xy) > 10.0) {
+        eyea += (mouse.x - 0.5) * CAM_MOUSE_SENS * 2.0;
+        eyef += (mouse.y - 0.5) * CAM_MOUSE_SENS;
+    }
+    eyef = clamp(eyef, 0.1, 3.04);
+    
+    vec3 cam = vec3(
+        eyer * sin(eyea) * sin(eyef),
+        eyer * cos(eyef) + CAM_Y_OFFSET,
+        eyer * cos(eyea) * sin(eyef)
+    );
+    
+    vec3 target = vec3(0.0, CAM_Y_OFFSET, 0.0);
+    vec3 front = normalize(target - cam);
+    vec3 left = normalize(cross(vec3(0.0, 1.0, 0.0), front));
+    vec3 up = normalize(cross(front, left));
+    vec3 v = normalize(front * 1.85 + left * pp.x + up * pp.y);
+    
+    vec3 finalColor = vec3(0.0);
+    float densityAccum = 0.0;
+    
+    for (int id = 1; id <= 118; id++) {
+        float q_n, q_l, q_m, q_s;
+        getElementQuantum(id, q_n, q_l, q_m, q_s);
+        
+        vec3 center = getElementCenter(id, q_n, q_l, q_m, q_s);
+        
+        float t0, t1;
+        if (raySphereIntersect(cam, v, center, ATOM_BOUNDING_R, t0, t1)) {
+            t0 = max(t0, 0.0);
+            
+            gn = q_n;
+            gl = q_l;
+            gm = q_m;
+            ms = q_s;
+            
+            A = sqrt(pow(2.0 / (gn * a0), 3.0) * (factorial(gn - gl - 1.0) / (2.0 * gn * factorial(gn + gl))));
+            float m_factor = (gm == 0.0) ? 1.0 : 2.0;
+            Y0 = sqrt(((2.0 * gl + 1.0) / (4.0 * 3.14159265359)) * stableFactorialRatio(gl, gm) * m_factor);
+            
+            for (float t = t0; t < t1; t += WAVE_STEP_SIZE) {
+                vec3 p_world = cam + v * t;
+                vec3 p_local = p_world - center;
+                float mSign = (q_m == 0.0) ? 1.0 : sign(q_m);
+                ROTATE(p_local.xz, mSign * sign(q_s) * 0.7 * u_time);
+                
+                if (calculateColor(p_local * 380.0, finalColor, densityAccum, id)) {
+                    break;
+                }
+            }
+        }
+    }
+    
+    vec3 background = vec3(0.008, 0.008, 0.015) * (1.0 - densityAccum);
+    finalColor = 1.0 - exp(-finalColor * 1.6);
+    
+    gl_FragColor = vec4(finalColor + background, 1.0);
+}
+`
+
+export { matrixFragmentShader, vertexShader, atomFragmentShader, periodicTableFragmentShader}
