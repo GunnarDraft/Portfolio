@@ -1,43 +1,9 @@
-import { Canvas, useFrame } from '@react-three/fiber'
+import { useFrame } from '@react-three/fiber'
 import React, { useRef, useState, Suspense, useCallback, useEffect, useMemo } from 'react'
 import { Vector2 } from "three";
 import PeriodicTableJSON from '../../public/PeriodicTable.json'
 import { CanvasContainer, CanvasContainerAtom, HTMLContainer } from '../styles/Styles'
-import { vertexShader, atomFragmentShader, orbitalFragmentShader, orbitalVertexShader } from '@/componets/shaders';
-
-// Componente interno que usa useFrame - debe estar dentro de Canvas
-function OrbitalMesh({ n, l, m }: { n: number; l: number; m: number }) {
-    const meshRef = useRef<any>(null);
-    const uniforms = useMemo(
-        () => ({
-            u_time: { value: 0.0 },
-            u_resolution: { value: new Vector2(128, 128) },
-            n: { value: n },
-            l: { value: l },
-            m: { value: m },
-        }),
-        [n, l, m]
-    );
-
-    useFrame((state) => {
-        if (meshRef.current) {
-            meshRef.current.material.uniforms.u_time.value = state.clock.getElapsedTime();
-        }
-    });
-
-    return (
-        <mesh ref={meshRef} position={[0, 0, 0]} scale={1}>
-            <planeGeometry args={[2, 2, 64, 64]} />
-            <shaderMaterial
-                fragmentShader={orbitalFragmentShader}
-                vertexShader={orbitalVertexShader}
-                uniforms={uniforms}
-                wireframe={false}
-                transparent={true}
-            />
-        </mesh>
-    );
-}
+import { orbitalFragmentShader, orbitalVertexShader } from '@/componets/shaders';
 
 // Genera valores cuanticos basados en el numero atomico
 function getQuantumNumbers(atomicNumber: number) {
@@ -47,10 +13,9 @@ function getQuantumNumbers(atomicNumber: number) {
     return { n, l: Math.max(0, l), m };
 }
 
+// Componente de celda simple sin Canvas anidado
 function Cell(props: any) {
     if (!props.visible) return null;
-    
-    const { n, l, m } = getQuantumNumbers(props.number);
 
     return (
         <div
@@ -64,26 +29,9 @@ function Cell(props: any) {
                 position: "relative",
             }}
         >
-            <div style={{ 
-                position: 'absolute', 
-                inset: 0, 
-                zIndex: 0,
-                overflow: 'hidden',
-                borderRadius: '4px'
-            }}>
-                <Canvas
-                    camera={{ position: [0, 0, 1.5] }}
-                    style={{ width: '100%', height: '100%' }}
-                    gl={{ alpha: true, antialias: false }}
-                >
-                    <OrbitalMesh n={n} l={l} m={m} />
-                </Canvas>
-            </div>
-            <div style={{ position: 'relative', zIndex: 1, pointerEvents: 'none' }}>
-                <span className="number">{props.number}</span>
-                <span className="symbol">{props.symbol}</span>
-                <span className="name">{props.name}</span>
-            </div>
+            <span className="number">{props.number}</span>
+            <span className="symbol">{props.symbol}</span>
+            <span className="name">{props.name}</span>
         </div>
     );
 }
@@ -194,8 +142,8 @@ const Orbital = ({ n, l, m ,position}: IOrbitalProps) => {
         <mesh ref={mesh} position={position} scale={1}>
             <planeGeometry args={[1, 1, 200, 200]} />
             <shaderMaterial
-                fragmentShader={atomFragmentShader}
-                vertexShader={vertexShader}
+                fragmentShader={orbitalFragmentShader}
+                vertexShader={orbitalVertexShader}
                 uniforms={uniforms}
                 wireframe={false}
             />
