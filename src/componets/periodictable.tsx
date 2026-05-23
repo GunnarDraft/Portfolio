@@ -1,68 +1,90 @@
-import { useFrame } from '@react-three/fiber'
+import { Canvas, useFrame } from '@react-three/fiber'
 import React, { useRef, useState, Suspense, useCallback, useEffect, useMemo } from 'react'
 import { Vector2 } from "three";
 import PeriodicTableJSON from '../../public/PeriodicTable.json'
 import { CanvasContainer, CanvasContainerAtom, HTMLContainer } from '../styles/Styles'
 import { vertexShader, atomFragmentShader, orbitalFragmentShader } from '@/componets/shaders';
 
-function Cell(props) {
-    const meshRef = useRef(null);
+// Componente interno que usa useFrame - debe estar dentro de Canvas
+function OrbitalMesh({ n, l, m }: { n: number; l: number; m: number }) {
+    const meshRef = useRef<any>(null);
     const uniforms = useMemo(
         () => ({
-            u_time: {
-                value: 0.0,
-            }, 
+            u_time: { value: 0.0 },
             u_resolution: { value: new Vector2(128, 128) },
-            n: {
-                value: Math.floor(Math.random() * 4) + 3
-            },
-            l: {
-                value: Math.floor(Math.random() * 3)
-            },
-            m: {
-                value: Math.floor(Math.random() * 3) - 1
-            },
+            n: { value: n },
+            l: { value: l },
+            m: { value: m },
         }),
-        []
+        [n, l, m]
     );
 
     useFrame((state) => {
-        const { clock } = state;
         if (meshRef.current) {
-            meshRef.current.material.uniforms.u_time.value = clock.getElapsedTime();
+            meshRef.current.material.uniforms.u_time.value = state.clock.getElapsedTime();
         }
     });
 
+    return (
+        <mesh ref={meshRef} position={[0, 0, 0]} scale={1}>
+            <planeGeometry args={[2, 2, 64, 64]} />
+            <shaderMaterial
+                fragmentShader={orbitalFragmentShader}
+                vertexShader={vertexShader}
+                uniforms={uniforms}
+                wireframe={false}
+                transparent={true}
+            />
+        </mesh>
+    );
+}
+
+// Genera valores cuanticos basados en el numero atomico
+function getQuantumNumbers(atomicNumber: number) {
+    const n = Math.min(Math.floor(atomicNumber / 20) + 2, 7);
+    const l = Math.min(atomicNumber % 4, n - 1);
+    const m = (atomicNumber % (2 * l + 1)) - l;
+    return { n, l: Math.max(0, l), m };
+}
+
+function Cell(props: any) {
     if (!props.visible) return null;
+    
+    const { n, l, m } = getQuantumNumbers(props.number);
 
     return (
-        <group key={props.number}>
-            <mesh ref={meshRef} position={[0, 0, 0.5]} scale={0.4}>
-                <planeGeometry args={[1, 1, 64, 64]} />
-                <shaderMaterial
-                    fragmentShader={orbitalFragmentShader}
-                    vertexShader={vertexShader}
-                    uniforms={uniforms}
-                    wireframe={false}
-                    transparent={true}
-                />
-            </mesh>
-            <div
-                className="cell"
-                data-category={props.category}
-                style={{
-                    gridRowStart: props.ypos,
-                    gridColumnStart: props.xpos,
-                    visibility: props.visible ? "visible" : "hidden",
-                    position: "relative",
-                    zIndex: 10
-                }}
-            >
+        <div
+            key={props.number}
+            className="cell"
+            data-category={props.category}
+            style={{
+                gridRowStart: props.ypos,
+                gridColumnStart: props.xpos,
+                visibility: props.visible ? "visible" : "hidden",
+                position: "relative",
+            }}
+        >
+            <div style={{ 
+                position: 'absolute', 
+                inset: 0, 
+                zIndex: 0,
+                overflow: 'hidden',
+                borderRadius: '4px'
+            }}>
+                <Canvas
+                    camera={{ position: [0, 0, 1.5] }}
+                    style={{ width: '100%', height: '100%' }}
+                    gl={{ alpha: true, antialias: false }}
+                >
+                    <OrbitalMesh n={n} l={l} m={m} />
+                </Canvas>
+            </div>
+            <div style={{ position: 'relative', zIndex: 1, pointerEvents: 'none' }}>
                 <span className="number">{props.number}</span>
                 <span className="symbol">{props.symbol}</span>
                 <span className="name">{props.name}</span>
             </div>
-        </group>
+        </div>
     );
 }
 
