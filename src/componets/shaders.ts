@@ -1246,17 +1246,28 @@ void main() {
 
 // ` 
 
+const orbitalVertexShader = /*glsl*/`
+varying vec2 vUv;
+
+void main() {
+  vUv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`
+
 const orbitalFragmentShader = /*glsl*/`
 #define ROTATE(p, a) p=cos(a)*p+sin(a)*vec2(p.y, -p.x)
 
-#define POSITIVE_COL vec3(1.000, 0.000, 1.000) // Púrpura
-#define NEGATIVE_COL vec3(0.000, 1.000, 1.000) // Cian
+#define POSITIVE_COL vec3(1.000, 0.000, 1.000)
+#define NEGATIVE_COL vec3(0.000, 1.000, 1.000)
 
 uniform float n;
 uniform float l;
 uniform float m;
 uniform float u_time;
 uniform vec2 u_resolution;
+
+varying vec2 vUv;
 
 // Parámetros cuánticos configurables
 float a0 = 5.1;
@@ -1371,7 +1382,7 @@ bool calculateColor(vec3 p, inout vec3 accumulatedColor, inout float accumulated
 }
 
 void main() {
-    vec2 pp = (gl_FragCoord.xy / u_resolution.xy - 0.5) * 2.0;
+    vec2 pp = (vUv - 0.5) * 2.0;
     float eyer = 3.2;
     float eyea = -((pp.x + 1.0) / 2.0) * 3.1415926 * 2.0;
     float eyef = (pp.y - 0.24) * 3.1415926;
@@ -1414,4 +1425,4 @@ void main() {
 }
 `
 
-export { matrixFragmentShader, vertexShader, atomFragmentShader, orbitalFragmentShader}
+export { matrixFragmentShader, vertexShader, atomFragmentShader, orbitalFragmentShader, orbitalVertexShader }

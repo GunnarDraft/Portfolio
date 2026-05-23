@@ -3,7 +3,7 @@ import React, { useRef, useState, Suspense, useCallback, useEffect, useMemo } fr
 import { Vector2 } from "three";
 import PeriodicTableJSON from '../../public/PeriodicTable.json'
 import { CanvasContainer, CanvasContainerAtom, HTMLContainer } from '../styles/Styles'
-import { vertexShader, atomFragmentShader, orbitalFragmentShader } from '@/componets/shaders';
+import { vertexShader, atomFragmentShader, orbitalFragmentShader, orbitalVertexShader } from '@/componets/shaders';
 
 // Componente interno que usa useFrame - debe estar dentro de Canvas
 function OrbitalMesh({ n, l, m }: { n: number; l: number; m: number }) {
@@ -30,7 +30,7 @@ function OrbitalMesh({ n, l, m }: { n: number; l: number; m: number }) {
             <planeGeometry args={[2, 2, 64, 64]} />
             <shaderMaterial
                 fragmentShader={orbitalFragmentShader}
-                vertexShader={vertexShader}
+                vertexShader={orbitalVertexShader}
                 uniforms={uniforms}
                 wireframe={false}
                 transparent={true}
