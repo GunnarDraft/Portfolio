@@ -1,11 +1,9 @@
 import { useFrame } from "@react-three/fiber";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Vector2 } from "three";
-import { Box, Content, Svg, SvgIn, SvgBehance, HomeContent, CanvasContainer, Heading, Typo, Typo2, Typo3, WarningBox, Path } from '../styles/Styles'
+import { CanvasContainer } from '../styles/Styles'
 import React from 'react'
-import { periodicTableFragmentShader, vertexShader } from "@/componets/shaders";
-
-const line1 = "M0 0L550 0L600 50L600 600L50 600L0 550Z";
+import { fragmentShader, vertexShader } from "@/componets/orbitalShader";
 
 const PeriodicTableShader = () => {
   const mesh = useRef(null);
@@ -17,11 +15,22 @@ const PeriodicTableShader = () => {
 
   const uniforms = useMemo(
     () => ({
-      u_time: {
-        value: 0.0,
-      },
-      u_mouse: { value: new Vector2(0, 0) },
+      u_time: { value: 0.0 },
+      u_mouse: { value: new Vector2() },
       u_resolution: { value: new Vector2(window.innerWidth, window.innerHeight) },
+
+      // Configuración Global
+      u_layout_mode: { value: 0 },       // 0: Tabla, 1: Cuántico
+      u_filter_active: { value: 0 },     // 0: Inactivo, 1: Activo
+      u_color_mode: { value: 0 },        // 0: Espín, 1: Visible, 2: Absorción, 3: Real
+
+
+      // Filtros Dinámicos (Rangos Inclusivos)
+      // u_enable_id_filter: { value: 0 }, u_filter_id_start: { value: 0 }, u_filter_id_end: { value: 0 },
+      // u_enable_l_filter: { value: 1 }, u_filter_l_start: { value: 0 }, u_filter_l_end: { value: 3 },
+      // u_enable_n_filter: { value: 0 }, u_filter_n_start: { value: 0 }, u_filter_n_end: { value: -1 },
+      // u_enable_spin_filter: { value: 0 }, u_filter_spin_start: { value: 1 }, u_filter_spin_end: { value: 1 },
+      // u_enable_m_filter: { value: 0 }, u_filter_m_start: { value: 0 }, u_filter_m_end: { value: -1 }
     }),
     []
   );
@@ -59,7 +68,7 @@ const PeriodicTableShader = () => {
     <mesh ref={mesh} position={[0, 0, 0]} scale={3}>
       <planeGeometry args={[2, 1, 200, 200]} />
       <shaderMaterial
-        fragmentShader={periodicTableFragmentShader}
+        fragmentShader={fragmentShader}
         vertexShader={vertexShader}
         uniforms={uniforms}
         wireframe={false}
@@ -78,14 +87,6 @@ const Scene = () => {
 
 
 export default function PeriodicTable() {
-  const linkedIn = () => {
-    const url = 'https://www.linkedin.com/in/gunnarmedina';
-    window.open(url, '_blank');
-  }
-  const behance = () => {
-    const url = 'https://www.behance.net/gunnarvalgeir';
-    window.open(url, '_blank');
-  }
   return <div>
     <Scene />
   </div>;

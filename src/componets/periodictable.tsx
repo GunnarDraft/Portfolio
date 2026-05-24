@@ -2,7 +2,7 @@ import { useFrame } from '@react-three/fiber'
 import React, { useRef, useState, Suspense, useCallback, useEffect, useMemo } from 'react'
 import { Vector2 } from "three";
 import PeriodicTableJSON from '../../public/PeriodicTable.json'
-import { CanvasContainer, CanvasContainerAtom, HTMLContainer } from '../styles/Styles'
+import { CanvasContainer, HTMLContainer } from '../styles/Styles'
 import { vertexShader, atomFragmentShader } from '@/componets/shaders';
 function Cell(props) {
     return (
@@ -26,36 +26,36 @@ function Cell(props) {
 
 
 export
-const PeriodicTableComponet = () => {
-    const [state, setState] = useState(
-        PeriodicTableJSON.elements.reduce(
-            (state, { category }) => Object.assign(state, { [category]: true }),
-            {}
-        )
-    );
-    return <div>
-        <CanvasContainer camera={{ position: [0.0, 0.0, 3] }}>
-            {/* <Orbital n={7} l={1} m={0} /> */}
-            <Orbital n={7} l={1} m={0} position={[0, 0, 0]} />
-            <Orbital n={5} l={1} m={1} position={[0.21, 0, 0]} />
-            <Orbital n={6} l={2} m={0} position={[-0.21, 0, 0]} />
-            
-            <HTMLContainer position={[-4,2,0]}>
-                <div className="table"> 
-                    <div className="cells">
-                        {PeriodicTableJSON.elements.map(e =>
-                            Cell({
-                                ...e,
-                                visible: state[e.category]
-                            })
-                        )}
+    const PeriodicTableComponet = () => {
+        const [state, setState] = useState(
+            PeriodicTableJSON.elements.reduce(
+                (state, { category }) => Object.assign(state, { [category]: true }),
+                {}
+            )
+        );
+        return <div>
+            <CanvasContainer camera={{ position: [0.0, 0.0, 3] }}>
+                {/* <Orbital n={7} l={1} m={0} /> */}
+                <Orbital n={7} l={1} m={0} position={[0, 0, 0]} />
+                <Orbital n={5} l={1} m={1} position={[0.21, 0, 0]} />
+                <Orbital n={6} l={2} m={0} position={[-0.21, 0, 0]} />
 
+                <HTMLContainer position={[-4, 2, 0]}>
+                    <div className="table">
+                        <div className="cells">
+                            {PeriodicTableJSON.elements.map(e =>
+                                Cell({
+                                    ...e,
+                                    visible: state[e.category]
+                                })
+                            )}
+
+                        </div>
                     </div>
-                </div>
-            </HTMLContainer>
-        </CanvasContainer>
+                </HTMLContainer>
+            </CanvasContainer>
 
-        {/* <div className="categories">
+            {/* <div className="categories">
                 {Object.keys(state).map(category => (
                     <span key={category}>
                         <input
@@ -74,8 +74,8 @@ const PeriodicTableComponet = () => {
                     </span>
                 ))}
             </div> */}
-    </div>
-}
+        </div>
+    }
 
 
 interface IOrbitalProps {
@@ -84,7 +84,7 @@ interface IOrbitalProps {
     m: number;
     position?: [number, number, number];
 }
-const Orbital = ({ n, l, m ,position}: IOrbitalProps) => {
+const Orbital = ({ n, l, m, position }: IOrbitalProps) => {
     // This reference will give us direct access to the mesh
     const mesh = useRef(null);
     const mousePosition = useRef({ x: 0, y: 0 });
@@ -97,7 +97,7 @@ const Orbital = ({ n, l, m ,position}: IOrbitalProps) => {
         () => ({
             u_time: {
                 value: 0.0,
-            }, 
+            },
             u_resolution: { value: new Vector2(200, 200) },
             n: {
                 value: n ?? 6
@@ -124,7 +124,7 @@ const Orbital = ({ n, l, m ,position}: IOrbitalProps) => {
         const { clock } = state;
 
         mesh.current.material.uniforms.u_time.value = clock.getElapsedTime();
-        
+
     });
     return (
         <mesh ref={mesh} position={position} scale={1}>
@@ -141,4 +141,3 @@ const Orbital = ({ n, l, m ,position}: IOrbitalProps) => {
 export default PeriodicTableComponet
 
 
- 
