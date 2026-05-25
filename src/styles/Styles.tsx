@@ -10,7 +10,7 @@ const WarningBox = styled.div`
   position: fixed;
   display: flex;
   top:42%;
-  left:32px;
+  left:calc(50vw - 300px);
   width: 600px;
   height: min-content; 
    z-index:20;
