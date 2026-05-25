@@ -249,7 +249,7 @@ width: 100vw !important;
 `
 const Heading = styled.p`
 
-font-size: 2rem !important;
+font-size: 1rem !important;
 font-family:  IMB !important;
 font-weight: bold;
  @media (max-width: 600px) {
@@ -257,7 +257,7 @@ font-weight: bold;
     }
 `
 const Typo = styled.p`
-font-size: 2rem !important;
+font-size: 1rem !important;
 font-family: IMB ;
  @media (max-width: 600px) {
     font-size: 1rem !important;
@@ -265,14 +265,14 @@ font-family: IMB ;
 
 `
 const Typo2 = styled.p`
-font-size: 1.2rem !important;
+font-size: 1rem !important;
 font-family: IMB  !important;
  @media (max-width: 600px) {
     font-size: 0.6rem !important;
     }
 `
 const Typo3 = styled.p`
-font-size: 1rem !important;
+font-size: 0.7rem !important;
 font-family: IMB !important;
  @media (max-width: 600px) {
     font-size: 0.7rem !important;

@@ -1,13 +1,10 @@
 import Toolbar from '@material-ui/core/Toolbar';
-import Card from '@material-ui/core/Card';
 import AppBar from '@material-ui/core/AppBar';
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import Container from '@material-ui/core/Container';
 import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
+
 
 const SvgSuscripcion = (props) => (
     <svg
@@ -111,13 +108,13 @@ const SvgGiftCard = (props) => (
         />
     </svg>
 )
-const Navbar = styled(Toolbar)`
+const Navbar = styled.div`
     -webkit-box-pack: justify;
     justify-content: space-between;
     height: 100px;
     background-color: #000000;
     `
-const Footer = styled(Toolbar)`
+const Footer = styled.div`
 justify-content: flex-end;
     background-color: #000000;
 `
@@ -125,7 +122,7 @@ const Image = styled.img`
     height: 64px;
     width:auto;
 `
-const Content = styled(Container)`
+const Content = styled.div`
     -webkit-box-pack: start;
     justify-content: flex-start;
     -webkit-box-align: stretch;
@@ -157,7 +154,7 @@ const DivFlexColumn = styled.div`
     display: flex;
     flex-flow: column;
     `
-const LinkButton = styled(Button)`
+const LinkButton = styled.button`
     flex:1%;
     display: flex;
     flex-flow: row;
@@ -165,7 +162,7 @@ const LinkButton = styled(Button)`
     justify-content: center;
     margin:8px !important;
 `
-const Title = styled(Typography)`
+const Title = styled.p`
     text-align: center;
     font-family: "Netflix" !important;
     font-weight: 700 !important;
@@ -173,41 +170,48 @@ const Title = styled(Typography)`
     line-height: 2.6rem;
     text-transform: uppercase;
 `
-const Text = styled(Typography)`
+const Text = styled.p`
     font-weight: 600 !important;
     font-family: "Netflix" !important;
     font-size: 20px !important;
     text-transform: initial;
 `
-const Text2 = styled(Typography)`
+const Text2 = styled.p`
     font-weight: 600 !important;
     font-family: "Netflix" !important;
     font-size: 16px !important;
     text-transform: initial;
 `
+const Button = styled.button` 
+`
+const Card = styled.button` 
+`
+const CardContent = styled.div`
+`
+
+
 const redirect = () => {
     window.open('https://netflix.ekomercio.com/selfinvoice/', '_ blank');
 }
 function Netflix() {
 
     return <Div>
-        <AppBar position="static">
-            <Navbar>
-                <Image src={'./Ekomercio_Logo.png'} alt='Ekomercio_Logo' />
-                <Title>
-                    Bienvenido
-                </Title>
-                <Image src={'./Netflix_Logo.png'} alt='Netflix_Logo' />
-            </Navbar>
-        </AppBar>
-        <Content maxWidth="sm">
+        <Navbar>
+            <Image src={'./Ekomercio_Logo.png'} alt='Ekomercio_Logo' />
+            <Title>
+                Bienvenido
+            </Title>
+            <Image src={'./Netflix_Logo.png'} alt='Netflix_Logo' />
+        </Navbar>
+
+        <Content >
             <Card>
                 <CardContent>
                     <Title>
                         PORTAL AUTOFACTURA
                     </Title>
                     <DivFlexRow>
-                        <LinkButton variant='outlined' >
+                        <LinkButton  >
                             <DivFlexColumn>
                                 <SvgSuscripcion height={160} width={190} />
                                 <Text>
@@ -215,7 +219,7 @@ function Netflix() {
                                 </Text>
                             </DivFlexColumn>
                         </LinkButton>
-                        <LinkButton variant='outlined'  >
+                        <LinkButton   >
                             <DivFlexColumn>
                                 <SvgGiftCard height={160} width={190} />
                                 <Text>
@@ -225,21 +229,19 @@ function Netflix() {
                         </LinkButton>
                     </DivFlexRow>
                 </CardContent>
-                <CardActions>
-                    <Text2>
-                        La generación de facturas estará disponible máximo 30 días después de la fecha de renovación o compra.
-                    </Text2>
-                </CardActions>
+                <Text2>
+                    La generación de facturas estará disponible máximo 30 días después de la fecha de renovación o compra.
+                </Text2>
             </Card>
         </Content>
-        <AppBar position="static">
-            <Footer>
-                <Button variant='outlined' style={{ color: '#fff' }}>Preguntas frecuentes</Button>
-                <Button variant='outlined' style={{ color: '#fff' }}>Aviso de privacidad Ekomercio</Button>
-                <Button variant='outlined' style={{ color: '#fff' }}>Aviso de privacidad Netflix</Button>
-                <Button variant='outlined' style={{ color: '#fff' }}>© Ekomercio 2023 v 1.0.10</Button>
-            </Footer>
-        </AppBar>
+
+        <Footer>
+            <Button style={{ color: '#fff' }}>Preguntas frecuentes</Button>
+            <Button style={{ color: '#fff' }}>Aviso de privacidad Ekomercio</Button>
+            <Button style={{ color: '#fff' }}>Aviso de privacidad Netflix</Button>
+            <Button style={{ color: '#fff' }}>© Ekomercio 2023 v 1.0.10</Button>
+        </Footer>
+
     </Div >
 }
 

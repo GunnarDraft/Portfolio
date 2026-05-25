@@ -2,7 +2,7 @@ import Head from 'next/head'
 import React, { useRef, Suspense, useCallback, useEffect, useMemo } from 'react'
 
 import { Canvas, useFrame } from '@react-three/fiber'
-import {  Html,  useGLTF } from '@react-three/drei'
+import { Html, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import Netflix from '../componets/netflix'
 import styled from 'styled-components'
@@ -97,20 +97,20 @@ const Matrix = () => {
         </mesh>
     );
 };
- 
+
 function LapTop(props) {
     const group = useRef<THREE.Group>(null)
     const pantalla = useRef<THREE.Group>(null)
     const { nodes, materials } = useGLTF('./mac-draco.glb') as any
- 
-   
-    useFrame((state) => { 
+
+
+    useFrame((state) => {
         const t = state.clock.getElapsedTime()
         group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, Math.cos(t / 1) / 20 + 0.25, 0.1)
         group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, Math.sin(t / 2) / 20, 0.1)
         group.current.rotation.z = THREE.MathUtils.lerp(group.current.rotation.z, Math.sin(t / 4) / 20, 0.1)
         group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, (-2 + Math.sin(t / 2)) / 2, 0.1)
- 
+
     })
     return (
         <group rotation={[0, Math.PI, 0]} position={[0, 0, 0]}>
@@ -156,7 +156,7 @@ const Description = () => {
     return <>
         <BottomComponet>
             Development of a billing solution for thousands of users in Latin America.
-            <br/>
+            <br />
             My focus was on implementing a smooth and practical user experience using ReactJS. I developed the front-end of the site, incorporating form validation with React Hook Forms and ensuring data integrity with Yup schemas. In addition, we integrated Google reCAPTCHA v3 for additional security.
 
         </BottomComponet>
@@ -174,21 +174,20 @@ export default function Projects() {
             <main>
                 <WarningBox >
                     <Typo>Page in maintenance.</Typo>
-                 
-                 </WarningBox>
+
+                </WarningBox>
                 <Canvas camera={{ position: [0, 0, -15], fov: 55 }}>
                     <Matrix />
                     <pointLight position={[10, 10, 10]} intensity={1.5} />
                     <Suspense fallback={null}>
-                         
-                            <LapTop /> 
+
+                        <LapTop />
                     </Suspense>
                 </Canvas>
-             
+
                 <Description />
             </main>
         </>
 
     )
 }
-
