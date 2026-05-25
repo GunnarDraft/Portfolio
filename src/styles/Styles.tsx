@@ -46,6 +46,30 @@ const WarningText = styled.p`
 
 
 `
+
+const WarningClose = styled.button`
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0);
+  color: #ffdddd;
+  font-size: 1rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: transform 0.2s ease, background 0.2s ease;
+  &:hover { 
+    transform: rotate(90deg);
+  }
+  &:focus {
+    outline: 2px solid #ff8888; 
+  }
+`
 const Box = styled.div`
   background: #00553e40;
   backdrop-filter: blur(8px) brightness(1.4);
@@ -286,5 +310,5 @@ z-index: 11 ;
 export {
   Box, Content, Path, Svg, MenuConetent, Linked, ContentNavbar, ContentBox, HomeContent,
   CanvasContainer, DivContainer, CanvasContainerAtom, Heading, Typo, Typo2, Typo3,
-  HTMLContainer, SvgIn, SvgBehance, WarningBox
+  HTMLContainer, SvgIn, SvgBehance, WarningBox, WarningClose
 }

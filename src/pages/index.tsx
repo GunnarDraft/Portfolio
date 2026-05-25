@@ -1,8 +1,7 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useCallback, useEffect, useMemo, useRef, Suspense, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, Suspense, useState } from 'react'
 import { Vector2, Mesh } from "three";
-import { Box, Path, Content, Svg, SvgIn, SvgBehance, HomeContent, CanvasContainer, Heading, Typo, Typo2, Typo3, WarningBox } from '../styles/Styles'
-import React from 'react'
+import { Box, Path, Content, Svg, SvgIn, SvgBehance, HomeContent, CanvasContainer, Heading, Typo, Typo2, Typo3, WarningBox, WarningClose } from '../styles/Styles'
 import { matrixFragmentShader, vertexShader } from "@/componets/shaders";
 
 const line1 = "M0 0L550 0L600 50L600 600L50 600L0 550Z";
@@ -67,6 +66,8 @@ const Scene = () => {
 
 
 export default function Home() {
+  const [showWarning, setShowWarning] = useState(true);
+
   const linkedIn = () => {
     const url = 'https://www.linkedin.com/in/gunnarmedina';
     window.open(url, '_blank');
@@ -134,10 +135,15 @@ export default function Home() {
           <Path d={line1} />
         </Svg>
       </Content>
-      <WarningBox > 
-        <Typo>⚠ Warning!</Typo>
-        <Typo2>This website may contain flashing lights or patterns that could trigger seizures or other visual discomfort. Viewer discretion is advised.</Typo2>
-      </WarningBox>
+      {showWarning && (
+        <WarningBox>
+          <WarningClose aria-label="Close warning" onClick={() => setShowWarning(false)}>
+            ✕
+          </WarningClose>
+          <Typo>⚠ Warning!</Typo>
+          <Typo2>This website may contain flashing lights or patterns that could trigger seizures or other visual discomfort. Viewer discretion is advised.</Typo2>
+        </WarningBox>
+      )}
     </HomeContent>
   </div>
     ;
