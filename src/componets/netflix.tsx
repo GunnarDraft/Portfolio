@@ -4,6 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Container from '@material-ui/core/Container';
 import CardActions from '@material-ui/core/CardActions';
+import Button from '@mui/material/Button';
 
 
 const SvgSuscripcion = (props) => (
@@ -181,8 +182,6 @@ const Text2 = styled.p`
     font-family: "Netflix" !important;
     font-size: 16px !important;
     text-transform: initial;
-`
-const Button = styled.button` 
 `
 const Card = styled.button` 
 `

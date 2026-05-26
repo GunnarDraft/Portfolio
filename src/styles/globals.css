@@ -134,7 +134,7 @@ a {
 
 .cell {
   box-sizing: border-box;
-  position: relative;
+  position: absolute;
   width: 100px;
   height: 100px;
   display: grid;

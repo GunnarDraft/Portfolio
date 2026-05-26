@@ -24,7 +24,21 @@ uniform vec2 u_resolution;
 uniform int u_layout_mode;
 uniform int u_filter_active;
 uniform int u_color_mode;
-
+uniform int u_enable_id_filter;
+uniform int u_filter_id_start;
+uniform int u_filter_id_end;
+uniform int u_enable_l_filter;
+uniform int u_filter_l_start;
+uniform int u_filter_l_end;
+uniform int u_enable_n_filter;
+uniform int u_filter_n_start;
+uniform int u_filter_n_end;
+uniform int u_enable_spin_filter;
+uniform int u_filter_spin_start;
+uniform int u_filter_spin_end;
+uniform int u_enable_m_filter;
+uniform int u_filter_m_start;
+uniform int u_filter_m_end;
 
 #define CAM_Y_OFFSET 0.0      // Desplazamiento vertical de la cámara
 #define CAM_INERTIA 0.92      // Reservado para suavizado/persistencia futura
@@ -39,7 +53,7 @@ uniform int u_color_mode;
 // --- PARÁMETROS DE CÁMARA Y ANIMACIÓN COLECTIVA ---
 #define CAM_DIST_GRID 9.5     // Distancia focal de la cámara en modo Tabla Periódica
 #define CAM_DIST_QUANT 5.5    // Distancia focal de la cámara en modo Espacio Cuántico
-#define CAM_AUTO_SPEED 0.005  // Velocidad de rotación automática de la cámara en Rad/Seg
+#define CAM_AUTO_SPEED 0.0  // Velocidad de rotación automática de la cámara en Rad/Seg
 #define CAM_MOUSE_SENS 3.1416 // Sensibilidad del control por Mouse/Click-Arrastre
 
 // --- ESCALADO DE ESPACIOS TRIDIMENSIONALES ---
@@ -58,28 +72,66 @@ uniform int u_color_mode;
 // =========================================================================
 // Si END es menor que START, el filtro no se procesará.
 
-#define MAX_FILTER_ITEMS 32
+#define MAX_FILTER_ITEMS 120
 
-#define ENABLE_ID_FILTER 0
-#define FILTER_ID_START 0
-#define FILTER_ID_END 0        // Lee el índice 0
 const int FILTER_IDS[MAX_FILTER_ITEMS] = int[](
-    1, 2, 17, 118,
-    57, 89, 0, 0,
-    0, 0, 0, 0,
-    0, 0, 0, 0,
-    0, 0, 0, 0,
-    0, 0, 0, 0,
-    0, 0, 0, 0,
-    0, 0, 0, 0
+    1, 2, 3, 4,
+    5, 6, 7, 8,
+    9, 10, 11, 12,
+    13, 14, 15, 16,
+    17, 18, 19, 20,
+    21, 22, 23, 24,
+    25, 26, 27, 28,
+    29, 30, 31, 32,
+    33, 34, 35, 36,
+    37, 38, 39, 40,
+    41, 42, 43, 44,
+    45, 46, 47, 48,
+    49, 50, 51, 52,
+    53, 54, 55, 56,
+    57, 58, 59, 60,
+    61, 62, 63, 64,
+    65, 66, 67, 68,
+    69, 70, 71, 72,
+    73, 74, 75, 76,
+    77, 78, 79, 80,
+    81, 82, 83, 84,
+    85, 86, 87, 88,
+    89, 90, 91, 92,
+    93, 94, 95, 96,
+    97, 98, 99, 100,
+    101, 102, 103, 104,
+    105, 106, 107, 108,
+    109, 110, 111, 112,
+    113, 114, 115, 116,
+    117, 118, 119, 120
 );
 
-#define ENABLE_L_FILTER 1
-#define FILTER_L_START 0
-#define FILTER_L_END 3        // Lee desde el índice 0 al 3 (4 elementos: 0.0, 1.0, 2.0, 3.0)
 const float FILTER_L_VALUES[MAX_FILTER_ITEMS] = float[](
     0.0, 1.0, 2.0, 3.0,
-    5.0, 6.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0,
@@ -88,11 +140,30 @@ const float FILTER_L_VALUES[MAX_FILTER_ITEMS] = float[](
     0.0, 0.0, 0.0, 0.0
 );
 
-#define ENABLE_N_FILTER 0
-#define FILTER_N_START 0
-#define FILTER_N_END -1       // Desactivado por rango inválido
 const float FILTER_N_VALUES[MAX_FILTER_ITEMS] = float[](
-    2.0, 4.0, 5.0, 6.0,
+    1.0, 2.0, 3.0, 4.0,
+    5.0, 6.0, 7.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0,
@@ -102,9 +173,6 @@ const float FILTER_N_VALUES[MAX_FILTER_ITEMS] = float[](
     0.0, 0.0, 0.0, 0.0
 );
 
-#define ENABLE_SPIN_FILTER 0
-#define FILTER_SPIN_START 1
-#define FILTER_SPIN_END 1      // Lee solo el índice 0 (0.5)
 const float FILTER_SPIN_VALUES[MAX_FILTER_ITEMS] = float[](
     0.5, -0.5, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0,
@@ -113,14 +181,55 @@ const float FILTER_SPIN_VALUES[MAX_FILTER_ITEMS] = float[](
     0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0
 );
 
-#define ENABLE_M_FILTER 0
-#define FILTER_M_START 0
-#define FILTER_M_END -1       // Desactivado por rango inválido
 const float FILTER_M_VALUES[MAX_FILTER_ITEMS] = float[](
     0.0, 1.0, -1.0, 2.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0,
@@ -548,37 +657,37 @@ bool isElementEnabled(
         return true;
 
     // 1) Arreglo opcional de IDs
-    if (ENABLE_ID_FILTER == 1 && FILTER_ID_END >= FILTER_ID_START)
+    if (u_enable_id_filter == 1 && u_filter_id_end >= u_filter_id_start)
     {
-        if (!containsIntValueRange(FILTER_IDS, FILTER_ID_START, FILTER_ID_END, id))
+        if (!containsIntValueRange(FILTER_IDS, u_filter_id_start, u_filter_id_end, id))
             return false;
     }
 
     // 2) Filtro por l
-    if (ENABLE_L_FILTER == 1 && FILTER_L_END >= FILTER_L_START)
+    if (u_enable_l_filter == 1 && u_filter_l_end >= u_filter_l_start)
     {
-        if (!containsFloatValueRange(FILTER_L_VALUES, FILTER_L_START, FILTER_L_END, q_l))
+        if (!containsFloatValueRange(FILTER_L_VALUES, u_filter_l_start, u_filter_l_end, q_l))
             return false;
     }
 
     // 3) Filtro por n
-    if (ENABLE_N_FILTER == 1 && FILTER_N_END >= FILTER_N_START)
+    if (u_enable_n_filter == 1 && u_filter_n_end >= u_filter_n_start)
     {
-        if (!containsFloatValueRange(FILTER_N_VALUES, FILTER_N_START, FILTER_N_END, q_n))
+        if (!containsFloatValueRange(FILTER_N_VALUES, u_filter_n_start, u_filter_n_end, q_n))
             return false;
     }
 
     // 4) Filtro por spin
-    if (ENABLE_SPIN_FILTER == 1 && FILTER_SPIN_END >= FILTER_SPIN_START)
+    if (u_enable_spin_filter == 1 && u_filter_spin_end >= u_filter_spin_start)
     {
-        if (!containsFloatValueRange(FILTER_SPIN_VALUES, FILTER_SPIN_START, FILTER_SPIN_END, q_s))
+        if (!containsFloatValueRange(FILTER_SPIN_VALUES, u_filter_spin_start, u_filter_spin_end, q_s))
             return false;
     }
 
     // 5) Filtro por m
-    if (ENABLE_M_FILTER == 1 && FILTER_M_END >= FILTER_M_START)
+    if (u_enable_m_filter == 1 && u_filter_m_end >= u_filter_m_start)
     {
-        if (!containsFloatValueRange(FILTER_M_VALUES, FILTER_M_START, FILTER_M_END, q_m))
+        if (!containsFloatValueRange(FILTER_M_VALUES, u_filter_m_start, u_filter_m_end, q_m))
             return false;
     }
 
@@ -695,23 +804,19 @@ bool calculateColor(vec3 p, inout vec3 accumulatedColor, inout float accumulated
     if (density > 0.002) {
         vec3 sampleColor;
 
-        if (u_color_mode== 1){
+        if (u_color_mode == 1) {
             // Se usa el color de la tabla visible basado en el ID
             sampleColor = ELEMENT_VISIBLE[id];
             if (psi < 0.0) sampleColor *= 0.5;
-            }
-        if (u_color_mode== 2){
+        } else if (u_color_mode == 2) {
             // Se usa el color de la tabla de absorción basado en el ID
             sampleColor = ELEMENT_ABSORPTION[id];
             if (psi < 0.0) sampleColor *= 0.5;
-            }
-
-        if (u_color_mode== 3){
+        } else if (u_color_mode == 3) {
             // Se usa el color basado en el aspecto macroscópico del mundo real
             sampleColor = ELEMENT_REAL[id];
             if (psi < 0.0) sampleColor *= 0.5;
-        }
-        else{
+        } else {
             // Lógica original de color por espín y fase
             vec3 posCol = (ms > 0.0) ? POS_COL_UP : POS_COL_DN;
             vec3 negCol = (ms > 0.0) ? NEG_COL_UP : NEG_COL_DN;
@@ -885,8 +990,8 @@ void main() {
 
     if(length(u_mouse.xy) > 10.0)
     {
-        eyea += (mouse.x - 0.5) * CAM_MOUSE_SENS * 0.10;
-        eyef += (mouse.y - 0.5) * CAM_MOUSE_SENS * 0.10;
+        eyea += (mouse.x - 0.5) * CAM_MOUSE_SENS * 0.40;
+        eyef += (mouse.y - 0.5) * CAM_MOUSE_SENS * 0.20;
     }
 
     eyef = clamp(eyef, 0.1, 3.04);

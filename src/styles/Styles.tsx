@@ -73,7 +73,7 @@ const WarningClose = styled.button`
 const Box = styled.div`
   background: #00553e40;
   backdrop-filter: blur(8px) brightness(1.4);
-  position: relative;
+  position: absolute;
   display: flex;
   width: 600px;
   height: 600px; 
@@ -125,6 +125,43 @@ const Box = styled.div`
   font-size: 10px;
 
     }
+`;
+
+const ControlBox = styled(Box)`
+  position: absolute !important ;
+  width: min(95vw, 340px);
+  max-width: 340px;
+  max-height: calc(100vh - 2rem);
+  min-height: auto;
+  height: auto;
+  padding: 24px;
+  overflow-y: auto;
+  clip-path: polygon(
+    0 50px,
+    0 0,
+    100% 0,
+    100% 50px,
+    100% calc(100% - 50px),
+    100% 100%,
+    50px 100%,
+    0% calc(100% - 50px),
+    0% 50px
+  );
+  @media (max-width: 600px) {
+    width: min(95vw, 300px);
+    max-width: 300px;
+    clip-path: polygon(
+      0 50px,
+      0 0,
+      100% 0,
+      100% 50px,
+      100% calc(100% - 50px),
+      100% 100%,
+      50px 100%,
+      0% calc(100% - 50px),
+      0% 50px
+    );
+  }
 `;
 
 const Content = styled.div`
@@ -231,7 +268,7 @@ const Linked = styled(Link)`
  margin: 16px;
 `
 const ContentBox = styled.div`
-  position: relative; 
+  position: absolute; 
   display: flex;
   width: 100vw;
   height: 100vh;
@@ -308,7 +345,7 @@ z-index: 11 ;
 `
 
 export {
-  Box, Content, Path, Svg, MenuConetent, Linked, ContentNavbar, ContentBox, HomeContent,
+  Box, ControlBox, Content, Path, Svg, MenuConetent, Linked, ContentNavbar, ContentBox, HomeContent,
   CanvasContainer, DivContainer, CanvasContainerAtom, Heading, Typo, Typo2, Typo3,
   HTMLContainer, SvgIn, SvgBehance, WarningBox, WarningClose
 }
