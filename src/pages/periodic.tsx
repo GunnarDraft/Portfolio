@@ -17,9 +17,11 @@ import {
   Paper,
 } from '@mui/material';
 
-const PeriodicTableShader = ({ uniforms }) => {
+const PeriodicTableShader = React.memo(({ uniforms }) => {
   const mesh = useRef(null);
   const mousePosition = useRef({ x: 0, y: 0 });
+  const resolution = useRef(new Vector2(1, 1));
+  const mouse = useRef(new Vector2());
 
   const updateMousePosition = useCallback((e) => {
     mousePosition.current = { x: e.pageX, y: e.pageY };
@@ -30,12 +32,12 @@ const PeriodicTableShader = ({ uniforms }) => {
 
     const handleResize = () => {
       if (mesh.current) {
-        mesh.current.material.uniforms.u_resolution.value = new Vector2(
-          window.innerWidth,
-          window.innerHeight
-        );
+        resolution.current.set(window.innerWidth, window.innerHeight);
+        mesh.current.material.uniforms.u_resolution.value.copy(resolution.current);
       }
     };
+
+    handleResize();
     window.addEventListener("resize", handleResize);
 
     return () => {
@@ -49,10 +51,8 @@ const PeriodicTableShader = ({ uniforms }) => {
 
     if (mesh.current) {
       mesh.current.material.uniforms.u_time.value = clock.getElapsedTime();
-      mesh.current.material.uniforms.u_mouse.value = new Vector2(
-        mousePosition.current.x,
-        mousePosition.current.y
-      );
+      mouse.current.set(mousePosition.current.x, mousePosition.current.y);
+      mesh.current.material.uniforms.u_mouse.value.copy(mouse.current);
     }
   });
 
@@ -67,15 +67,15 @@ const PeriodicTableShader = ({ uniforms }) => {
       />
     </mesh>
   );
-};
+});
 
-const Scene = ({ uniforms }) => {
+const Scene = React.memo(({ uniforms }) => {
   return (
     <CanvasContainer camera={{ position: [0.0, 0.0, 1.5] }}>
       <PeriodicTableShader uniforms={uniforms} />
     </CanvasContainer>
   );
-};
+});
 
 const controlPanelSx = {
   position: "absolute",
@@ -152,45 +152,67 @@ export default function PeriodicTable() {
             ? new Vector2(window.innerWidth, window.innerHeight)
             : new Vector2(1, 1),
       },
-      u_layout_mode: { value: layoutMode },
-      u_filter_active: { value: filterActive },
-      u_color_mode: { value: colorMode },
-      u_enable_id_filter: { value: enableIdFilter },
-      u_filter_id_start: { value: idFilterStart },
-      u_filter_id_end: { value: idFilterEnd },
-      u_enable_l_filter: { value: enableLFilter },
-      u_filter_l_start: { value: lFilterStart },
-      u_filter_l_end: { value: lFilterEnd },
-      u_enable_n_filter: { value: enableNFilter },
-      u_filter_n_start: { value: nFilterStart },
-      u_filter_n_end: { value: nFilterEnd },
-      u_enable_spin_filter: { value: enableSpinFilter },
-      u_filter_spin_start: { value: spinValue },
-      u_filter_spin_end: { value: spinValue },
-      u_enable_m_filter: { value: enableMFilter },
-      u_filter_m_start: { value: mFilterStart },
-      u_filter_m_end: { value: mFilterEnd },
+      u_layout_mode: { value: 0 },
+      u_filter_active: { value: 0 },
+      u_color_mode: { value: 0 },
+      u_enable_id_filter: { value: 0 },
+      u_filter_id_start: { value: 0 },
+      u_filter_id_end: { value: 0 },
+      u_enable_l_filter: { value: 1 },
+      u_filter_l_start: { value: 0 },
+      u_filter_l_end: { value: 3 },
+      u_enable_n_filter: { value: 0 },
+      u_filter_n_start: { value: 0 },
+      u_filter_n_end: { value: -1 },
+      u_enable_spin_filter: { value: 0 },
+      u_filter_spin_start: { value: 0 },
+      u_filter_spin_end: { value: 0 },
+      u_enable_m_filter: { value: 0 },
+      u_filter_m_start: { value: 0 },
+      u_filter_m_end: { value: -1 },
     }),
-    [
-      layoutMode,
-      filterActive,
-      colorMode,
-      enableIdFilter,
-      idFilterStart,
-      idFilterEnd,
-      enableLFilter,
-      lFilterStart,
-      lFilterEnd,
-      enableNFilter,
-      nFilterStart,
-      nFilterEnd,
-      enableSpinFilter,
-      spinValue,
-      enableMFilter,
-      mFilterStart,
-      mFilterEnd,
-    ]
+    []
   );
+
+  useEffect(() => {
+    uniforms.u_layout_mode.value = layoutMode;
+    uniforms.u_filter_active.value = filterActive;
+    uniforms.u_color_mode.value = colorMode;
+    uniforms.u_enable_id_filter.value = enableIdFilter;
+    uniforms.u_filter_id_start.value = idFilterStart;
+    uniforms.u_filter_id_end.value = idFilterEnd;
+    uniforms.u_enable_l_filter.value = enableLFilter;
+    uniforms.u_filter_l_start.value = lFilterStart;
+    uniforms.u_filter_l_end.value = lFilterEnd;
+    uniforms.u_enable_n_filter.value = enableNFilter;
+    uniforms.u_filter_n_start.value = nFilterStart;
+    uniforms.u_filter_n_end.value = nFilterEnd;
+    uniforms.u_enable_spin_filter.value = enableSpinFilter;
+    uniforms.u_filter_spin_start.value = spinValue;
+    uniforms.u_filter_spin_end.value = spinValue;
+    uniforms.u_enable_m_filter.value = enableMFilter;
+    uniforms.u_filter_m_start.value = mFilterStart;
+    uniforms.u_filter_m_end.value = mFilterEnd;
+  }, [
+    uniforms,
+    layoutMode,
+    filterActive,
+    colorMode,
+    enableIdFilter,
+    idFilterStart,
+    idFilterEnd,
+    enableLFilter,
+    lFilterStart,
+    lFilterEnd,
+    enableNFilter,
+    nFilterStart,
+    nFilterEnd,
+    enableSpinFilter,
+    spinValue,
+    enableMFilter,
+    mFilterStart,
+    mFilterEnd,
+  ]);
 
   return (
     <div style={{ position: "absolute", minHeight: "100vh", minWidth: "100vw", overflow: "visible" }}>
@@ -241,11 +263,6 @@ export default function PeriodicTable() {
           label={<Typography sx={{ color: "#d7ffd4", fontWeight: 500 }}>Filtros activos</Typography>}
         />
 
-
-
-        <Typography variant="caption" sx={{ mt: "1rem", fontWeight: 600, color: "#d7ffd4" }}>
-          Filtros por categoría
-        </Typography>
 
         {/* spin Filter */}
         <Paper sx={filterBlockSx}>

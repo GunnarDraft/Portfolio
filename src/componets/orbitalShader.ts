@@ -63,8 +63,8 @@ uniform int u_filter_m_end;
 #define ATOM_BOUNDING_R 0.40  // Radio de contención esférica
 
 // --- INTENSIDAD VOLUMÉTRICA INDIVIDUAL ---
-#define ELECTRON_DENSITY 15000000.0
-#define WAVE_STEP_SIZE 0.012
+#define ELECTRON_DENSITY 12000000.0
+#define WAVE_STEP_SIZE 0.03
  #define ROTATE(p, a) p=cos(a)*p+sin(a)*vec2(p.y, -p.x)
 
 // =========================================================================
@@ -621,28 +621,6 @@ float Y0 = 0.0;
 // =========================================================================
 // UTILIDADES DE BÚSQUEDA EN ARREGLOS POR RANGOS
 // =========================================================================
-bool containsIntValueRange(const int values[MAX_FILTER_ITEMS], int start, int end, int value)
-{
-    for (int i = 0; i < MAX_FILTER_ITEMS; i++)
-    {
-        if (i < start) continue;
-        if (i > end) break;
-        if (values[i] == value) return true;
-    }
-    return false;
-}
-
-bool containsFloatValueRange(const float values[MAX_FILTER_ITEMS], int start, int end, float value)
-{
-    for (int i = 0; i < MAX_FILTER_ITEMS; i++)
-    {
-        if (i < start) continue;
-        if (i > end) break;
-        if (abs(values[i] - value) < 0.001) return true;
-    }
-    return false;
-}
-
 // =========================================================================
 // FILTRO PRINCIPAL DE RENDERIZADO
 // =========================================================================
@@ -656,38 +634,41 @@ bool isElementEnabled(
     if (u_filter_active == 0)
         return true;
 
-    // 1) Arreglo opcional de IDs
+    // 1) Filtro por ID. El slider usa indices 0..117 y el ID real es 1..118.
     if (u_enable_id_filter == 1 && u_filter_id_end >= u_filter_id_start)
     {
-        if (!containsIntValueRange(FILTER_IDS, u_filter_id_start, u_filter_id_end, id))
+        int minId = u_filter_id_start + 1;
+        int maxId = u_filter_id_end + 1;
+        if (id < minId || id > maxId)
             return false;
     }
 
     // 2) Filtro por l
     if (u_enable_l_filter == 1 && u_filter_l_end >= u_filter_l_start)
     {
-        if (!containsFloatValueRange(FILTER_L_VALUES, u_filter_l_start, u_filter_l_end, q_l))
+        if (q_l < float(u_filter_l_start) || q_l > float(u_filter_l_end))
             return false;
     }
 
     // 3) Filtro por n
     if (u_enable_n_filter == 1 && u_filter_n_end >= u_filter_n_start)
     {
-        if (!containsFloatValueRange(FILTER_N_VALUES, u_filter_n_start, u_filter_n_end, q_n))
+        if (q_n < float(u_filter_n_start) || q_n > float(u_filter_n_end))
             return false;
     }
 
     // 4) Filtro por spin
     if (u_enable_spin_filter == 1 && u_filter_spin_end >= u_filter_spin_start)
     {
-        if (!containsFloatValueRange(FILTER_SPIN_VALUES, u_filter_spin_start, u_filter_spin_end, q_s))
+        float targetSpin = (u_filter_spin_start == 0) ? 0.5 : -0.5;
+        if (abs(q_s - targetSpin) > 0.001)
             return false;
     }
 
     // 5) Filtro por m
     if (u_enable_m_filter == 1 && u_filter_m_end >= u_filter_m_start)
     {
-        if (!containsFloatValueRange(FILTER_M_VALUES, u_filter_m_start, u_filter_m_end, q_m))
+        if (q_m < float(u_filter_m_start) || q_m > float(u_filter_m_end))
             return false;
     }
 
@@ -697,19 +678,29 @@ bool isElementEnabled(
 // =========================================================================
 // FACTORIALES
 // =========================================================================
+const float FACT_LUT[15] = float[](
+    1.0, 1.0, 2.0, 6.0, 24.0, 120.0, 720.0, 5040.0, 40320.0,
+    362880.0, 3628800.0, 39916800.0, 479001600.0, 6227020800.0, 87178291200.0
+);
+
 float factorial(float n) {
-    if (n <= 1.0) return 1.0;
-    float res = 1.0;
-    for (float i = n; i > 1.0; i -= 1.0)
-        res *= i;
-    return res;
+    return FACT_LUT[clamp(int(n), 0, 14)];
 }
 
 float doubleFactorial(float n) {
-    if (n <= 0.0) return 1.0;
+    int in_n = int(n);
+    if (in_n <= 0) return 1.0;
+    // Precomputado para los límites de l y m esperados
+    if (in_n == 1) return 1.0;
+    if (in_n == 2) return 2.0;
+    if (in_n == 3) return 3.0;
+    if (in_n == 4) return 8.0;
+    if (in_n == 5) return 15.0;
+    if (in_n == 6) return 48.0;
+    if (in_n == 7) return 105.0;
+
     float res = 1.0;
-    for (float i = n; i > 1.0; i -= 2.0)
-        res *= i;
+    for (float i = n; i > 1.0; i -= 2.0) res *= i;
     return res;
 }
 
@@ -719,8 +710,7 @@ float stableFactorialRatio(float l, float m) {
     float res = 1.0;
     for (float i = max(l - am + 1.0, 2.0); i <= l + am; i += 1.0)
         res *= i;
-    if (m < 0.0) return res;
-    return 1.0 / res;
+    return (m < 0.0) ? res : 1.0 / res;
 }
 
 // =========================================================================
@@ -773,8 +763,8 @@ float calcAngularPart(float cosang) {
 
 float calcAzimuthalPart(float fai) {
     if (m == 0.0) return 1.0;
-    if (m > 0.0)  return cos(m * fai);
-    return sin(abs(m) * fai);
+    // GPU es más rápida multiplicando que llamando a abs() y ramificando innecesariamente
+    return (m > 0.0) ? cos(m * fai) : sin(-m * fai);
 }
 
 // =========================================================================
