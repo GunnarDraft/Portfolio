@@ -108,8 +108,8 @@ const controlPanelSx = {
 const filterBlockSx = {
   p: "1rem",
   width: "300px",
-  height: "150px",
-  clipPath: "polygon(0 0, calc(300px - 20px) 0, 300px 20px, 300px 150px, 20px 150px, 0 calc(150px - 20px))",
+  height: "130px",
+  clipPath: "polygon(0 0, calc(300px - 20px) 0, 300px 20px, 300px 130px, 20px 130px, 0 calc(130px - 20px))",
   background: "rgba(15, 41, 27, 0.5)",
   backdropFilter: "blur(22px)",
 
@@ -121,19 +121,19 @@ const FilterBlock = ({ children }) => (
       {children}
     </Paper>
     <svg
-      viewBox="0 0 300 150"
+      viewBox="0 0 300 130"
       preserveAspectRatio="none"
       style={{
         position: "absolute",
         top: 0,
         left: 0,
         width: "300px",
-        height: "150px",
+        height: "130px",
         pointerEvents: "none",
       }}
     >
       <polyline
-        points="0,0 280,0 300,20 300,150 20,150 0,130 0,0"
+        points="0,0 280,0 300,20 300,130 20,130 0,110 0,0"
         fill="none"
         stroke="#66ff00ef"
         strokeWidth="0.5"
@@ -247,7 +247,7 @@ export default function PeriodicTable() {
   const [enableIdFilter, setEnableIdFilter] = useState(0);
   const [idFilterStart, setIdFilterStart] = useState(0);
   const [idFilterEnd, setIdFilterEnd] = useState(118);
-  const [enableLFilter, setEnableLFilter] = useState(1);
+  const [enableLFilter, setEnableLFilter] = useState(0);
   const [lFilterStart, setLFilterStart] = useState(0);
   const [lFilterEnd, setLFilterEnd] = useState(3);
   const [enableNFilter, setEnableNFilter] = useState(0);
@@ -340,7 +340,7 @@ export default function PeriodicTable() {
             <MenuItem value={1}>Tetrahedron</MenuItem>
           </Select>
         </Stack>
-        <Stack spacing={1} sx={{ mt: "1rem" }}>
+        <Stack spacing={1}>
           <Typography variant="caption" sx={{ fontWeight: 600, color: "#d7ffd4" }}>
             Modo de color
           </Typography>
@@ -447,7 +447,7 @@ export default function PeriodicTable() {
                   sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
                 />
               }
-              label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número L</Typography>}
+              label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número <i>l</i></Typography>}
             />
             <Box>
               <Slider
@@ -480,7 +480,7 @@ export default function PeriodicTable() {
                   sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
                 />
               }
-              label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número n</Typography>}
+              label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número <i>n</i></Typography>}
             />
             <Box>
               <Slider
@@ -514,7 +514,7 @@ export default function PeriodicTable() {
                   sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
                 />
               }
-              label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número m</Typography>}
+              label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número <i>m</i></Typography>}
             />
             <Box>
               <Slider

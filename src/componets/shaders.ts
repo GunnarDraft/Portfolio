@@ -414,7 +414,7 @@ void main( )
    gl_FragColor = vec4(col, 1.);
 }
 
-` 
+`
 const atomFragmentShader = /*glsl*/ `
 precision lowp float;
 precision lowp int;
@@ -954,7 +954,7 @@ void main() {
 //     // normalized 2d projection
 //     vec2 ro2 = vec2(ro3);
 //     vec2 rd2 = normalize(vec2(rd3));
- 
+
 //     bool prefer_dx = abs(rd2.x) > abs(rd2.y);
 //     float t3_to_t2 = prefer_dx ? rd3.x / rd2.x : rd3.y / rd2.y;
 
@@ -1567,4 +1567,4 @@ void main() {
 }
 `
 
-export { matrixFragmentShader, vertexShader, atomFragmentShader, periodicTableFragmentShader}
+export { matrixFragmentShader, vertexShader, atomFragmentShader, periodicTableFragmentShader }

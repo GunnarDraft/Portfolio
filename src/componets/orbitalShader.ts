@@ -968,12 +968,13 @@ vec3 getElementCenter(int id, float q_n, float q_l, float q_m, float q_s) {
 // =========================================================================
 void main() {
     vec2 fragCoord = gl_FragCoord.xy;
+    
  vec2 pp = (-u_resolution.xy + 2.0 * fragCoord.xy) / u_resolution.y;
 
     float eyer = (u_layout_mode == 0) ? CAM_DIST_GRID : CAM_DIST_QUANT;
 
     // Cámara con rotación base en el tiempo
-    float eyea = u_time * CAM_AUTO_SPEED;
+    float eyea = u_time * CAM_AUTO_SPEED + 3.14159;
     float eyef = 1.5708;
 
     vec2 mouse = u_mouse.xy / u_resolution.xy;
