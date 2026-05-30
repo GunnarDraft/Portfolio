@@ -215,9 +215,9 @@ a {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 85, 62, 0.25);
+  background: rgba(0, 85, 62, 0.1);
 }
  
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 142, 100, 0.25);
+  background: rgba(0, 142, 100, 0.1);
 }

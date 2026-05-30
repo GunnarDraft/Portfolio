@@ -15,7 +15,7 @@ const WarningBox = styled.div`
   height: min-content; 
    z-index:20;
   min-width: 100px;
-  min-height: min-content;
+  min-height: 260px;
   font-family: IMB, sans-serif;
   font-size: 16px;
   font-weight: bold;
@@ -25,13 +25,16 @@ const WarningBox = styled.div`
   text-shadow: 1px 1px 3px #ee112e;
   padding: 16px; 
   overflow: visible;
- clip-path: polygon(
-    0 0,      
-    90% 0%,    
-    100% 30%,    
-    100% 100%, 
-    10% 100%,    
-    0 70%    
+  --warning-w: 600px;
+  --warning-h: 260px;
+  --warning-b: 60px;
+  clip-path: polygon(
+    0px 0px,
+    calc(var(--warning-w) - var(--warning-b)) 0px,
+    var(--warning-w) var(--warning-b),
+    var(--warning-w) var(--warning-h),
+    var(--warning-b) var(--warning-h),
+    0px calc(var(--warning-h) - var(--warning-b))
   );
   & p {
     margin: 16px;
@@ -89,16 +92,19 @@ const Box = styled.div`
   padding: 32px;
   z-index: 8;
   overflow: visible;
+  --box-w: 600px;
+  --box-h: 600px;
+  --box-b: 50px;
   clip-path: polygon(
-    0 50px,
-    0 0,
-    550px 0,
-    600px 50px,
-    600px 550px,
-    600px 600px,
-    50px 600px,
-    0% 550px,
-    0% 50px
+    0px var(--box-b),
+    0px 0px,
+    calc(var(--box-w) - var(--box-b)) 0px,
+    var(--box-w) var(--box-b),
+    var(--box-w) calc(var(--box-h) - var(--box-b)),
+    var(--box-w) var(--box-h),
+    var(--box-b) var(--box-h),
+    0px calc(var(--box-h) - var(--box-b)),
+    0px var(--box-b)
   );
   & p {
     margin: 16px;
@@ -106,16 +112,19 @@ const Box = styled.div`
   @media (max-width: 600px) {
     width: 300px;
     height: 300px;
+     --box-w: 300px;
+     --box-h: 300px;
+     --box-b: 25px;
      clip-path: polygon(
-    0 50px,
-    0 0,
-    250px 0,
-    300px 50px,
-    300px 250px,
-    300px 300px,
-    50px 300px,
-    0% 250px,
-    0% 50px
+    0px var(--box-b),
+    0px 0px,
+    calc(var(--box-w) - var(--box-b)) 0px,
+    var(--box-w) var(--box-b),
+    var(--box-w) calc(var(--box-h) - var(--box-b)),
+    var(--box-w) var(--box-h),
+    var(--box-b) var(--box-h),
+    0px calc(var(--box-h) - var(--box-b)),
+    0px var(--box-b)
   );
   padding: 8px;
   & p {
@@ -136,30 +145,36 @@ const ControlBox = styled(Box)`
   height: auto;
   padding: 24px;
   overflow-y: auto;
+  --control-w: 340px;
+  --control-h: calc(100vh - 2rem);
+  --control-b: 50px;
   clip-path: polygon(
-    0 50px,
-    0 0,
-    100% 0,
-    100% 50px,
-    100% calc(100% - 50px),
-    100% 100%,
-    50px 100%,
-    0% calc(100% - 50px),
-    0% 50px
+    0px var(--control-b),
+    0px 0px,
+    var(--control-w) 0px,
+    var(--control-w) var(--control-b),
+    var(--control-w) calc(var(--control-h) - var(--control-b)),
+    var(--control-w) var(--control-h),
+    var(--control-b) var(--control-h),
+    0px calc(var(--control-h) - var(--control-b)),
+    0px var(--control-b)
   );
   @media (max-width: 600px) {
     width: min(95vw, 300px);
     max-width: 300px;
+    --control-w: 300px;
+    --control-h: calc(100vh - 2rem);
+    --control-b: 30px;
     clip-path: polygon(
-      0 50px,
-      0 0,
-      100% 0,
-      100% 50px,
-      100% calc(100% - 50px),
-      100% 100%,
-      50px 100%,
-      0% calc(100% - 50px),
-      0% 50px
+      0px var(--control-b),
+      0px 0px,
+      var(--control-w) 0px,
+      var(--control-w) var(--control-b),
+      var(--control-w) calc(var(--control-h) - var(--control-b)),
+      var(--control-w) var(--control-h),
+      var(--control-b) var(--control-h),
+      0px calc(var(--control-h) - var(--control-b)),
+      0px var(--control-b)
     );
   }
 `;
@@ -244,7 +259,22 @@ const MenuConetent = styled.div`
   z-index: 4; 
   padding: 16px; 
   margin: 16px;
-  clip-path: polygon( 0 7%, 0 0, 93% 0, 100% 50%, 100% 93%, 100% 100%, 7% 100%, 0% 50%, 0% 0% );
+  height: 64px;
+  width: 520px;
+  --menu-w: 520px;
+  --menu-h: 64px;
+  --menu-b: 32px;
+  clip-path: polygon(
+    0px calc(var(--menu-b) / 2),
+    0px 0px,
+    calc(var(--menu-w) - var(--menu-b)) 0px,
+    var(--menu-w) calc(var(--menu-h) / 2),
+    var(--menu-w) calc(var(--menu-h) - calc(var(--menu-b) / 2)),
+    var(--menu-w) var(--menu-h),
+    var(--menu-b) var(--menu-h),
+    0px calc(var(--menu-h) / 2),
+    0px 0px
+  );
 `
 
 const ContentNavbar = styled.div`
