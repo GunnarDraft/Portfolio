@@ -10,7 +10,6 @@ const Navbar = () => {
       <MenuConetent>
         <Linked href="/">About</Linked>
         <Linked href="/periodic">Periodic Table</Linked>
-        <Linked href="/projects">Projects</Linked>
       </MenuConetent>
     </ContentNavbar>
   )
