@@ -260,10 +260,10 @@ const MenuConetent = styled.div`
   padding: 16px; 
   margin: 16px;
   height: 64px;
-  width: 520px;
-  --menu-w: 520px;
+  width: 380px;
+  --menu-w: 380px;
   --menu-h: 64px;
-  --menu-b: 32px;
+  --menu-b: 24px;
   clip-path: polygon(
     0px calc(var(--menu-b) / 2),
     0px 0px,
