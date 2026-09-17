@@ -968,7 +968,7 @@ vec3 getElementCenter(int id, float q_n, float q_l, float q_m, float q_s) {
 // =========================================================================
 void main() {
     vec2 fragCoord = gl_FragCoord.xy;
-
+    
  vec2 pp = (-u_resolution.xy + 2.0 * fragCoord.xy) / u_resolution.y;
 
     float eyer = (u_layout_mode == 0) ? CAM_DIST_GRID : CAM_DIST_QUANT;
@@ -989,7 +989,7 @@ void main() {
 
     vec3 cam = vec3(
         eyer * sin(eyea) * sin(eyef),
-        eyer * cos(eyef) + CAM_Y_OFFSET + u_layout_mode,
+        eyer * cos(eyef) + CAM_Y_OFFSET,
         eyer * cos(eyea) * sin(eyef)
     );
 
