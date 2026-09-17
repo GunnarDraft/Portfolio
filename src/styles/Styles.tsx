@@ -348,7 +348,7 @@ font-weight: bold;
     }
 `
 const Typo = styled.p`
-font-size: 1rem !important;
+font-size: 0.8rem !important;
 font-family: IMB ;
  @media (max-width: 600px) {
     font-size: 1rem !important;

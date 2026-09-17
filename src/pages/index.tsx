@@ -88,7 +88,7 @@ export default function Home() {
           <Heading  >
             Gunnar Valgeirsson
           </Heading>
-          <Typo2>Digital ( Artist / Developer / Designer )</Typo2>
+          <Typo>Digital Artist / Developer / Designer</Typo>
           <Typo3>
             Gunnar is a freelance and a full-stack developer based in Mexico with a
             passion for building digital services/stuff he wants. He has a knack
