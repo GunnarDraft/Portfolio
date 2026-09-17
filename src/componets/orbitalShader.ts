@@ -40,7 +40,7 @@ uniform int u_enable_m_filter;
 uniform int u_filter_m_start;
 uniform int u_filter_m_end;
 
-#define CAM_Y_OFFSET 0.70      // Desplazamiento vertical de la cámara
+#define CAM_Y_OFFSET -0.70      // Desplazamiento vertical de la cámara
 #define CAM_INERTIA 0.92      // Reservado para suavizado/persistencia futura
 
 // Paletas de color para diferenciar el estado de espín (Usado si u_color_modees 0)
