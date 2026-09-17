@@ -40,7 +40,7 @@ uniform int u_enable_m_filter;
 uniform int u_filter_m_start;
 uniform int u_filter_m_end;
 
-#define CAM_Y_OFFSET -0.70      // Desplazamiento vertical de la cámara
+#define CAM_Y_OFFSET -0.90      // Desplazamiento vertical de la cámara
 #define CAM_INERTIA 0.92      // Reservado para suavizado/persistencia futura
 
 // Paletas de color para diferenciar el estado de espín (Usado si u_color_modees 0)
@@ -968,7 +968,7 @@ vec3 getElementCenter(int id, float q_n, float q_l, float q_m, float q_s) {
 // =========================================================================
 void main() {
     vec2 fragCoord = gl_FragCoord.xy;
-    
+
  vec2 pp = (-u_resolution.xy + 2.0 * fragCoord.xy) / u_resolution.y;
 
     float eyer = (u_layout_mode == 0) ? CAM_DIST_GRID : CAM_DIST_QUANT;
@@ -989,7 +989,7 @@ void main() {
 
     vec3 cam = vec3(
         eyer * sin(eyea) * sin(eyef),
-        eyer * cos(eyef) + CAM_Y_OFFSET,
+        eyer * cos(eyef) + CAM_Y_OFFSET + u_layout_mode,
         eyer * cos(eyea) * sin(eyef)
     );
 
