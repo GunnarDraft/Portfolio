@@ -958,6 +958,11 @@ vec3 getElementCenter(int id, float q_n, float q_l, float q_m, float q_s) {
         float posX = q_m * QUANT_SCALE;
         float posY = (q_n - 4.0) * QUANT_SCALE;
         float posZ = (q_l - 1.5) * QUANT_SCALE;
+        // En modo Tetrahedron (u_layout_mode == 1) los átomos quedaban una unidad
+        // elevados: corregimos restando 1.0 en Y para ese modo.
+        if (u_layout_mode == 1) {
+            posY -= 1.0;
+        }
         posX += q_s * 0.15;
         return vec3(posX, posY, posZ);
     }

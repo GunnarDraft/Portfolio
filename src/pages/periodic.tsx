@@ -242,7 +242,7 @@ const checkboxCheckedIcon = (
 
 export default function PeriodicTable() {
   const [layoutMode, setLayoutMode] = useState(0);
-  const [filterActive, setFilterActive] = useState(0);
+  const [filterActive, setFilterActive] = useState(1);
   const [colorMode, setColorMode] = useState(0);
   const [enableIdFilter, setEnableIdFilter] = useState(0);
   const [idFilterStart, setIdFilterStart] = useState(0);
@@ -432,6 +432,7 @@ export default function PeriodicTable() {
                 sx={sliderSx}
               />
             </Box>
+
           </Stack>
         </FilterBlock>
 
