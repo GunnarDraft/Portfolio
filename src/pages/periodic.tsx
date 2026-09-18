@@ -15,6 +15,7 @@ import {
   Stack,
   Typography,
   Paper,
+  Button,
   type MenuProps,
 } from '@mui/material';
 
@@ -241,7 +242,8 @@ const checkboxCheckedIcon = (
 );
 
 export default function PeriodicTable() {
-  const [layoutMode, setLayoutMode] = useState(0);
+  const [showControls, setShowControls] = useState(true);
+const [layoutMode, setLayoutMode] = useState(0);
   const [filterActive, setFilterActive] = useState(1);
   const [colorMode, setColorMode] = useState(0);
   const [enableIdFilter, setEnableIdFilter] = useState(0);
@@ -323,7 +325,36 @@ export default function PeriodicTable() {
   return (
     <div style={{ position: "absolute", minHeight: "100vh", minWidth: "100vw", overflow: "visible" }}>
       <Scene uniforms={uniforms} />
+      {!showControls && (
+        <Button
+          variant="contained"
+          onClick={() => setShowControls(true)}
+          aria-label="Show CSS controls"
+          sx={{
+            position: "fixed",
+            left: 16,
+            top: 16,
+            zIndex: 1000,
+            color: "#d7ffd4",
+            backgroundColor: "rgba(0, 85, 62, 0.8)",
+            border: "1px solid rgba(102, 255, 0, 0.5)",
+            fontFamily: "IMB, monospace",
+            "&:hover": { backgroundColor: "rgba(0, 142, 100, 0.9)" },
+          }}
+        >
+          Show CSS Box
+        </Button>
+      )}
+      {showControls && (
       <Box component={ControlBox} sx={controlPanelSx}>
+        <Button
+          variant="text"
+          onClick={() => setShowControls(false)}
+          aria-label="Hide CSS controls"
+          sx={{ alignSelf: "flex-end", minWidth: 0, color: "#d7ffd4", fontFamily: "IMB, monospace" }}
+        >
+          Hide
+        </Button>
 
         <Stack spacing={1}>
           <Typography variant="caption" sx={{ fontWeight: 600, color: "#d7ffd4" }}>
@@ -536,6 +567,7 @@ export default function PeriodicTable() {
           </Stack>
         </FilterBlock>
       </Box>
+      )}
     </div>
   );
 }
