@@ -16,6 +16,7 @@ import {
   Typography,
   Paper,
   Button,
+  IconButton,
   type MenuProps,
 } from '@mui/material';
 
@@ -326,8 +327,7 @@ const [layoutMode, setLayoutMode] = useState(0);
     <div style={{ position: "absolute", minHeight: "100vh", minWidth: "100vw", overflow: "visible" }}>
       <Scene uniforms={uniforms} />
       {!showControls && (
-        <Button
-          variant="contained"
+        <IconButton
           onClick={() => setShowControls(true)}
           aria-label="Show CSS controls"
           sx={{
@@ -338,23 +338,20 @@ const [layoutMode, setLayoutMode] = useState(0);
             color: "#d7ffd4",
             backgroundColor: "rgba(0, 85, 62, 0.8)",
             border: "1px solid rgba(102, 255, 0, 0.5)",
-            fontFamily: "IMB, monospace",
             "&:hover": { backgroundColor: "rgba(0, 142, 100, 0.9)" },
           }}
         >
-          Show CSS Box
-        </Button>
+          <span aria-hidden="true" style={{ fontSize: "1.5rem", lineHeight: 1 }}>→</span>
+        </IconButton>
       )}
       {showControls && (
-      <Box component={ControlBox} sx={controlPanelSx}>
-        <Button
-          variant="text"
-          onClick={() => setShowControls(false)}
-          aria-label="Hide CSS controls"
-          sx={{ alignSelf: "flex-end", minWidth: 0, color: "#d7ffd4", fontFamily: "IMB, monospace" }}
-        >
-          Hide
-        </Button>
+        <>
+          <Box component={ControlBox} sx={controlPanelSx}>
+            <Stack spacing={1}>
+              <Typography variant="caption" sx={{ fontWeight: 600, color: "#d7ffd4" }}>
+                CSS Box
+              </Typography>
+            </Stack>
 
         <Stack spacing={1}>
           <Typography variant="caption" sx={{ fontWeight: 600, color: "#d7ffd4" }}>
@@ -566,7 +563,24 @@ const [layoutMode, setLayoutMode] = useState(0);
             </Box>
           </Stack>
         </FilterBlock>
-      </Box>
+          </Box>
+          <IconButton
+            onClick={() => setShowControls(false)}
+            aria-label="Hide CSS controls"
+            sx={{
+              position: "fixed",
+              left: "calc(min(95vw, 340px) + 1.25rem)",
+              top: 16,
+              zIndex: 1000,
+              color: "#d7ffd4",
+              backgroundColor: "rgba(0, 85, 62, 0.8)",
+              border: "1px solid rgba(102, 255, 0, 0.5)",
+              "&:hover": { backgroundColor: "rgba(0, 142, 100, 0.9)" },
+            }}
+          >
+            <span aria-hidden="true" style={{ fontSize: "1.5rem", lineHeight: 1 }}>←</span>
+          </IconButton>
+        </>
       )}
     </div>
   );
