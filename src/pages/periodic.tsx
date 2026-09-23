@@ -244,18 +244,18 @@ export default function PeriodicTable() {
   const [layoutMode, setLayoutMode] = useState(0);
   const [filterActive, setFilterActive] = useState(1);
   const [colorMode, setColorMode] = useState(0);
-  const [enableIdFilter, setEnableIdFilter] = useState(0);
+  const [enableIdFilter, setEnableIdFilter] = useState(1);
   const [idFilterStart, setIdFilterStart] = useState(0);
   const [idFilterEnd, setIdFilterEnd] = useState(118);
   const [enableLFilter, setEnableLFilter] = useState(0);
   const [lFilterStart, setLFilterStart] = useState(0);
   const [lFilterEnd, setLFilterEnd] = useState(3);
-  const [enableNFilter, setEnableNFilter] = useState(0);
+  const [enableNFilter, setEnableNFilter] = useState(1);
   const [nFilterStart, setNFilterStart] = useState(1);
   const [nFilterEnd, setNFilterEnd] = useState(7);
-  const [enableSpinFilter, setEnableSpinFilter] = useState(1);
+  const [enableSpinFilter, setEnableSpinFilter] = useState(0);
   const [spinValue, setSpinValue] = useState(0); // 0 = up (+0.5), 1 = down (-0.5)
-  const [enableMFilter, setEnableMFilter] = useState(0);
+  const [enableMFilter, setEnableMFilter] = useState(1);
   const [mFilterStart, setMFilterStart] = useState(-3);
   const [mFilterEnd, setMFilterEnd] = useState(3);
   const [resolution, setResolution] = useState(
