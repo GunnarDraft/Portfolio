@@ -65,7 +65,7 @@ uniform int u_filter_m_end;
 // --- INTENSIDAD VOLUMÉTRICA INDIVIDUAL ---
 #define ELECTRON_DENSITY 12000000.0
 #define WAVE_STEP_SIZE 0.03
- #define ROTATE(p, a) p=cos(a)*p+sin(a)*vec2(p.y, -p.x)
+#define ROTATE(p, a) p=cos(a)*p+sin(a)*vec2(p.y, -p.x)
 
 // =========================================================================
 // FILTROS (RANGOS INCLUSIVOS)
@@ -731,33 +731,53 @@ float associatedLaguerrePolynomial(float x, float s, float k) {
 // =========================================================================
 // POLINOMIOS ASOCIADOS DE LEGENDRE
 // =========================================================================
-float associatedLegendrePolynomials(float x, float l, float m) {
-    float am = abs(m);
-    if (l < am) return 0.0;
-    if (l == 0.0) return 1.0;
-
-    float mul = m >= 0.0 ? 1.0 : (mod(-m, 2.0) * 2.0 - 1.0) * stableFactorialRatio(l, m);
+float associatedLegendrePolynomials(
+    float x,
+    float lValue,
+    float legAm,
+    float legMul,
+    float legInitialSign,
+    float legInitialDf
+) {
+    if (lValue < legAm) return 0.0;
+    if (lValue == 0.0) return 1.0;
 
     float lp1 = 0.0;
-    float lp2 = (mod(-am, 2.0) * 2.0 - 1.0) * doubleFactorial(2.0 * am - 1.0) * pow(max(1.0 - x * x, 1e-7), am / 2.0);
+    float lp2 = legInitialSign * legInitialDf *
+                pow(max(1.0 - x * x, 1e-7), legAm / 2.0);
 
-    for (float i = am + 1.0; i <= l; i += 1.0) {
-        float lp = (x * (2.0 * i - 1.0) * lp2 - (i + am - 1.0) * lp1) / (i - am);
+    for (float i = legAm + 1.0; i <= lValue; i += 1.0) {
+        float lp = (x * (2.0 * i - 1.0) * lp2 -
+                    (i + legAm - 1.0) * lp1) / (i - legAm);
         lp1 = lp2;
         lp2 = lp;
     }
-    return lp2 / mul;
+    return lp2 / legMul;
 }
 
-float calcRadialPart(float r) {
-    float B = pow(2.0 * r / (n * a0), l);
-    float C = associatedLaguerrePolynomial(2.0 * r / (n * a0), n - l - 1.0, 2.0 * l + 1.0);
-    float E = exp(-(r / (n * a0)));
+float calcRadialPart(float r, float invNa) {
+    float x = r * invNa;
+    float B = pow(2.0 * x, l);
+    float C = associatedLaguerrePolynomial(2.0 * x, n - l - 1.0, 2.0 * l + 1.0);
+    float E = exp(-x);
     return A * B * C * E;
 }
 
-float calcAngularPart(float cosang) {
-    float pml = associatedLegendrePolynomials(cosang, l, m);
+float calcAngularPart(
+    float cosang,
+    float legAm,
+    float legMul,
+    float legInitialSign,
+    float legInitialDf
+) {
+    float pml = associatedLegendrePolynomials(
+        cosang,
+        l,
+        legAm,
+        legMul,
+        legInitialSign,
+        legInitialDf
+    );
     return Y0 * pml;
 }
 
@@ -770,18 +790,35 @@ float calcAzimuthalPart(float fai) {
 // =========================================================================
 // CÁLCULO DE COLOR
 // =========================================================================
-bool calculateColor(vec3 p, inout vec3 accumulatedColor, inout float accumulatedDensity, int id) {
+bool calculateColor(
+    vec3 p,
+    inout vec3 accumulatedColor,
+    inout float accumulatedDensity,
+    int id,
+    float invNa,
+    float legAm,
+    float legMul,
+    float legInitialSign,
+    float legInitialDf
+) {
     float r = length(p);
     if (r < 1e-4) return false;
 
     vec3 v = p / r;
     vec2 xz = vec2(0.0);
-    if (length(p.xz) > 1e-4) {
-        xz = normalize(p.xz);
+    float xz2 = dot(p.xz, p.xz);
+    if (xz2 > 1e-8) {
+        xz = p.xz * inversesqrt(xz2);
     }
 
-    float R = calcRadialPart(r);
-    float Y = calcAngularPart(v.y);
+    float R = calcRadialPart(r, invNa);
+    float Y = calcAngularPart(
+        v.y,
+        legAm,
+        legMul,
+        legInitialSign,
+        legInitialDf
+    );
 
     float fai = atan(-xz.y, xz.x);
     float F = calcAzimuthalPart(fai);
@@ -984,7 +1021,7 @@ void main() {
 
     vec2 mouse = u_mouse.xy / u_resolution.xy;
 
-    if(length(u_mouse.xy) > 10.0)
+    if(dot(u_mouse.xy, u_mouse.xy) > 100.0)
     {
         eyea += (mouse.x - 0.5) * CAM_MOUSE_SENS * 0.40;
         eyef += (mouse.y - 0.5) * CAM_MOUSE_SENS * 0.20;
@@ -1028,8 +1065,11 @@ void main() {
             m  = q_m;
             ms = q_s;
 
+            // Precomputación por elemento: estos valores no dependen de t.
+            float invNa = 1.0 / (n * a0);
+
             A = sqrt(
-                pow(2.0 / (n * a0), 3.0) *
+                pow(2.0 * invNa, 3.0) *
                 (factorial(n - l - 1.0) / (2.0 * n * factorial(n + l)))
             );
 
@@ -1040,29 +1080,48 @@ void main() {
                 m_factor
             );
 
+            // Los factores de Legendre que dependen solo de l y m se calculan una vez.
+            float legAm = abs(m);
+            float legMul = (m >= 0.0)
+                ? 1.0
+                : (mod(-m, 2.0) * 2.0 - 1.0) * stableFactorialRatio(l, m);
+            float legInitialSign = mod(-legAm, 2.0) * 2.0 - 1.0;
+            float legInitialDf = doubleFactorial(2.0 * legAm - 1.0);
+
+            // La rotación depende del elemento, del modo de layout y del tiempo,
+            // pero no de la muestra t del ray-march.
+            float mSign = (q_m == 0.0) ? 1.0 : sign(q_m);
+            float rotationAngle;
+            if (u_layout_mode == 1)
+                rotationAngle = mSign * q_s * 2.0 * u_time;
+            else
+                rotationAngle = mSign * sign(q_s) * 0.7 * u_time;
+
+            float rotCos = cos(rotationAngle);
+            float rotSin = sin(rotationAngle);
+
             for(float t = t0; t < t1; t += WAVE_STEP_SIZE)
             {
                 vec3 p_world = cam + v * t;
                 vec3 p_local = p_world - center;
 
-                float mSign = (q_m == 0.0) ? 1.0 : sign(q_m);
+                // Misma rotación que ROTATE(), usando los valores ya calculados.
+                float px = p_local.x;
+                float pz = p_local.z;
+                p_local.x = rotCos * px + rotSin * pz;
+                p_local.z = rotCos * pz - rotSin * px;
 
-                if (u_layout_mode == 1)
-                {
-                    ROTATE(
-                        p_local.xz,
-                        mSign * q_s * 2.0 * u_time
-                    );
-                }
-                else
-                {
-                    ROTATE(
-                        p_local.xz,
-                        mSign * sign(q_s) * 0.7 * u_time
-                    );
-                }
-
-                if (calculateColor(p_local * 380.0, finalColor, densityAccum, id))
+                if (calculateColor(
+                    p_local * 380.0,
+                    finalColor,
+                    densityAccum,
+                    id,
+                    invNa,
+                    legAm,
+                    legMul,
+                    legInitialSign,
+                    legInitialDf
+                ))
                 {
                     break;
                 }

@@ -1,7 +1,7 @@
 import { useFrame } from "@react-three/fiber";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Vector2 } from "three";
-import { CanvasContainer, ControlBox } from '../styles/Styles'
+import { CanvasContainer, ControlBox, HideButton } from '../styles/Styles'
 import React from 'react'
 import { fragmentShader, vertexShader } from "@/componets/orbitalShader";
 import {
@@ -323,8 +323,10 @@ export default function PeriodicTable() {
   return (
     <div style={{ position: "absolute", minHeight: "100vh", minWidth: "100vw", overflow: "visible" }}>
       <Scene uniforms={uniforms} />
-      <Box component={ControlBox} sx={controlPanelSx}>
+      <HideButton>
 
+      </HideButton>
+      <Box component={ControlBox} sx={controlPanelSx}>
         <Stack spacing={1}>
           <Typography variant="caption" sx={{ fontWeight: 600, color: "#d7ffd4" }}>
             Layout

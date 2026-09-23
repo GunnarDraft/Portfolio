@@ -136,6 +136,17 @@ const Box = styled.div`
     }
 `;
 
+const HideButton = styled.button`
+  position: absolute;
+  top: 12px;
+  right: -12px;
+  border: 1px solid #66ff00ef;
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0);
+`;
+
 const ControlBox = styled(Box)`
   position: absolute !important ;
   width: min(95vw, 340px);
@@ -375,6 +386,7 @@ z-index: 11 ;
 `
 
 export {
+  HideButton,
   Box, ControlBox, Content, Path, Svg, MenuConetent, Linked, ContentNavbar, ContentBox, HomeContent,
   CanvasContainer, DivContainer, CanvasContainerAtom, Heading, Typo, Typo2, Typo3,
   HTMLContainer, SvgIn, SvgBehance, WarningBox, WarningClose
