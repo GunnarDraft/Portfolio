@@ -247,7 +247,7 @@ export default function PeriodicTable() {
   const [enableIdFilter, setEnableIdFilter] = useState(1);
   const [idFilterStart, setIdFilterStart] = useState(0);
   const [idFilterEnd, setIdFilterEnd] = useState(118);
-  const [enableLFilter, setEnableLFilter] = useState(0);
+  const [enableLFilter, setEnableLFilter] = useState(1);
   const [lFilterStart, setLFilterStart] = useState(0);
   const [lFilterEnd, setLFilterEnd] = useState(3);
   const [enableNFilter, setEnableNFilter] = useState(1);
