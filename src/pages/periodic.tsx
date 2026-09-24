@@ -356,17 +356,6 @@ export default function PeriodicTable() {
             <MenuItem value={2}>Absorción</MenuItem> */}
           </Select>
         </Stack>
-        <FormControlLabel
-          sx={formControlLabelSx}
-          control={
-            <Switch
-              checked={filterActive === 1}
-              onChange={(e) => setFilterActive(e.target.checked ? 1 : 0)}
-              sx={switchSx}
-            />
-          }
-          label={<Typography sx={{ color: "#d7ffd4", fontWeight: 500 }}>Filtros activos</Typography>}
-        />
 
 
         {/* spin Filter */}
@@ -434,30 +423,29 @@ export default function PeriodicTable() {
 
           </Stack>
         </FilterBlock>
-
-        {/* l Filter */}
+        {/* m Filter */}
         <FilterBlock>
           <Stack spacing={1}>
             <FormControlLabel
               sx={formControlLabelSx}
               control={
                 <Checkbox
-                  checked={enableLFilter === 1}
-                  onChange={(e) => setEnableLFilter(e.target.checked ? 1 : 0)}
+                  checked={enableMFilter === 1}
+                  onChange={(e) => setEnableMFilter(e.target.checked ? 1 : 0)}
                   sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
                 />
               }
-              label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número <i>l</i></Typography>}
+              label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número <i>m</i></Typography>}
             />
             <Box>
               <Slider
-                value={[lFilterStart, lFilterEnd]}
+                value={[mFilterStart, mFilterEnd]}
                 onChange={(e, value) => {
                   const [start, end] = value as number[];
-                  setLFilterStart(start);
-                  setLFilterEnd(end);
+                  setMFilterStart(start);
+                  setMFilterEnd(end);
                 }}
-                min={0}
+                min={-3}
                 max={3}
                 marks
                 valueLabelDisplay="auto"
@@ -467,7 +455,6 @@ export default function PeriodicTable() {
             </Box>
           </Stack>
         </FilterBlock>
-
         {/* n Filter */}
         <FilterBlock>
           <Stack spacing={1}>
@@ -500,31 +487,29 @@ export default function PeriodicTable() {
             </Box>
           </Stack>
         </FilterBlock>
-
-
-        {/* m Filter */}
+        {/* l Filter */}
         <FilterBlock>
           <Stack spacing={1}>
             <FormControlLabel
               sx={formControlLabelSx}
               control={
                 <Checkbox
-                  checked={enableMFilter === 1}
-                  onChange={(e) => setEnableMFilter(e.target.checked ? 1 : 0)}
+                  checked={enableLFilter === 1}
+                  onChange={(e) => setEnableLFilter(e.target.checked ? 1 : 0)}
                   sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
                 />
               }
-              label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número <i>m</i></Typography>}
+              label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número <i>l</i></Typography>}
             />
             <Box>
               <Slider
-                value={[mFilterStart, mFilterEnd]}
+                value={[lFilterStart, lFilterEnd]}
                 onChange={(e, value) => {
                   const [start, end] = value as number[];
-                  setMFilterStart(start);
-                  setMFilterEnd(end);
+                  setLFilterStart(start);
+                  setLFilterEnd(end);
                 }}
-                min={-3}
+                min={0}
                 max={3}
                 marks
                 valueLabelDisplay="auto"
