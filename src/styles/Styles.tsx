@@ -132,19 +132,39 @@ const Box = styled.div`
     
   }
   font-size: 10px;
-
     }
 `;
 
 const HideButton = styled.button`
+  z-index: 20;
   position: absolute;
-  top: 12px;
-  right: -12px;
-  border: 1px solid #66ff00ef;
+  top: 32px;
+  left: 420px; 
   min-width: 32px;
   min-height: 32px;
-  border-radius: 50%;
+  margin: 0 32px;
+  width: 32px;
+  height: 32px;  
   background: rgba(0, 0, 0, 0);
+  color: #66ff00ef;
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 0 0 1px rgba(102, 255, 0, 0.12);
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+  background: none;
+  &:hover {
+    transform: translateX(4px); 
+  }
+
+  &:focus-visible {  
+  }
 `;
 
 const ControlBox = styled(Box)`
@@ -297,7 +317,7 @@ const ContentNavbar = styled.div`
   display: flex;
   width: 100vw;
   justify-content: center;
-  z-index: 9999999999;
+  z-index: 19;
 `
 
 const Linked = styled(Link)`

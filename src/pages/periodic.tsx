@@ -241,6 +241,7 @@ const checkboxCheckedIcon = (
 );
 
 export default function PeriodicTable() {
+  const [isPanelHidden, setIsPanelHidden] = useState(false);
   const [layoutMode, setLayoutMode] = useState(0);
   const [filterActive, setFilterActive] = useState(1);
   const [colorMode, setColorMode] = useState(0);
@@ -323,203 +324,213 @@ export default function PeriodicTable() {
   return (
     <div style={{ position: "absolute", minHeight: "100vh", minWidth: "100vw", overflow: "visible" }}>
       <Scene uniforms={uniforms} />
-      <HideButton>
-
+      <HideButton
+        type="button"
+        aria-label={isPanelHidden ? "Show filters" : "Hide filters"}
+        onClick={() => setIsPanelHidden((prev) => !prev)}
+        style={{
+          left: isPanelHidden ? "1rem" : "360px",
+          transform: isPanelHidden ? "rotateY(180deg)" : "none",
+        }}
+      >
+        <span aria-hidden="true">→</span>
       </HideButton>
-      <Box component={ControlBox} sx={controlPanelSx}>
-        <Stack spacing={1}>
-          <Select
-            value={layoutMode}
-            onChange={(e) => setLayoutMode(Number(e.target.value))}
-            size="small"
-            sx={selectSx}
-            MenuProps={selectMenuProps}
-          >
-            <MenuItem value={0}>Mendeléyev</MenuItem>
-            <MenuItem value={1}>Tetrahedron</MenuItem>
-          </Select>
-        </Stack>
-        <Stack spacing={1}>
-          <Typography variant="caption" sx={{ fontWeight: 600, color: "#d7ffd4" }}>
-            Modo de color
-          </Typography>
-          <Select
-            value={colorMode}
-            onChange={(e) => setColorMode(Number(e.target.value))}
-            size="small"
-            sx={selectSx}
-            MenuProps={selectMenuProps}
-          >
-            <MenuItem value={0}>Espín</MenuItem>
-            <MenuItem value={3}>Real</MenuItem>
-            {/* <MenuItem value={1}>Visible</MenuItem>
+      {!isPanelHidden && (
+        <Box component={ControlBox} sx={controlPanelSx}>
+          <Stack spacing={1}>
+            <Select
+              value={layoutMode}
+              onChange={(e) => setLayoutMode(Number(e.target.value))}
+              size="small"
+              sx={selectSx}
+              MenuProps={selectMenuProps}
+            >
+              <MenuItem value={0}>Mendeléyev</MenuItem>
+              <MenuItem value={1}>Tetrahedron</MenuItem>
+            </Select>
+          </Stack>
+          <Stack spacing={1}>
+            <Typography variant="caption" sx={{ fontWeight: 600, color: "#d7ffd4" }}>
+              Modo de color
+            </Typography>
+            <Select
+              value={colorMode}
+              onChange={(e) => setColorMode(Number(e.target.value))}
+              size="small"
+              sx={selectSx}
+              MenuProps={selectMenuProps}
+            >
+              <MenuItem value={0}>Espín</MenuItem>
+              <MenuItem value={3}>Real</MenuItem>
+              {/* <MenuItem value={1}>Visible</MenuItem>
             <MenuItem value={2}>Absorción</MenuItem> */}
-          </Select>
-        </Stack>
+            </Select>
+          </Stack>
 
 
-        {/* spin Filter */}
-        <FilterBlock>
-          <Stack spacing={1}>
-            <FormControlLabel
-              sx={formControlLabelSx}
-              control={
-                <Checkbox
-                  checked={enableSpinFilter === 1}
-                  onChange={(e) => setEnableSpinFilter(e.target.checked ? 1 : 0)}
-                  sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" } }}
-                />
-              }
-              label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por Spin</Typography>}
-            />
-            <FormControlLabel
-              sx={formControlLabelSx}
-              control={
-                <Switch
-                  checked={spinValue === 1}
-                  onChange={(e) => setSpinValue(e.target.checked ? 1 : 0)}
-                  sx={switchSx}
-                />
-              }
-              label={
-                <Typography sx={{ fontWeight: 600, color: "#d7ffd4", fontSize: "1rem" }}>
-                  {spinValue === 0 ? "↑ (up +½)" : "↓ (down -½)"}
-                </Typography>
-              }
-            />
-          </Stack>
-        </FilterBlock>
+          {/* spin Filter */}
+          <FilterBlock>
+            <Stack spacing={1}>
+              <FormControlLabel
+                sx={formControlLabelSx}
+                control={
+                  <Checkbox
+                    checked={enableSpinFilter === 1}
+                    onChange={(e) => setEnableSpinFilter(e.target.checked ? 1 : 0)}
+                    sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" } }}
+                  />
+                }
+                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por Spin</Typography>}
+              />
+              <FormControlLabel
+                sx={formControlLabelSx}
+                control={
+                  <Switch
+                    checked={spinValue === 1}
+                    onChange={(e) => setSpinValue(e.target.checked ? 1 : 0)}
+                    sx={switchSx}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontWeight: 600, color: "#d7ffd4", fontSize: "1rem" }}>
+                    {spinValue === 0 ? "↑ (up +½)" : "↓ (down -½)"}
+                  </Typography>
+                }
+              />
+            </Stack>
+          </FilterBlock>
 
-        {/* ID Filter */}
-        <FilterBlock>
-          <Stack spacing={1}>
-            <FormControlLabel
-              sx={formControlLabelSx}
-              control={
-                <Checkbox
-                  checked={enableIdFilter === 1}
-                  onChange={(e) => setEnableIdFilter(e.target.checked ? 1 : 0)}
-                  sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
-                />
-              }
-              label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por ID</Typography>}
-            />
-            <Box>
-              <Slider
-                value={[idFilterStart, idFilterEnd]}
-                onChange={(e, value) => {
-                  const [start, end] = value as number[];
-                  setIdFilterStart(start);
-                  setIdFilterEnd(end);
-                }}
-                min={0}
-                max={118}
-                marks
-                valueLabelDisplay="auto"
-                disableSwap
-                sx={sliderSx}
+          {/* ID Filter */}
+          <FilterBlock>
+            <Stack spacing={1}>
+              <FormControlLabel
+                sx={formControlLabelSx}
+                control={
+                  <Checkbox
+                    checked={enableIdFilter === 1}
+                    onChange={(e) => setEnableIdFilter(e.target.checked ? 1 : 0)}
+                    sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
+                  />
+                }
+                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por ID</Typography>}
               />
-            </Box>
+              <Box>
+                <Slider
+                  value={[idFilterStart, idFilterEnd]}
+                  onChange={(e, value) => {
+                    const [start, end] = value as number[];
+                    setIdFilterStart(start);
+                    setIdFilterEnd(end);
+                  }}
+                  min={0}
+                  max={118}
+                  marks
+                  valueLabelDisplay="auto"
+                  disableSwap
+                  sx={sliderSx}
+                />
+              </Box>
 
-          </Stack>
-        </FilterBlock>
-        {/* m Filter */}
-        <FilterBlock>
-          <Stack spacing={1}>
-            <FormControlLabel
-              sx={formControlLabelSx}
-              control={
-                <Checkbox
-                  checked={enableMFilter === 1}
-                  onChange={(e) => setEnableMFilter(e.target.checked ? 1 : 0)}
-                  sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
-                />
-              }
-              label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número <i>m</i></Typography>}
-            />
-            <Box>
-              <Slider
-                value={[mFilterStart, mFilterEnd]}
-                onChange={(e, value) => {
-                  const [start, end] = value as number[];
-                  setMFilterStart(start);
-                  setMFilterEnd(end);
-                }}
-                min={-3}
-                max={3}
-                marks
-                valueLabelDisplay="auto"
-                disableSwap
-                sx={sliderSx}
+            </Stack>
+          </FilterBlock>
+          {/* m Filter */}
+          <FilterBlock>
+            <Stack spacing={1}>
+              <FormControlLabel
+                sx={formControlLabelSx}
+                control={
+                  <Checkbox
+                    checked={enableMFilter === 1}
+                    onChange={(e) => setEnableMFilter(e.target.checked ? 1 : 0)}
+                    sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
+                  />
+                }
+                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número <i>m</i></Typography>}
               />
-            </Box>
-          </Stack>
-        </FilterBlock>
-        {/* n Filter */}
-        <FilterBlock>
-          <Stack spacing={1}>
-            <FormControlLabel
-              sx={formControlLabelSx}
-              control={
-                <Checkbox
-                  checked={enableNFilter === 1}
-                  onChange={(e) => setEnableNFilter(e.target.checked ? 1 : 0)}
-                  sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
+              <Box>
+                <Slider
+                  value={[mFilterStart, mFilterEnd]}
+                  onChange={(e, value) => {
+                    const [start, end] = value as number[];
+                    setMFilterStart(start);
+                    setMFilterEnd(end);
+                  }}
+                  min={-3}
+                  max={3}
+                  marks
+                  valueLabelDisplay="auto"
+                  disableSwap
+                  sx={sliderSx}
                 />
-              }
-              label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número <i>n</i></Typography>}
-            />
-            <Box>
-              <Slider
-                value={[nFilterStart, nFilterEnd]}
-                onChange={(e, value) => {
-                  const [start, end] = value as number[];
-                  setNFilterStart(start);
-                  setNFilterEnd(end);
-                }}
-                min={1}
-                max={7}
-                marks
-                valueLabelDisplay="auto"
-                disableSwap
-                sx={sliderSx}
+              </Box>
+            </Stack>
+          </FilterBlock>
+          {/* n Filter */}
+          <FilterBlock>
+            <Stack spacing={1}>
+              <FormControlLabel
+                sx={formControlLabelSx}
+                control={
+                  <Checkbox
+                    checked={enableNFilter === 1}
+                    onChange={(e) => setEnableNFilter(e.target.checked ? 1 : 0)}
+                    sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
+                  />
+                }
+                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número <i>n</i></Typography>}
               />
-            </Box>
-          </Stack>
-        </FilterBlock>
-        {/* l Filter */}
-        <FilterBlock>
-          <Stack spacing={1}>
-            <FormControlLabel
-              sx={formControlLabelSx}
-              control={
-                <Checkbox
-                  checked={enableLFilter === 1}
-                  onChange={(e) => setEnableLFilter(e.target.checked ? 1 : 0)}
-                  sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
+              <Box>
+                <Slider
+                  value={[nFilterStart, nFilterEnd]}
+                  onChange={(e, value) => {
+                    const [start, end] = value as number[];
+                    setNFilterStart(start);
+                    setNFilterEnd(end);
+                  }}
+                  min={1}
+                  max={7}
+                  marks
+                  valueLabelDisplay="auto"
+                  disableSwap
+                  sx={sliderSx}
                 />
-              }
-              label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número <i>l</i></Typography>}
-            />
-            <Box>
-              <Slider
-                value={[lFilterStart, lFilterEnd]}
-                onChange={(e, value) => {
-                  const [start, end] = value as number[];
-                  setLFilterStart(start);
-                  setLFilterEnd(end);
-                }}
-                min={0}
-                max={3}
-                marks
-                valueLabelDisplay="auto"
-                disableSwap
-                sx={sliderSx}
+              </Box>
+            </Stack>
+          </FilterBlock>
+          {/* l Filter */}
+          <FilterBlock>
+            <Stack spacing={1}>
+              <FormControlLabel
+                sx={formControlLabelSx}
+                control={
+                  <Checkbox
+                    checked={enableLFilter === 1}
+                    onChange={(e) => setEnableLFilter(e.target.checked ? 1 : 0)}
+                    sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
+                  />
+                }
+                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número <i>l</i></Typography>}
               />
-            </Box>
-          </Stack>
-        </FilterBlock>
-      </Box>
+              <Box>
+                <Slider
+                  value={[lFilterStart, lFilterEnd]}
+                  onChange={(e, value) => {
+                    const [start, end] = value as number[];
+                    setLFilterStart(start);
+                    setLFilterEnd(end);
+                  }}
+                  min={0}
+                  max={3}
+                  marks
+                  valueLabelDisplay="auto"
+                  disableSwap
+                  sx={sliderSx}
+                />
+              </Box>
+            </Stack>
+          </FilterBlock>
+        </Box>
+      )}
     </div>
   );
 }
