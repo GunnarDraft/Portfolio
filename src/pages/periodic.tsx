@@ -328,9 +328,6 @@ export default function PeriodicTable() {
       </HideButton>
       <Box component={ControlBox} sx={controlPanelSx}>
         <Stack spacing={1}>
-          <Typography variant="caption" sx={{ fontWeight: 600, color: "#d7ffd4" }}>
-            Layout
-          </Typography>
           <Select
             value={layoutMode}
             onChange={(e) => setLayoutMode(Number(e.target.value))}
