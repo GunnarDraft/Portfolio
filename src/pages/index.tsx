@@ -1,7 +1,7 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import React, { useCallback, useEffect, useMemo, useRef, Suspense, useState } from 'react'
 import { Vector2, Mesh } from "three";
-import { Box, Path, Content, Svg, SvgIn, SvgBehance, HomeContent, CanvasContainer, Heading, Typo, Typo2, Typo3, WarningBox, WarningClose } from '../styles/Styles'
+import { Box, Path, Path2, Content, Svg, SvgIn, SvgBehance, HomeContent, CanvasContainer, Heading, Typo, Typo2, Typo3, WarningBox, WarningClose, WarningBorderSvg } from '../styles/Styles'
 import { matrixFragmentShader, vertexShader } from "@/componets/shaders";
 
 const line1 = "M0 0L550 0L600 50L600 600L50 600L0 550Z";
@@ -137,10 +137,24 @@ export default function Home() {
       </Content>
       {showWarning && (
         <WarningBox>
+          <WarningBorderSvg
+            viewBox="0 0 600 300"
+            aria-hidden="true"
+            whileHover={{ scaleY: 0.97, scaleX: 0.98 }}
+            transition={{ type: "spring", stiffness: 260, damping: 18 }}
+          >
+            <Path2
+              d="M0 0 L540 0 L600 60 L600 300 L60 300 L0 240 Z"
+              fill="none"
+              stroke="#ff3b3b"
+              strokeWidth="3"
+              strokeLinejoin="miter"
+            />
+          </WarningBorderSvg>
           <WarningClose aria-label="Close warning" onClick={() => setShowWarning(false)}>
             ✕
           </WarningClose>
-          <Typo>⚠ Warning!</Typo>
+          <Heading>⚠ Warning ⚠</Heading>
           <Typo2>This website may contain flashing lights or patterns that could trigger seizures or other visual discomfort. Viewer discretion is advised.</Typo2>
         </WarningBox>
       )}

@@ -257,7 +257,7 @@ export default function PeriodicTable() {
   const [enableNFilter, setEnableNFilter] = useState(1);
   const [nFilterStart, setNFilterStart] = useState(1);
   const [nFilterEnd, setNFilterEnd] = useState(7);
-  const [enableSpinFilter, setEnableSpinFilter] = useState(0);
+  const [enableSpinFilter, setEnableSpinFilter] = useState(1);
   const [spinValue, setSpinValue] = useState(0); // 0 = up (+0.5), 1 = down (-0.5)
   const [enableMFilter, setEnableMFilter] = useState(1);
   const [mFilterStart, setMFilterStart] = useState(-3);

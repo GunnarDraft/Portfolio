@@ -15,7 +15,7 @@ const WarningBox = styled.div`
   height: min-content; 
    z-index:20;
   min-width: 100px;
-  min-height: 260px;
+  min-height: 300px;
   font-family: IMB, sans-serif;
   font-size: 16px;
   font-weight: bold;
@@ -26,7 +26,7 @@ const WarningBox = styled.div`
   padding: 16px; 
   overflow: visible;
   --warning-w: 600px;
-  --warning-h: 260px;
+  --warning-h: 300px;
   --warning-b: 60px;
   clip-path: polygon(
     0px 0px,
@@ -203,7 +203,12 @@ const Path = styled(motion.path)`
   stroke-width: 4;
   stroke-miterlimit: 10;
 `;
-
+const Path2 = styled(motion.path)`
+  fill: none;
+  stroke: #dd2222af;
+  stroke-width: 3;
+  stroke-miterlimit: 10;
+`;
 const Svg = styled(motion.svg)`
   outline: none;
   top: 10;
@@ -342,8 +347,9 @@ width: 100vw !important;
 
 `
 const Heading = styled.p`
+margin: 16px 8px 8px 8px   !important;
 
-font-size: 1rem !important;
+font-size: 1.2rem !important;
 font-family:  IMB !important;
 font-weight: bold;
  @media (max-width: 600px) {
@@ -351,6 +357,8 @@ font-weight: bold;
     }
 `
 const Typo = styled.p`
+margin: 32px !important;
+
 font-size: 0.8rem !important;
 font-family: IMB ;
  @media (max-width: 600px) {
@@ -359,6 +367,8 @@ font-family: IMB ;
 
 `
 const Typo2 = styled.p`
+margin: 32px 16px !important;
+
 font-size: 1rem !important;
 font-family: IMB  !important;
  @media (max-width: 600px) {
@@ -366,20 +376,24 @@ font-family: IMB  !important;
     }
 `
 const Typo3 = styled.p`
+margin: 32px 16px !important;
 font-size: 0.7rem !important;
 font-family: IMB !important;
- @media (max-width: 600px) {
-    font-size: 0.7rem !important;
-    }
 `
 
 const HTMLContainer = styled(Html)`
-z-index: 11 ;
+z-index: 11;
+`
+
+const WarningBorderSvg = styled(motion.svg)`
+  position: absolute;
+  top: 0;
+  left: 0;    
 `
 
 export {
   HideButton,
-  Box, ControlBox, Content, Path, Svg, MenuConetent, Linked, ContentNavbar, ContentBox, HomeContent,
-  CanvasContainer, DivContainer, CanvasContainerAtom, Heading, Typo, Typo2, Typo3,
+  Box, ControlBox, Content, Path, Path2, Svg, MenuConetent, Linked, ContentNavbar, ContentBox, HomeContent,
+  CanvasContainer, DivContainer, CanvasContainerAtom, Heading, Typo, Typo2, Typo3, WarningBorderSvg,
   HTMLContainer, SvgIn, SvgBehance, WarningBox, WarningClose
 }
