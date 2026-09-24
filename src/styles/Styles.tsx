@@ -115,7 +115,12 @@ const Box = styled.div`
     
   }
   font-size: 10px;
-    }
+    @media (max-width: 600px) {
+      width: 300px;
+      height: 300px; 
+      min-width: 200px;
+      min-height: 200px; 
+     }
 `;
 
 const HideButton = styled.button`
@@ -244,6 +249,10 @@ const SvgIn = styled(motion.svg)`
   stroke: #66ff00ef;
 fill:#00000088;
 
+ @media (max-width: 600px) { 
+    bottom:-64px;
+    left:16px;
+    }
 `;
 const SvgBehance = styled(motion.svg)`
 fill:#00000088;
@@ -257,6 +266,10 @@ fill:#00000088;
   position: absolute;
   flex: 1;
   overflow: visible;
+   @media (max-width: 600px) { 
+    bottom:-64px;
+    right:-32px;
+    }
    
 `;
 const MenuConetent = styled.div`
@@ -353,7 +366,8 @@ font-size: 1.2rem !important;
 font-family:  IMB !important;
 font-weight: bold;
  @media (max-width: 600px) {
-    font-size: 1rem !important;
+    font-size: 0.8rem !important;
+    margin: 8px 4px 4px 4px   !important;
     }
 `
 const Typo = styled.p`
@@ -362,7 +376,8 @@ margin: 32px !important;
 font-size: 0.8rem !important;
 font-family: IMB ;
  @media (max-width: 600px) {
-    font-size: 1rem !important;
+    font-size: 0.5rem !important;
+    margin: 8px !important;
     }
 
 `
@@ -373,12 +388,19 @@ font-size: 1rem !important;
 font-family: IMB  !important;
  @media (max-width: 600px) {
     font-size: 0.6rem !important;
+    margin: 8px !important;
+
     }
 `
 const Typo3 = styled.p`
 margin: 32px 16px !important;
 font-size: 0.7rem !important;
 font-family: IMB !important;
+     @media (max-width: 600px) {
+    font-size: 0.5rem !important;
+    margin: 8px !important;
+
+    }
 `
 
 const HTMLContainer = styled(Html)`
