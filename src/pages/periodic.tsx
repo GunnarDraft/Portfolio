@@ -104,7 +104,6 @@ const controlPanelSx = {
   background: "rgba(0, 85, 62, 0.1) !important",
   boxShadow: "0 10px 30px rgba(0,0,0,0.35) !important",
   "@media (max-width: 1280px)": {
-    top: "calc(1rem + 64px)",
     marginTop: "64px",
   },
 };
