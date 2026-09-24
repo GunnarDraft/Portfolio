@@ -415,7 +415,7 @@ export default function PeriodicTable() {
                     sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
                   />
                 }
-                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por ID</Typography>}
+                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número atomico</Typography>}
               />
               <Box>
                 <Slider
