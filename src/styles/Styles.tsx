@@ -80,7 +80,7 @@ const Box = styled.div`
   display: flex;
   width: 600px;
   height: 600px; 
-  min-width: 300px;
+  min-width: 340px;
   min-height: 300px;
   font-family: IMB, sans-serif;
   font-size: 16px;
@@ -108,24 +108,7 @@ const Box = styled.div`
   );
   & p {
     margin: 16px;
-  }
-  @media (max-width: 600px) {
-    width: 300px;
-    height: 300px;
-     --box-w: 300px;
-     --box-h: 300px;
-     --box-b: 25px;
-     clip-path: polygon(
-    0px var(--box-b),
-    0px 0px,
-    calc(var(--box-w) - var(--box-b)) 0px,
-    var(--box-w) var(--box-b),
-    var(--box-w) calc(var(--box-h) - var(--box-b)),
-    var(--box-w) var(--box-h),
-    var(--box-b) var(--box-h),
-    0px calc(var(--box-h) - var(--box-b)),
-    0px var(--box-b)
-  );
+  } 
   padding: 8px;
   & p {
     margin:4px;
@@ -159,6 +142,11 @@ const HideButton = styled.button`
   outline: 0;
   box-shadow: none;
   background: none;
+
+  @media (max-width: 1280px) {
+    margin-top: 64px;
+  }
+
   &:hover {
     transform: translateX(4px); 
   }
@@ -190,24 +178,7 @@ const ControlBox = styled(Box)`
     0px calc(var(--control-h) - var(--control-b)),
     0px var(--control-b)
   );
-  @media (max-width: 600px) {
-    width: min(95vw, 300px);
-    max-width: 300px;
-    --control-w: 300px;
-    --control-h: calc(100vh - 2rem);
-    --control-b: 30px;
-    clip-path: polygon(
-      0px var(--control-b),
-      0px 0px,
-      var(--control-w) 0px,
-      var(--control-w) var(--control-b),
-      var(--control-w) calc(var(--control-h) - var(--control-b)),
-      var(--control-w) var(--control-h),
-      var(--control-b) var(--control-h),
-      0px calc(var(--control-h) - var(--control-b)),
-      0px var(--control-b)
-    );
-  }
+  
 `;
 
 const Content = styled.div`

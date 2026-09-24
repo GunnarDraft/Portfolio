@@ -103,6 +103,9 @@ const controlPanelSx = {
   gap: "0.75rem",
   background: "rgba(0, 85, 62, 0.1) !important",
   boxShadow: "0 10px 30px rgba(0,0,0,0.35) !important",
+  "@media (max-width: 1280px)": {
+    marginTop: "64px",
+  },
 };
 
 const filterBlockSx = {
