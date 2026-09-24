@@ -330,7 +330,7 @@ export default function PeriodicTable() {
         onClick={() => setIsPanelHidden((prev) => !prev)}
         style={{
           left: isPanelHidden ? "1rem" : "360px",
-          transform: isPanelHidden ? "rotateY(180deg)" : "none",
+          transform: isPanelHidden ? "none" : "rotateY(180deg)",
         }}
       >
         <span aria-hidden="true">→</span>

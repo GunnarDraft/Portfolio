@@ -108,6 +108,34 @@ body {
       rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
 
+.MuiInputBase-root,
+.MuiOutlinedInput-root,
+.MuiFilledInput-root,
+.MuiInput-root,
+.MuiSelect-root {
+  border-radius: 0 !important;
+}
+
+.MuiInputBase-input,
+.MuiOutlinedInput-input,
+.MuiFilledInput-input {
+  border-radius: 0 !important;
+}
+
+.MuiList-root,
+.MuiList-padding,
+.MuiMenu-list,
+.css-1toxriw-MuiList-root-MuiMenu-list,
+.MuiPaper-root,
+.MuiPaper-elevation,
+.MuiPaper-rounded,
+.MuiPaper-elevation8,
+.MuiPopover-paper,
+.MuiMenu-paper,
+.css-1g7t9gb-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+  border-radius: 0 !important;
+}
+
 a {
   color: inherit;
   text-decoration: none;

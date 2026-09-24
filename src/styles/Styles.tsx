@@ -314,9 +314,10 @@ const ContentNavbar = styled.div`
   z-index: 100;
   left:0 ;
   right:0;
-  display: flex;
-  width: 100vw;
-  justify-content: center;
+  display: flex; 
+  width: min-content; 
+  display: flex; 
+  justify-self: center; 
   z-index: 19;
 `
 
