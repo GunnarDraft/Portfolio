@@ -383,7 +383,7 @@ export default function PeriodicTable() {
                     sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" } }}
                   />
                 }
-                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por Spin</Typography>}
+                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filter by Spin</Typography>}
               />
               <FormControlLabel
                 sx={formControlLabelSx}
