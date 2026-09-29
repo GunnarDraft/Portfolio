@@ -354,7 +354,7 @@ export default function PeriodicTable() {
           </Stack>
           <Stack spacing={1}>
             <Typography variant="caption" sx={{ fontWeight: 600, color: "#d7ffd4" }}>
-              Modo de color
+              Color Mode
             </Typography>
             <Select
               value={colorMode}
@@ -363,8 +363,8 @@ export default function PeriodicTable() {
               sx={selectSx}
               MenuProps={selectMenuProps}
             >
-              <MenuItem value={0}>Espín</MenuItem>
-              <MenuItem value={3}>Real</MenuItem>
+              <MenuItem value={0}>Spin</MenuItem>
+              <MenuItem value={3}>Color representation</MenuItem>
               {/* <MenuItem value={1}>Visible</MenuItem>
             <MenuItem value={2}>Absorción</MenuItem> */}
             </Select>
@@ -415,7 +415,7 @@ export default function PeriodicTable() {
                     sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
                   />
                 }
-                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número atomico</Typography>}
+                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filter by atomic number</Typography>}
               />
               <Box>
                 <Slider
@@ -448,7 +448,7 @@ export default function PeriodicTable() {
                     sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
                   />
                 }
-                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número <i>m</i></Typography>}
+                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filter by <i>m</i> quantum number</Typography>}
               />
               <Box>
                 <Slider
@@ -480,7 +480,7 @@ export default function PeriodicTable() {
                     sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
                   />
                 }
-                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número <i>n</i></Typography>}
+                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filter by <i>n</i> quantum number</Typography>}
               />
               <Box>
                 <Slider
@@ -512,7 +512,7 @@ export default function PeriodicTable() {
                     sx={{ color: "#66ff00ef", "&.Mui-checked": { color: "#66ff00ef" }, height: 42 }}
                   />
                 }
-                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filtro por número <i>l</i></Typography>}
+                label={<Typography sx={{ fontWeight: 700, color: "#d7ffd4", fontSize: "0.8rem" }}>Filter by <i>l</i> quantum number</Typography>}
               />
               <Box>
                 <Slider
