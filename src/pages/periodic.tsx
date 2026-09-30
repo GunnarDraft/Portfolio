@@ -364,7 +364,7 @@ export default function PeriodicTable() {
               MenuProps={selectMenuProps}
             >
               <MenuItem value={0}>Spin</MenuItem>
-              <MenuItem value={3}>Color representation</MenuItem>
+              <MenuItem value={3}>Representation</MenuItem>
               {/* <MenuItem value={1}>Visible</MenuItem>
             <MenuItem value={2}>Absorción</MenuItem> */}
             </Select>
