@@ -236,7 +236,8 @@ void main() {
 
     for (int id = 1; id <= 118; id++) {
         float qn, ql, qm, qs;
-        getMode(id, qn, ql, qm, qs, qn, qn);
+        float zeff, norm;
+        getMode(id, qn, ql, qm, qs, zeff, norm);
 
         if (!isElementEnabled(id, qn, ql, qm, qs)) continue;
 
