@@ -1,9 +1,10 @@
 import { useFrame } from "@react-three/fiber";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Vector2 } from "three";
+import { Vector2, DataTexture } from "three";
 import { CanvasContainer, ControlBox, HideButton } from '../styles/Styles'
 import React from 'react'
 import { fragmentShader, vertexShader } from "@/componets/orbitalShader";
+import { createQuantumModeTexture } from "@/componets/quantumBasis";
 import {
   Box,
   Slider,
@@ -248,6 +249,7 @@ export default function PeriodicTable() {
   const [layoutMode, setLayoutMode] = useState(0);
   const [filterActive, setFilterActive] = useState(1);
   const [colorMode, setColorMode] = useState(0);
+  const modeTexture = useMemo(() => createQuantumModeTexture(), []);
   const [enableIdFilter, setEnableIdFilter] = useState(1);
   const [idFilterStart, setIdFilterStart] = useState(0);
   const [idFilterEnd, setIdFilterEnd] = useState(118);
@@ -283,6 +285,7 @@ export default function PeriodicTable() {
       u_time: { value: 0.0 },
       u_mouse: { value: new Vector2() },
       u_resolution: { value: resolution },
+      u_mode_texture: { value: modeTexture },
       u_layout_mode: { value: layoutMode },
       u_filter_active: { value: filterActive },
       u_color_mode: { value: colorMode },
@@ -304,6 +307,7 @@ export default function PeriodicTable() {
     }),
     [
       resolution,
+      modeTexture,
       layoutMode,
       filterActive,
       colorMode,
