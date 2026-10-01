@@ -1,6 +1,6 @@
 import { useFrame } from "@react-three/fiber";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Vector2, DataTexture } from "three";
+import { Vector2 } from "three";
 import { CanvasContainer, ControlBox, HideButton } from '../styles/Styles'
 import React from 'react'
 import { fragmentShader, vertexShader } from "@/componets/orbitalShader";
